@@ -5,6 +5,45 @@ import { auth } from "@/lib/auth";
 import { logAudit } from "./audit";
 import { revalidatePath } from "next/cache";
 
+function normalizeTimeValue(value: string): string | null {
+  const normalized = value.trim().replace(/\s+/g, "").replace(/\./g, ":");
+
+  if (/^\d{1,2}$/.test(normalized)) {
+    const hours = Number(normalized);
+    if (hours >= 0 && hours <= 23) {
+      return `${String(hours).padStart(2, "0")}:00`;
+    }
+    return null;
+  }
+
+  if (/^\d{3,4}$/.test(normalized)) {
+    const hours = Number(normalized.slice(0, -2));
+    const minutes = Number(normalized.slice(-2));
+    if (hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
+      return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+    }
+    return null;
+  }
+
+  const match = normalized.match(/^(\d{1,2}):(\d{1,2})$/);
+  if (!match) {
+    return null;
+  }
+
+  const hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+    return null;
+  }
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+function toMinutes(value: string): number {
+  const [hours, minutes] = value.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
 async function requireTimetableManager() {
   const session = await auth();
   if (!session?.user || !session.user.tenantId) {
@@ -119,9 +158,28 @@ export async function saveTimetable(data: {
     return { success: false, error: "No current academic year found" };
   }
 
+  const normalizedEntries = data.entries.map((entry) => {
+    const startTime = normalizeTimeValue(entry.startTime);
+    const endTime = normalizeTimeValue(entry.endTime);
+
+    if (!startTime || !endTime) {
+      throw new Error("Invalid time format. Use HH:MM.");
+    }
+
+    if (toMinutes(startTime) >= toMinutes(endTime)) {
+      throw new Error("End time must be after start time.");
+    }
+
+    return {
+      ...entry,
+      startTime,
+      endTime,
+    };
+  });
+
   try {
     // Check for teacher conflicts
-    const conflicts = await checkTeacherConflicts(tenantId, currentYear.id, data.entries, data.classId, data.batchId);
+    const conflicts = await checkTeacherConflicts(tenantId, currentYear.id, normalizedEntries, data.classId, data.batchId);
     if (conflicts.length > 0) {
       return {
         success: false,
@@ -142,9 +200,9 @@ export async function saveTimetable(data: {
       await tx.timetableEntry.deleteMany({ where: deleteWhere });
 
       // Create new entries
-      if (data.entries.length > 0) {
+      if (normalizedEntries.length > 0) {
         await tx.timetableEntry.createMany({
-          data: data.entries.map((entry) => ({
+          data: normalizedEntries.map((entry) => ({
             tenantId,
             academicYearId: currentYear.id,
             classId: data.classId || null,
@@ -184,7 +242,7 @@ export async function saveTimetable(data: {
       entityId: data.classId || data.batchId || "",
       details: {
         target: targetLabel,
-        entriesCount: data.entries.length,
+        entriesCount: normalizedEntries.length,
       },
     });
 
@@ -195,7 +253,10 @@ export async function saveTimetable(data: {
     };
   } catch (error) {
     console.error("Save timetable error:", error);
-    return { success: false, error: "Failed to save timetable" };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to save timetable",
+    };
   }
 }
 
@@ -221,60 +282,69 @@ async function checkTeacherConflicts(
     conflictWith: string;
   }> = [];
 
-  // Get all unique teacher IDs and day combos
-  const teacherDays = new Map<string, typeof entries>();
+  // Group by teacher and day without serializing keys back into strings.
+  const teacherDays = new Map<string, Map<number, typeof entries>>();
   for (const entry of entries) {
-    const key = `${entry.teacherId}-${entry.dayOfWeek}`;
-    if (!teacherDays.has(key)) {
-      teacherDays.set(key, []);
+    if (!Number.isInteger(entry.dayOfWeek) || entry.dayOfWeek < 1 || entry.dayOfWeek > 7) {
+      throw new Error(`Invalid day of week: ${entry.dayOfWeek}`);
     }
-    teacherDays.get(key)!.push(entry);
+
+    if (!teacherDays.has(entry.teacherId)) {
+      teacherDays.set(entry.teacherId, new Map<number, typeof entries>());
+    }
+
+    const teacherDayMap = teacherDays.get(entry.teacherId)!;
+    if (!teacherDayMap.has(entry.dayOfWeek)) {
+      teacherDayMap.set(entry.dayOfWeek, []);
+    }
+
+    teacherDayMap.get(entry.dayOfWeek)!.push(entry);
   }
 
-  for (const [key, teacherEntries] of teacherDays) {
-    const [teacherId, dayStr] = key.split("-");
-    const dayOfWeek = parseInt(dayStr);
+  for (const [teacherId, dayMap] of teacherDays) {
+    for (const [dayOfWeek, teacherEntries] of dayMap) {
 
-    // Get existing entries for this teacher on this day (excluding current class/batch)
-    const existingWhere: Record<string, unknown> = {
-      tenantId,
-      academicYearId,
-      teacherId,
-      dayOfWeek,
-    };
+      // Get existing entries for this teacher on this day (excluding current class/batch)
+      const existingWhere: Record<string, unknown> = {
+        tenantId,
+        academicYearId,
+        teacherId,
+        dayOfWeek,
+      };
 
-    // Exclude the class/batch we're saving (since we'll delete those first)
-    if (excludeClassId) {
-      existingWhere.classId = { not: excludeClassId };
-    }
-    if (excludeBatchId) {
-      existingWhere.batchId = { not: excludeBatchId };
-    }
+      // Exclude the class/batch we're saving (since we'll delete those first)
+      if (excludeClassId) {
+        existingWhere.classId = { not: excludeClassId };
+      }
+      if (excludeBatchId) {
+        existingWhere.batchId = { not: excludeBatchId };
+      }
 
-    const existingEntries = await prisma.timetableEntry.findMany({
-      where: existingWhere,
-      include: {
-        teacher: { select: { name: true } },
-        class: { select: { name: true, section: true } },
-        batch: { select: { name: true } },
-      },
-    });
+      const existingEntries = await prisma.timetableEntry.findMany({
+        where: existingWhere,
+        include: {
+          teacher: { select: { name: true } },
+          class: { select: { name: true, section: true } },
+          batch: { select: { name: true } },
+        },
+      });
 
-    for (const newEntry of teacherEntries) {
-      for (const existing of existingEntries) {
-        // Check time overlap
-        if (timesOverlap(newEntry.startTime, newEntry.endTime, existing.startTime, existing.endTime)) {
-          const conflictTarget = existing.class
-            ? `${existing.class.name}${existing.class.section ? `-${existing.class.section}` : ""}`
-            : existing.batch?.name || "Unknown";
+      for (const newEntry of teacherEntries) {
+        for (const existing of existingEntries) {
+          // Check time overlap
+          if (timesOverlap(newEntry.startTime, newEntry.endTime, existing.startTime, existing.endTime)) {
+            const conflictTarget = existing.class
+              ? `${existing.class.name}${existing.class.section ? `-${existing.class.section}` : ""}`
+              : existing.batch?.name || "Unknown";
 
-          conflicts.push({
-            teacherName: existing.teacher.name,
-            dayOfWeek: newEntry.dayOfWeek,
-            startTime: newEntry.startTime,
-            endTime: newEntry.endTime,
-            conflictWith: conflictTarget,
-          });
+            conflicts.push({
+              teacherName: existing.teacher.name,
+              dayOfWeek: newEntry.dayOfWeek,
+              startTime: newEntry.startTime,
+              endTime: newEntry.endTime,
+              conflictWith: conflictTarget,
+            });
+          }
         }
       }
     }
@@ -308,6 +378,12 @@ export async function checkTeacherConflict(params: {
   const user = await requireTimetableManager();
   const tenantId = user.tenantId!;
 
+  const startTime = normalizeTimeValue(params.startTime);
+  const endTime = normalizeTimeValue(params.endTime);
+  if (!startTime || !endTime || toMinutes(startTime) >= toMinutes(endTime)) {
+    return { success: false, error: "Invalid time range" };
+  }
+
   const currentYear = await prisma.academicYear.findFirst({
     where: { tenantId, isCurrent: true },
   });
@@ -338,7 +414,7 @@ export async function checkTeacherConflict(params: {
   });
 
   for (const existing of existingEntries) {
-    if (timesOverlap(params.startTime, params.endTime, existing.startTime, existing.endTime)) {
+    if (timesOverlap(startTime, endTime, existing.startTime, existing.endTime)) {
       const conflictTarget = existing.class
         ? `${existing.class.name}${existing.class.section ? `-${existing.class.section}` : ""}`
         : existing.batch?.name || "Unknown";

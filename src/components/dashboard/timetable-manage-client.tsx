@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -99,12 +101,57 @@ const DAYS = [
   { value: 6, label: "Saturday", shortLabel: "Sat" },
 ];
 
-const TIME_SLOTS = [
-  "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
-  "11:00", "11:30", "12:00", "12:30", "13:00", "13:30",
-  "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
-  "17:00",
-];
+const TIME_SLOT_INTERVAL_MINUTES = 15;
+
+function formatTimeSlot(totalMinutes: number) {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+function normalizeTimeInput(value: string): string | null {
+  const normalized = value.trim().replace(/\s+/g, "").replace(/\./g, ":");
+
+  if (/^\d{1,2}$/.test(normalized)) {
+    const hours = Number(normalized);
+    if (hours >= 0 && hours <= 23) {
+      return `${String(hours).padStart(2, "0")}:00`;
+    }
+    return null;
+  }
+
+  if (/^\d{3,4}$/.test(normalized)) {
+    const hours = Number(normalized.slice(0, -2));
+    const minutes = Number(normalized.slice(-2));
+    if (hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
+      return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+    }
+    return null;
+  }
+
+  const match = normalized.match(/^(\d{1,2}):(\d{1,2})$/);
+  if (!match) {
+    return null;
+  }
+
+  const hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+    return null;
+  }
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+function toMinutes(value: string): number {
+  const [hours, minutes] = value.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
+const TIME_SLOTS = Array.from(
+  { length: (24 * 60) / TIME_SLOT_INTERVAL_MINUTES },
+  (_, index) => formatTimeSlot(index * TIME_SLOT_INTERVAL_MINUTES)
+);
 
 const SUBJECT_COLORS = [
   "bg-blue-100 border-blue-300 text-blue-800 dark:bg-blue-950/40 dark:border-blue-700 dark:text-blue-300",
@@ -147,6 +194,9 @@ export function TimetableManageClient({ tenantType }: TimetableManageClientProps
   const [showCopyDialog, setShowCopyDialog] = useState(false);
   const [copyFromClassId, setCopyFromClassId] = useState("");
   const [copyFromBatchId, setCopyFromBatchId] = useState("");
+  const [showCopyDayDialog, setShowCopyDayDialog] = useState(false);
+  const [copySourceDay, setCopySourceDay] = useState(1);
+  const [copyTargetDays, setCopyTargetDays] = useState<number[]>([]);
 
   // New entry form state
   const [formSubjectId, setFormSubjectId] = useState("");
@@ -276,6 +326,13 @@ export function TimetableManageClient({ tenantType }: TimetableManageClientProps
     setShowEntryDialog(true);
   };
 
+  const handleTimeInputBlur = (value: string, setter: (nextValue: string) => void) => {
+    const normalized = normalizeTimeInput(value);
+    if (normalized) {
+      setter(normalized);
+    }
+  };
+
   // Open edit entry dialog
   const openEditDialog = (entry: TimetableEntry, index: number) => {
     setEditingEntry(entry);
@@ -294,12 +351,19 @@ export function TimetableManageClient({ tenantType }: TimetableManageClientProps
   const checkConflicts = useCallback(async () => {
     if (!formTeacherId || !formStartTime || !formEndTime) return;
 
+    const startTime = normalizeTimeInput(formStartTime);
+    const endTime = normalizeTimeInput(formEndTime);
+    if (!startTime || !endTime || toMinutes(startTime) >= toMinutes(endTime)) {
+      setConflictWarning("");
+      return;
+    }
+
     try {
       const result = await checkTeacherConflict({
         teacherId: formTeacherId,
         dayOfWeek: formDayOfWeek,
-        startTime: formStartTime,
-        endTime: formEndTime,
+        startTime,
+        endTime,
         excludeClassId: isSchool ? selectedClassId : undefined,
         excludeBatchId: !isSchool ? selectedBatchId : undefined,
       });
@@ -330,6 +394,18 @@ export function TimetableManageClient({ tenantType }: TimetableManageClientProps
       return;
     }
 
+    const normalizedStartTime = normalizeTimeInput(formStartTime);
+    const normalizedEndTime = normalizeTimeInput(formEndTime);
+    if (!normalizedStartTime || !normalizedEndTime) {
+      toast.error("Enter time as HH:MM, for example 10:15 or 11:00");
+      return;
+    }
+
+    if (toMinutes(normalizedStartTime) >= toMinutes(normalizedEndTime)) {
+      toast.error("End time must be after start time");
+      return;
+    }
+
     const subject = subjects.find((s) => s.id === formSubjectId);
     const teacher = teachers.find((t) => t.id === formTeacherId);
     if (!subject || !teacher) return;
@@ -340,8 +416,8 @@ export function TimetableManageClient({ tenantType }: TimetableManageClientProps
       teacherId: formTeacherId,
       teacherName: teacher.name,
       dayOfWeek: formDayOfWeek,
-      startTime: formStartTime,
-      endTime: formEndTime,
+      startTime: normalizedStartTime,
+      endTime: normalizedEndTime,
       room: formRoom,
     };
 
@@ -425,6 +501,62 @@ export function TimetableManageClient({ tenantType }: TimetableManageClientProps
     }
   };
 
+  const toggleCopyTargetDay = (dayOfWeek: number, checked: boolean) => {
+    setCopyTargetDays((currentDays) => {
+      if (checked) {
+        return currentDays.includes(dayOfWeek) ? currentDays : [...currentDays, dayOfWeek].sort((a, b) => a - b);
+      }
+      return currentDays.filter((value) => value !== dayOfWeek);
+    });
+  };
+
+  const handleOpenCopyDayDialog = () => {
+    setCopySourceDay(1);
+    setCopyTargetDays([]);
+    setShowCopyDayDialog(true);
+  };
+
+  const handleCopyDay = () => {
+    const sourceEntries = entries.filter((entry) => entry.dayOfWeek === copySourceDay);
+    if (sourceEntries.length === 0) {
+      toast.error("No periods found on the selected source day");
+      return;
+    }
+
+    if (copyTargetDays.length === 0) {
+      toast.error("Select at least one target day");
+      return;
+    }
+
+    const newEntries = entries.filter((entry) => !copyTargetDays.includes(entry.dayOfWeek));
+    for (const targetDay of copyTargetDays) {
+      for (const entry of sourceEntries) {
+        newEntries.push({
+          ...entry,
+          id: undefined,
+          dayOfWeek: targetDay,
+        });
+      }
+    }
+
+    newEntries.sort((left, right) => {
+      if (left.dayOfWeek !== right.dayOfWeek) {
+        return left.dayOfWeek - right.dayOfWeek;
+      }
+      return left.startTime.localeCompare(right.startTime);
+    });
+
+    setEntries(newEntries);
+    setHasUnsavedChanges(true);
+    setShowCopyDayDialog(false);
+
+    const targetLabels = copyTargetDays
+      .map((dayValue) => DAYS.find((day) => day.value === dayValue)?.shortLabel)
+      .filter(Boolean)
+      .join(", ");
+    toast.success(`Copied ${sourceEntries.length} periods to ${targetLabels}`);
+  };
+
   // Group entries by day for grid display
   const entriesByDay: Record<number, TimetableEntry[]> = {};
   for (const day of DAYS) {
@@ -452,6 +584,10 @@ export function TimetableManageClient({ tenantType }: TimetableManageClientProps
 
         {selectedId && (
           <div className="flex gap-2">
+            <Button variant="outline" size="sm" onClick={handleOpenCopyDayDialog}>
+              <Calendar className="mr-2 h-4 w-4" />
+              Copy Day
+            </Button>
             <Button variant="outline" size="sm" onClick={() => setShowCopyDialog(true)}>
               <Copy className="mr-2 h-4 w-4" />
               Copy From
@@ -532,7 +668,7 @@ export function TimetableManageClient({ tenantType }: TimetableManageClientProps
             <Card>
               <CardContent className="p-0">
                 <div className="overflow-x-auto">
-                  <div className="min-w-[800px]">
+                  <div className="min-w-200">
                     <div className="grid grid-cols-6 border-b">
                       {DAYS.map((day) => (
                         <div
@@ -551,7 +687,7 @@ export function TimetableManageClient({ tenantType }: TimetableManageClientProps
                     </div>
                     <div className="grid grid-cols-6">
                       {DAYS.map((day) => (
-                        <div key={day.value} className="min-h-[200px] border-r p-2 last:border-r-0 space-y-1.5">
+                        <div key={day.value} className="min-h-50 border-r p-2 last:border-r-0 space-y-1.5">
                           {entriesByDay[day.value]?.map((entry, idx) => {
                             const globalIdx = entries.indexOf(entry);
                             return (
@@ -764,35 +900,34 @@ export function TimetableManageClient({ tenantType }: TimetableManageClientProps
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="mb-1 block text-sm font-medium">Start Time</label>
-                <Select value={formStartTime} onValueChange={(val) => val && setFormStartTime(val)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {TIME_SLOTS.map((t) => (
-                      <SelectItem key={t} value={t}>
-                        {t}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input
+                  value={formStartTime}
+                  onChange={(event) => setFormStartTime(event.target.value)}
+                  onBlur={() => handleTimeInputBlur(formStartTime, setFormStartTime)}
+                  placeholder="HH:MM"
+                  list="timetable-time-slots"
+                />
               </div>
               <div>
                 <label className="mb-1 block text-sm font-medium">End Time</label>
-                <Select value={formEndTime} onValueChange={(val) => val && setFormEndTime(val)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {TIME_SLOTS.map((t) => (
-                      <SelectItem key={t} value={t}>
-                        {t}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Input
+                  value={formEndTime}
+                  onChange={(event) => setFormEndTime(event.target.value)}
+                  onBlur={() => handleTimeInputBlur(formEndTime, setFormEndTime)}
+                  placeholder="HH:MM"
+                  list="timetable-time-slots"
+                />
               </div>
             </div>
+            <p className="text-xs text-muted-foreground">
+              Pick a 15-minute slot like 10:15 or type the time manually in HH:MM format.
+            </p>
+
+            <datalist id="timetable-time-slots">
+              {TIME_SLOTS.map((timeSlot) => (
+                <option key={timeSlot} value={timeSlot} />
+              ))}
+            </datalist>
 
             <div>
               <label className="mb-1 block text-sm font-medium">Room (Optional)</label>
@@ -810,6 +945,88 @@ export function TimetableManageClient({ tenantType }: TimetableManageClientProps
             </Button>
             <Button onClick={handleSaveEntry}>
               {editingEntry ? "Update" : "Add"} Period
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showCopyDayDialog} onOpenChange={setShowCopyDayDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Copy Day Timetable</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div>
+              <label className="mb-1 block text-sm font-medium">Source Day</label>
+              <Select
+                value={String(copySourceDay)}
+                onValueChange={(value) => {
+                  const nextSourceDay = Number(value);
+                  setCopySourceDay(nextSourceDay);
+                  setCopyTargetDays((currentDays) => currentDays.filter((dayValue) => dayValue !== nextSourceDay));
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {DAYS.map((day) => (
+                    <SelectItem key={day.value} value={String(day.value)}>
+                      {day.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <label className="block text-sm font-medium">Target Days</label>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setCopyTargetDays(DAYS.filter((day) => day.value !== copySourceDay).map((day) => day.value))}
+                  >
+                    Select all
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setCopyTargetDays([])}
+                  >
+                    Clear
+                  </Button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 rounded-md border p-3">
+                {DAYS.filter((day) => day.value !== copySourceDay).map((day) => (
+                  <Label key={day.value} className="cursor-pointer justify-start gap-3 rounded-md border px-3 py-2">
+                    <Checkbox
+                      checked={copyTargetDays.includes(day.value)}
+                      onCheckedChange={(checked) => toggleCopyTargetDay(day.value, Boolean(checked))}
+                    />
+                    <span>{day.label}</span>
+                  </Label>
+                ))}
+              </div>
+            </div>
+
+            <p className="text-xs text-muted-foreground">
+              Existing periods on the selected target days will be replaced in the draft timetable. Save the timetable to persist the copied days.
+            </p>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCopyDayDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleCopyDay}>
+              Copy Day
             </Button>
           </DialogFooter>
         </DialogContent>

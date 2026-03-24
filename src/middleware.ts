@@ -13,7 +13,13 @@ export default auth((req) => {
   const publicPaths = ["/", "/login", "/register", "/forgot-password", "/reset-password"];
   const isPublicPath = publicPaths.includes(pathname);
   const isApiAuth = pathname.startsWith("/api/auth");
-  const isPublicAsset = pathname.startsWith("/_next") || pathname.startsWith("/favicon");
+  const isPublicAsset =
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/favicon") ||
+    pathname === "/manifest.json" ||
+    pathname === "/apple-touch-icon.png" ||
+    pathname === "/robots.txt" ||
+    pathname === "/sitemap.xml";
 
   if (isApiAuth || isPublicAsset) {
     return NextResponse.next();
@@ -106,5 +112,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|manifest.json|apple-touch-icon.png|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|json|txt|xml)$).*)"],
 };
