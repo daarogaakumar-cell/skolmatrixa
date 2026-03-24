@@ -4,6 +4,8 @@ import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
 
 export const authConfig: NextAuthConfig = {
+  // Required for Vercel/production deployments — trusts the x-forwarded-host header
+  trustHost: true,
   providers: [
     Credentials({
       name: "credentials",

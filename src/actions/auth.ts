@@ -175,10 +175,11 @@ export async function forgotPasswordAction(email: string) {
       create: { key: `reset_token_${token}`, value: { userId: user.id, email: user.email, expiry: expiry.toISOString() } },
     });
 
-    // Send reset email
-    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
+    // Send reset email — use AUTH_URL first, fall back to NEXT_PUBLIC_APP_URL
+    const appUrl = process.env.AUTH_URL || process.env.NEXTAUTH_URL || process.env.NEXT_PUBLIC_APP_URL || "";
+    const resetUrl = `${appUrl}/reset-password?token=${token}`;
     const { sendEmail } = await import("@/lib/email");
-    await sendEmail({
+    const emailResult = await sendEmail({
       to: user.email,
       subject: "Reset your SkolMatrixa password",
       html: `
@@ -193,6 +194,12 @@ export async function forgotPasswordAction(email: string) {
         </div>
       `,
     });
+
+    if (!emailResult.success) {
+      console.error("Forgot password email failed to send:", emailResult.error);
+      // Token is saved — log the reset URL server-side so admin can assist if needed
+      console.log(`[RESET_LINK] ${user.email} → ${resetUrl}`);
+    }
 
     return { success: true, message: "If an account exists with this email, you will receive a password reset link." };
   } catch (error) {
