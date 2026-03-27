@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 
 interface DashboardShellProps {
   loading?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 }
 
