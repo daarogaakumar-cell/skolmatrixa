@@ -165,7 +165,7 @@ export function LibraryDashboardClient() {
           value={stats.seats.total}
           subtitle={`${stats.seats.available} available`}
           icon={Armchair}
-          color="amber"
+          variant="amber"
           href="/dashboard/library/seats"
         />
         <MetricCard
@@ -173,7 +173,7 @@ export function LibraryDashboardClient() {
           value={stats.members.active}
           subtitle={`${stats.members.total} total`}
           icon={Users}
-          color="emerald"
+          variant="emerald"
           href="/dashboard/library/members"
         />
         <MetricCard
@@ -181,16 +181,16 @@ export function LibraryDashboardClient() {
           value={stats.books.issued}
           subtitle={stats.books.overdue > 0 ? `${stats.books.overdue} overdue` : "All on time"}
           icon={BookOpen}
-          color="indigo"
+          variant="indigo"
           href="/dashboard/library/books"
-          trend={stats.books.overdue > 0 ? { value: stats.books.overdue, label: "overdue", direction: "down" as const } : undefined}
+          trend={stats.books.overdue > 0 ? { value: stats.books.overdue, isPositive: false } : undefined}
         />
         <MetricCard
           title="Pending Fees"
           value={formatCurrency(stats.fees.pending)}
           subtitle={`${formatCurrency(stats.fees.collected)} collected`}
           icon={IndianRupee}
-          color="rose"
+          variant="rose"
           href="/dashboard/library/fees"
         />
       </div>

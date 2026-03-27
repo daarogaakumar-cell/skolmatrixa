@@ -94,7 +94,7 @@ export function AccountantDashboardClient({
             value={`₹${Number(feeStats.totalCollected || 0).toLocaleString("en-IN")}`}
             subtitle="This academic year"
             icon={TrendingUp}
-            color="emerald"
+            variant="emerald"
             href="/dashboard/fees"
           />
           <MetricCard
@@ -102,21 +102,21 @@ export function AccountantDashboardClient({
             value={`₹${Number(feeStats.totalPending || 0).toLocaleString("en-IN")}`}
             subtitle="Awaiting payment"
             icon={Clock}
-            color="amber"
+            variant="amber"
           />
           <MetricCard
             title="Overdue"
             value={feeStats.overdueCount || 0}
             subtitle="Overdue payments"
             icon={AlertTriangle}
-            color="rose"
+            variant="rose"
           />
           <MetricCard
             title="Students"
             value={feeStats.totalStudents || 0}
             subtitle="Total enrolled"
             icon={Users}
-            color="blue"
+            variant="blue"
           />
         </div>
       )}

@@ -73,7 +73,7 @@ export function LibrarianDashboardClient({
           value={stats?.books?.total || 0}
           subtitle={`${stats?.books?.available || 0} available`}
           icon={BookOpen}
-          color="blue"
+          variant="blue"
           href="/dashboard/library/books"
         />
         <MetricCard
@@ -81,7 +81,7 @@ export function LibrarianDashboardClient({
           value={stats?.members?.active || 0}
           subtitle={`${stats?.members?.total || 0} total members`}
           icon={Users}
-          color="emerald"
+          variant="emerald"
           href="/dashboard/library/members"
         />
         <MetricCard
@@ -89,16 +89,16 @@ export function LibrarianDashboardClient({
           value={stats?.books?.issued || 0}
           subtitle={(stats?.books?.overdue || 0) > 0 ? `${stats.books.overdue} overdue` : "All on time"}
           icon={BookCheck}
-          color="violet"
+          variant="violet"
           href="/dashboard/library/book-issues"
-          trend={(stats?.books?.overdue || 0) > 0 ? { value: stats.books.overdue, label: "overdue", direction: "down" } : undefined}
+          trend={(stats?.books?.overdue || 0) > 0 ? { value: stats.books.overdue, isPositive: false } : undefined}
         />
         <MetricCard
           title="Available Seats"
           value={stats?.seats?.available || 0}
           subtitle={`of ${stats?.seats?.total || 0} seats`}
           icon={Armchair}
-          color="amber"
+          variant="amber"
           href="/dashboard/library/seats"
         />
       </div>
