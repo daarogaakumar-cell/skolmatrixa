@@ -2,23 +2,17 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import {
   Armchair,
   Users,
   BookOpen,
   IndianRupee,
-  AlertTriangle,
-  TrendingUp,
   UserPlus,
   ArrowUpRight,
-  Loader2,
-  Clock,
   BookCheck,
-  Wifi,
   CreditCard,
   Mail,
+  Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getLibraryDashboardStats, sendFeeReminders, sendBookReturnReminders } from "@/actions/library";
@@ -33,10 +27,13 @@ import {
   PieChart,
   Pie,
   Cell,
-  Legend,
 } from "recharts";
+import { MetricCard } from "./ui/metric-card";
+import { DashboardHeader } from "./ui/dashboard-header";
+import { DashboardShell } from "./ui/dashboard-shell";
+import { SectionCard, EmptyState } from "./ui/section-card";
+import { QuickActionGrid } from "./ui/quick-action-grid";
 
-const CHART_COLORS = ["#f59e0b", "#22c55e", "#6366f1", "#ef4444", "#06b6d4", "#8b5cf6"];
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function formatCurrency(amount: number) {
@@ -47,6 +44,14 @@ function formatCurrency(amount: number) {
     maximumFractionDigits: 0,
   }).format(amount);
 }
+
+const chartTooltipStyle = {
+  borderRadius: "0.75rem",
+  border: "1px solid hsl(var(--border))",
+  background: "hsl(var(--card))",
+  fontSize: "0.75rem",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+};
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function LibraryDashboardClient() {
@@ -81,29 +86,27 @@ export function LibraryDashboardClient() {
   }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    );
+    return <DashboardShell loading />;
   }
 
   if (!stats) {
     return (
-      <div className="text-center py-20 text-muted-foreground">
-        Failed to load dashboard data.
-      </div>
+      <DashboardShell>
+        <div className="text-center py-20 text-muted-foreground">
+          Failed to load dashboard data.
+        </div>
+      </DashboardShell>
     );
   }
 
   const seatData = [
-    { name: "Available", value: stats.seats.available, color: "#22c55e" },
+    { name: "Available", value: stats.seats.available, color: "#059669" },
     { name: "Occupied", value: stats.seats.occupied, color: "#f59e0b" },
     { name: "Maintenance", value: stats.seats.maintenance, color: "#ef4444" },
   ].filter((d) => d.value > 0);
 
   const memberData = [
-    { name: "Active", value: stats.members.active, color: "#22c55e" },
+    { name: "Active", value: stats.members.active, color: "#059669" },
     { name: "Expired", value: stats.members.expired, color: "#f59e0b" },
     { name: "Suspended", value: stats.members.suspended, color: "#ef4444" },
   ].filter((d) => d.value > 0);
@@ -113,35 +116,51 @@ export function LibraryDashboardClient() {
     revenue: Number(r.total),
   }));
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Library Dashboard</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Overview of your library operations &amp; analytics
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button size="sm" variant="outline" onClick={handleSendFeeReminders} disabled={sendingFeeReminders}>
-            {sendingFeeReminders ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Mail className="mr-1.5 h-4 w-4" />}
-            Fee Reminders
-          </Button>
-          <Button size="sm" variant="outline" onClick={handleSendBookReminders} disabled={sendingBookReminders}>
-            {sendingBookReminders ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Mail className="mr-1.5 h-4 w-4" />}
-            Book Reminders
-          </Button>
-          <Button size="sm" nativeButton={false} render={<Link href="/dashboard/library/members/new" />}>
-            <UserPlus className="mr-1.5 h-4 w-4" />
-            Add Member
-          </Button>
-        </div>
-      </div>
+  const quickActions = [
+    { label: "Add Member", icon: UserPlus, href: "/dashboard/library/members/new" },
+    { label: "Manage Seats", icon: Armchair, href: "/dashboard/library/seats" },
+    { label: "Manage Books", icon: BookOpen, href: "/dashboard/library/books" },
+    { label: "Issue Book", icon: BookCheck, href: "/dashboard/library/books/issue" },
+    { label: "Collect Fees", icon: CreditCard, href: "/dashboard/library/fees" },
+    { label: "ID Cards", icon: CreditCard, href: "/dashboard/library/id-cards" },
+  ];
 
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
+  return (
+    <DashboardShell>
+      {/* ── Header ── */}
+      <DashboardHeader
+        greeting="Library Dashboard"
+        subtitle="Overview of your library operations & analytics"
+      >
+        <div className="flex flex-wrap gap-2">
+          <button
+            onClick={handleSendFeeReminders}
+            disabled={sendingFeeReminders}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted/60 disabled:opacity-50"
+          >
+            {sendingFeeReminders ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Mail className="h-3.5 w-3.5" />}
+            Fee Reminders
+          </button>
+          <button
+            onClick={handleSendBookReminders}
+            disabled={sendingBookReminders}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-xs font-medium transition-colors hover:bg-muted/60 disabled:opacity-50"
+          >
+            {sendingBookReminders ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Mail className="h-3.5 w-3.5" />}
+            Book Reminders
+          </button>
+          <Link
+            href="/dashboard/library/members/new"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            <UserPlus className="h-3.5 w-3.5" /> Add Member
+          </Link>
+        </div>
+      </DashboardHeader>
+
+      {/* ── Metric Cards ── */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <MetricCard
           title="Total Seats"
           value={stats.seats.total}
           subtitle={`${stats.seats.available} available`}
@@ -149,7 +168,7 @@ export function LibraryDashboardClient() {
           color="amber"
           href="/dashboard/library/seats"
         />
-        <StatCard
+        <MetricCard
           title="Active Members"
           value={stats.members.active}
           subtitle={`${stats.members.total} total`}
@@ -157,15 +176,16 @@ export function LibraryDashboardClient() {
           color="emerald"
           href="/dashboard/library/members"
         />
-        <StatCard
+        <MetricCard
           title="Books Issued"
           value={stats.books.issued}
-          subtitle={`${stats.books.overdue} overdue`}
+          subtitle={stats.books.overdue > 0 ? `${stats.books.overdue} overdue` : "All on time"}
           icon={BookOpen}
           color="indigo"
           href="/dashboard/library/books"
+          trend={stats.books.overdue > 0 ? { value: stats.books.overdue, label: "overdue", direction: "down" as const } : undefined}
         />
-        <StatCard
+        <MetricCard
           title="Pending Fees"
           value={formatCurrency(stats.fees.pending)}
           subtitle={`${formatCurrency(stats.fees.collected)} collected`}
@@ -175,217 +195,195 @@ export function LibraryDashboardClient() {
         />
       </div>
 
-      {/* Charts Row */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Seat Distribution */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-semibold">Seat Occupancy</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {seatData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={200}>
+      {/* ── Charts Row ── */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        {/* Seat Occupancy Donut */}
+        <SectionCard title="Seat Occupancy">
+          {seatData.length > 0 ? (
+            <div className="flex flex-col items-center gap-3">
+              <ResponsiveContainer width="100%" height={180}>
                 <PieChart>
-                  <Pie data={seatData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={75} paddingAngle={4}>
-                    {seatData.map((entry, i) => (
-                      <Cell key={i} fill={entry.color} />
+                  <Pie
+                    data={seatData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={48}
+                    outerRadius={72}
+                    paddingAngle={3}
+                    strokeWidth={0}
+                  >
+                    {seatData.map((entry) => (
+                      <Cell key={entry.name} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(val) => String(val)} />
-                  <Legend />
+                  <Tooltip contentStyle={chartTooltipStyle} />
                 </PieChart>
               </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-[200px] text-muted-foreground text-sm">
-                No seat data available
+              <div className="flex flex-wrap justify-center gap-3">
+                {seatData.map((d) => (
+                  <div key={d.name} className="flex items-center gap-1.5 text-xs">
+                    <div className="h-2 w-2 rounded-full" style={{ backgroundColor: d.color }} />
+                    <span className="text-muted-foreground">{d.name}</span>
+                    <span className="font-semibold tabular-nums">{d.value}</span>
+                  </div>
+                ))}
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </div>
+          ) : (
+            <EmptyState icon={<Armchair className="h-10 w-10" />} message="No seat data available" />
+          )}
+        </SectionCard>
 
-        {/* Member Distribution */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-semibold">Members Overview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {memberData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={200}>
+        {/* Members Donut */}
+        <SectionCard title="Members Overview">
+          {memberData.length > 0 ? (
+            <div className="flex flex-col items-center gap-3">
+              <ResponsiveContainer width="100%" height={180}>
                 <PieChart>
-                  <Pie data={memberData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={50} outerRadius={75} paddingAngle={4}>
-                    {memberData.map((entry, i) => (
-                      <Cell key={i} fill={entry.color} />
+                  <Pie
+                    data={memberData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={48}
+                    outerRadius={72}
+                    paddingAngle={3}
+                    strokeWidth={0}
+                  >
+                    {memberData.map((entry) => (
+                      <Cell key={entry.name} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(val) => String(val)} />
-                  <Legend />
+                  <Tooltip contentStyle={chartTooltipStyle} />
                 </PieChart>
               </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-[200px] text-muted-foreground text-sm">
-                No member data
+              <div className="flex flex-wrap justify-center gap-3">
+                {memberData.map((d) => (
+                  <div key={d.name} className="flex items-center gap-1.5 text-xs">
+                    <div className="h-2 w-2 rounded-full" style={{ backgroundColor: d.color }} />
+                    <span className="text-muted-foreground">{d.name}</span>
+                    <span className="font-semibold tabular-nums">{d.value}</span>
+                  </div>
+                ))}
               </div>
-            )}
-          </CardContent>
-        </Card>
+            </div>
+          ) : (
+            <EmptyState icon={<Users className="h-10 w-10" />} message="No member data" />
+          )}
+        </SectionCard>
 
-        {/* Revenue Trend */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-semibold">Monthly Revenue</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {revenueData.length > 0 ? (
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={revenueData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-                  <YAxis tick={{ fontSize: 12 }} />
-                  <Tooltip formatter={(val) => formatCurrency(Number(val))} />
-                  <Bar dataKey="revenue" fill="#f59e0b" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-[200px] text-muted-foreground text-sm">
-                No revenue data yet
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        {/* Revenue Bar Chart */}
+        <SectionCard title="Monthly Revenue">
+          {revenueData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={210}>
+              <BarChart data={revenueData}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                <XAxis dataKey="name" tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                <YAxis tick={{ fontSize: 11 }} stroke="hsl(var(--muted-foreground))" />
+                <Tooltip
+                  formatter={(val) => formatCurrency(Number(val))}
+                  contentStyle={chartTooltipStyle}
+                />
+                <Bar dataKey="revenue" fill="#059669" radius={[6, 6, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <EmptyState icon={<IndianRupee className="h-10 w-10" />} message="No revenue data yet" />
+          )}
+        </SectionCard>
       </div>
 
-      {/* Bottom Section */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      {/* ── Recent Lists Row ── */}
+      <div className="grid gap-4 lg:grid-cols-2">
         {/* Recent Members */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-semibold">Recent Members</CardTitle>
-            <Button size="sm" variant="ghost" nativeButton={false} render={<Link href="/dashboard/library/members" />}>
-              View All <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {stats.recentMembers?.length > 0 ? stats.recentMembers.map((m: any) => (
-                <div key={m.id} className="flex items-center justify-between rounded-lg border p-3">
-                  <div>
-                    <p className="text-sm font-medium">{m.name}</p>
-                    <p className="text-xs text-muted-foreground">{m.memberId} · {m.email}</p>
+        <SectionCard title="Recent Members" action={{ label: "View All", href: "/dashboard/library/members" }}>
+          {stats.recentMembers?.length > 0 ? (
+            <div className="space-y-2">
+              {stats.recentMembers.map((m: any) => (
+                <Link
+                  key={m.id}
+                  href="/dashboard/library/members"
+                  className="group flex items-center justify-between rounded-lg border border-border/40 p-3 transition-all hover:bg-muted/50 hover:border-border"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+                      {m.name?.charAt(0) || "?"}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">{m.name}</p>
+                      <p className="text-xs text-muted-foreground truncate">{m.memberId} · {m.email}</p>
+                    </div>
                   </div>
-                  <span className={cn(
-                    "text-xs font-medium px-2 py-0.5 rounded-full",
-                    m.status === "ACTIVE" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"
-                  )}>
+                  <span
+                    className={cn(
+                      "shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full",
+                      m.status === "ACTIVE"
+                        ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400"
+                        : "bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400"
+                    )}
+                  >
                     {m.status}
                   </span>
-                </div>
-              )) : (
-                <p className="text-sm text-muted-foreground text-center py-4">No members yet</p>
-              )}
+                </Link>
+              ))}
             </div>
-          </CardContent>
-        </Card>
+          ) : (
+            <EmptyState icon={<Users className="h-10 w-10" />} message="No members yet" />
+          )}
+        </SectionCard>
 
         {/* Recent Book Issues */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-semibold">Recent Book Issues</CardTitle>
-            <Button size="sm" variant="ghost" nativeButton={false} render={<Link href="/dashboard/library/books/issues" />}>
-              View All <ArrowUpRight className="ml-1 h-3.5 w-3.5" />
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {stats.recentIssues?.length > 0 ? stats.recentIssues.map((i: any) => (
-                <div key={i.id} className="flex items-center justify-between rounded-lg border p-3">
-                  <div>
-                    <p className="text-sm font-medium">{i.bookTitle}</p>
-                    <p className="text-xs text-muted-foreground">{i.memberName} ({i.memberId})</p>
+        <SectionCard title="Recent Book Issues" action={{ label: "View All", href: "/dashboard/library/books/issues" }}>
+          {stats.recentIssues?.length > 0 ? (
+            <div className="space-y-2">
+              {stats.recentIssues.map((i: any) => (
+                <Link
+                  key={i.id}
+                  href="/dashboard/library/books/issues"
+                  className="group flex items-center justify-between rounded-lg border border-border/40 p-3 transition-all hover:bg-muted/50 hover:border-border"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-violet-500/10">
+                      <BookCheck className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">{i.bookTitle}</p>
+                      <p className="text-xs text-muted-foreground truncate">{i.memberName} ({i.memberId})</p>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <span className={cn(
-                      "text-xs font-medium px-2 py-0.5 rounded-full",
-                      i.status === "ISSUED" ? "bg-blue-50 text-blue-700" :
-                      i.status === "RETURNED" ? "bg-emerald-50 text-emerald-700" :
-                      i.status === "OVERDUE" ? "bg-red-50 text-red-700" : "bg-gray-50 text-gray-700"
-                    )}>
+                  <div className="text-right shrink-0">
+                    <span
+                      className={cn(
+                        "text-[10px] font-semibold px-2 py-0.5 rounded-full",
+                        i.status === "ISSUED" ? "bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400" :
+                        i.status === "RETURNED" ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400" :
+                        i.status === "OVERDUE" ? "bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400" :
+                        "bg-muted text-muted-foreground"
+                      )}
+                    >
                       {i.status}
                     </span>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">
+                    <p className="text-[10px] text-muted-foreground mt-1">
                       Due: {new Date(i.dueDate).toLocaleDateString("en-IN")}
                     </p>
                   </div>
-                </div>
-              )) : (
-                <p className="text-sm text-muted-foreground text-center py-4">No book issues yet</p>
-              )}
+                </Link>
+              ))}
             </div>
-          </CardContent>
-        </Card>
+          ) : (
+            <EmptyState icon={<BookCheck className="h-10 w-10" />} message="No book issues yet" />
+          )}
+        </SectionCard>
       </div>
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm font-semibold">Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-            {[
-              { href: "/dashboard/library/members/new", label: "Add Member", icon: UserPlus, color: "text-emerald-600 bg-emerald-50" },
-              { href: "/dashboard/library/seats", label: "Manage Seats", icon: Armchair, color: "text-amber-600 bg-amber-50" },
-              { href: "/dashboard/library/books", label: "Manage Books", icon: BookOpen, color: "text-indigo-600 bg-indigo-50" },
-              { href: "/dashboard/library/books/issue", label: "Issue Book", icon: BookCheck, color: "text-blue-600 bg-blue-50" },
-              { href: "/dashboard/library/fees", label: "Collect Fees", icon: CreditCard, color: "text-rose-600 bg-rose-50" },
-              { href: "/dashboard/library/id-cards", label: "ID Cards", icon: CreditCard, color: "text-violet-600 bg-violet-50" },
-            ].map((action) => (
-              <Link key={action.href} href={action.href} className="flex flex-col items-center gap-2 rounded-xl border p-4 transition-colors hover:bg-muted/50">
-                <div className={cn("flex h-10 w-10 items-center justify-center rounded-lg", action.color)}>
-                  <action.icon className="h-5 w-5" />
-                </div>
-                <span className="text-xs font-medium text-center">{action.label}</span>
-              </Link>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+      {/* ── Quick Actions ── */}
+      <SectionCard title="Quick Actions">
+        <QuickActionGrid actions={quickActions} columns={6} />
+      </SectionCard>
+    </DashboardShell>
   );
 }
-
 /* eslint-enable @typescript-eslint/no-explicit-any */
-
-function StatCard({ title, value, subtitle, icon: Icon, color, href }: {
-  title: string;
-  value: string | number;
-  subtitle: string;
-  icon: React.ComponentType<{ className?: string }>;
-  color: "amber" | "emerald" | "indigo" | "rose";
-  href: string;
-}) {
-  const colorMap = {
-    amber: "from-amber-500 to-orange-500 shadow-amber-500/20",
-    emerald: "from-emerald-500 to-green-500 shadow-emerald-500/20",
-    indigo: "from-indigo-500 to-violet-500 shadow-indigo-500/20",
-    rose: "from-rose-500 to-pink-500 shadow-rose-500/20",
-  };
-
-  return (
-    <Link href={href}>
-      <Card className="group transition-shadow hover:shadow-md cursor-pointer">
-        <CardContent className="p-5">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs font-medium text-muted-foreground">{title}</p>
-              <p className="mt-1 text-2xl font-bold tracking-tight">{value}</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>
-            </div>
-            <div className={cn("flex h-11 w-11 items-center justify-center rounded-xl bg-linear-to-br shadow-lg", colorMap[color])}>
-              <Icon className="h-5 w-5 text-white" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </Link>
-  );
-}

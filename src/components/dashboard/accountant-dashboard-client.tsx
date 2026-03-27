@@ -1,8 +1,6 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import {
   Wallet,
@@ -12,12 +10,25 @@ import {
   AlertTriangle,
   Download,
   CalendarDays,
-  Loader2,
   TrendingUp,
   Users,
+  ArrowUpRight,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { getFeeDashboardStats } from "@/actions/fees";
+import { MetricCard } from "./ui/metric-card";
+import { DashboardHeader } from "./ui/dashboard-header";
+import { DashboardShell } from "./ui/dashboard-shell";
+import { SectionCard, EmptyState } from "./ui/section-card";
+import { QuickActionGrid } from "./ui/quick-action-grid";
+import { MiniStat } from "./ui/mini-stat";
+import { ProgressRing } from "./ui/mini-stat";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 interface AccountantDashboardProps {
   tenantName: string;
@@ -49,163 +60,170 @@ export function AccountantDashboardClient({
   ];
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    );
+    return <DashboardShell loading />;
   }
 
-  return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Welcome back, {firstName}</h1>
-        <p className="text-sm text-muted-foreground">{tenantName} &middot; Accounts Dashboard</p>
-      </div>
+  const collectionRate =
+    feeStats && feeStats.totalCollected && feeStats.totalPending
+      ? Math.round(
+          (Number(feeStats.totalCollected) /
+            (Number(feeStats.totalCollected) + Number(feeStats.totalPending))) *
+            100
+        )
+      : 0;
 
-      {/* Fee Stats */}
+  const pieData = feeStats
+    ? [
+        { name: "Paid", value: Number(feeStats.paidCount || 0), color: "#059669" },
+        { name: "Partial", value: Number(feeStats.partialCount || 0), color: "#f59e0b" },
+        { name: "Pending", value: Number(feeStats.pendingCount || 0), color: "#3b82f6" },
+        { name: "Overdue", value: Number(feeStats.overdueCount || 0), color: "#ef4444" },
+      ].filter((d) => d.value > 0)
+    : [];
+
+  return (
+    <DashboardShell>
+      {/* ── Header ── */}
+      <DashboardHeader greeting={`Welcome back, ${firstName}`} subtitle={`${tenantName} · Accounts Dashboard`} />
+
+      {/* ── Metric Cards ── */}
       {feeStats && (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Card className="transition-shadow hover:shadow-md">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Total Collection</CardTitle>
-              <div className="rounded-lg p-2 bg-emerald-50 dark:bg-emerald-950/30">
-                <TrendingUp className="h-4 w-4 text-emerald-600" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">₹{Number(feeStats.totalCollected || 0).toLocaleString("en-IN")}</div>
-              <p className="text-xs text-muted-foreground mt-1">This academic year</p>
-            </CardContent>
-          </Card>
-          <Card className="transition-shadow hover:shadow-md">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Pending Amount</CardTitle>
-              <div className="rounded-lg p-2 bg-amber-50 dark:bg-amber-950/30">
-                <Clock className="h-4 w-4 text-amber-600" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-amber-700 dark:text-amber-400">₹{Number(feeStats.totalPending || 0).toLocaleString("en-IN")}</div>
-              <p className="text-xs text-muted-foreground mt-1">Awaiting payment</p>
-            </CardContent>
-          </Card>
-          <Card className="transition-shadow hover:shadow-md">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Overdue</CardTitle>
-              <div className="rounded-lg p-2 bg-red-50 dark:bg-red-950/30">
-                <AlertTriangle className="h-4 w-4 text-red-600" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-red-700 dark:text-red-400">{feeStats.overdueCount || 0}</div>
-              <p className="text-xs text-muted-foreground mt-1">Overdue payments</p>
-            </CardContent>
-          </Card>
-          <Card className="transition-shadow hover:shadow-md">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground">Students</CardTitle>
-              <div className="rounded-lg p-2 bg-blue-50 dark:bg-blue-950/30">
-                <Users className="h-4 w-4 text-blue-600" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{feeStats.totalStudents || 0}</div>
-              <p className="text-xs text-muted-foreground mt-1">Total enrolled</p>
-            </CardContent>
-          </Card>
+          <MetricCard
+            title="Total Collection"
+            value={`₹${Number(feeStats.totalCollected || 0).toLocaleString("en-IN")}`}
+            subtitle="This academic year"
+            icon={TrendingUp}
+            color="emerald"
+            href="/dashboard/fees"
+          />
+          <MetricCard
+            title="Pending Amount"
+            value={`₹${Number(feeStats.totalPending || 0).toLocaleString("en-IN")}`}
+            subtitle="Awaiting payment"
+            icon={Clock}
+            color="amber"
+          />
+          <MetricCard
+            title="Overdue"
+            value={feeStats.overdueCount || 0}
+            subtitle="Overdue payments"
+            icon={AlertTriangle}
+            color="rose"
+          />
+          <MetricCard
+            title="Students"
+            value={feeStats.totalStudents || 0}
+            subtitle="Total enrolled"
+            icon={Users}
+            color="blue"
+          />
         </div>
       )}
 
-      {/* Quick Actions */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {quickActions.map((action) => (
-              <Link key={action.label} href={action.href}>
-                <Button variant="outline" className="h-auto w-full flex-col gap-2 py-4">
-                  <action.icon className="h-5 w-5" />
-                  <span className="text-xs">{action.label}</span>
-                </Button>
-              </Link>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {/* ── Quick Actions ── */}
+      <SectionCard title="Quick Actions">
+        <QuickActionGrid actions={quickActions} columns={4} />
+      </SectionCard>
 
-      {/* Fee Collection Summary */}
+      {/* ── Chart + Activity Row ── */}
       {feeStats && (
-        <div className="grid gap-4 md:grid-cols-2">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-base">Payment Status Breakdown</CardTitle>
-              <Link href="/dashboard/fees" className={cn(buttonVariants({ variant: "ghost", size: "sm" }))}>View Details</Link>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 rounded-full bg-emerald-500" />
-                    <span className="text-sm">Paid</span>
-                  </div>
-                  <span className="text-sm font-medium">{feeStats.paidCount || 0}</span>
+        <div className="grid gap-4 lg:grid-cols-2">
+          {/* Payment Breakdown Chart */}
+          <SectionCard title="Payment Status Breakdown" action={{ label: "View Details", href: "/dashboard/fees" }}>
+            {pieData.length === 0 ? (
+              <EmptyState icon={<Wallet className="h-10 w-10" />} message="No payment data yet" />
+            ) : (
+              <div className="flex flex-col items-center gap-4 sm:flex-row">
+                <div className="h-48 w-48 shrink-0">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={pieData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={42}
+                        outerRadius={72}
+                        paddingAngle={3}
+                        dataKey="value"
+                        strokeWidth={0}
+                      >
+                        {pieData.map((entry) => (
+                          <Cell key={entry.name} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{
+                          borderRadius: "0.75rem",
+                          border: "1px solid hsl(var(--border))",
+                          background: "hsl(var(--card))",
+                          fontSize: "0.75rem",
+                        }}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 rounded-full bg-amber-500" />
-                    <span className="text-sm">Partial</span>
-                  </div>
-                  <span className="text-sm font-medium">{feeStats.partialCount || 0}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 rounded-full bg-blue-500" />
-                    <span className="text-sm">Pending</span>
-                  </div>
-                  <span className="text-sm font-medium">{feeStats.pendingCount || 0}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="h-3 w-3 rounded-full bg-red-500" />
-                    <span className="text-sm">Overdue</span>
-                  </div>
-                  <span className="text-sm font-medium">{feeStats.overdueCount || 0}</span>
+                <div className="flex-1 space-y-2.5 w-full">
+                  {pieData.map((item) => (
+                    <div key={item.name} className="flex items-center justify-between">
+                      <div className="flex items-center gap-2.5">
+                        <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: item.color }} />
+                        <span className="text-sm">{item.name}</span>
+                      </div>
+                      <span className="text-sm font-semibold tabular-nums">{item.value}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            )}
+          </SectionCard>
 
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">Today&apos;s Activity</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="rounded-lg bg-emerald-50 p-4 dark:bg-emerald-950/30">
-                  <div className="flex items-center gap-2 mb-1">
-                    <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                    <span className="text-xs text-muted-foreground">Today&apos;s Collection</span>
-                  </div>
-                  <p className="text-xl font-bold text-emerald-700 dark:text-emerald-400">
-                    ₹{Number(feeStats.todayCollection || 0).toLocaleString("en-IN")}
+          {/* Today's Activity + Collection Rate */}
+          <div className="flex flex-col gap-4">
+            <SectionCard title="Collection Rate">
+              <div className="flex items-center justify-center gap-6 py-2">
+                <ProgressRing percentage={collectionRate} size={96} strokeWidth={8} label="Collected" />
+                <div className="space-y-1 text-sm">
+                  <p className="text-muted-foreground">
+                    <span className="font-semibold text-foreground">₹{Number(feeStats.totalCollected || 0).toLocaleString("en-IN")}</span> collected
+                  </p>
+                  <p className="text-muted-foreground">
+                    <span className="font-semibold text-foreground">₹{Number(feeStats.totalPending || 0).toLocaleString("en-IN")}</span> pending
                   </p>
                 </div>
-                <div className="rounded-lg bg-blue-50 p-4 dark:bg-blue-950/30">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Wallet className="h-4 w-4 text-blue-600" />
-                    <span className="text-xs text-muted-foreground">Receipts Today</span>
-                  </div>
-                  <p className="text-xl font-bold text-blue-700 dark:text-blue-400">{feeStats.todayReceipts || 0}</p>
-                </div>
               </div>
-            </CardContent>
-          </Card>
+            </SectionCard>
+
+            <SectionCard title="Today's Activity">
+              <div className="grid grid-cols-2 gap-2.5">
+                <MiniStat icon={CheckCircle2} label="Today's Collection" value={`₹${Number(feeStats.todayCollection || 0).toLocaleString("en-IN")}`} variant="emerald" />
+                <MiniStat icon={Wallet} label="Receipts Today" value={feeStats.todayReceipts || 0} variant="blue" />
+              </div>
+            </SectionCard>
+          </div>
         </div>
       )}
-    </div>
+
+      {/* ── Overdue Alert ── */}
+      {feeStats && feeStats.overdueCount > 0 && (
+        <div className="flex items-center gap-3 rounded-xl border border-red-200 dark:border-red-900/40 bg-red-50/50 dark:bg-red-950/10 p-4">
+          <AlertTriangle className="h-5 w-5 text-red-500 shrink-0" />
+          <div className="flex-1">
+            <p className="text-sm font-medium text-red-700 dark:text-red-400">
+              {feeStats.overdueCount} overdue payment(s) require attention
+            </p>
+            <p className="text-xs text-red-600/70 dark:text-red-400/70 mt-0.5">
+              Follow up to minimize outstanding balances.
+            </p>
+          </div>
+          <Link
+            href="/dashboard/fees"
+            className="flex items-center gap-1 rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-red-700 shrink-0"
+          >
+            Review <ArrowUpRight className="h-3 w-3" />
+          </Link>
+        </div>
+      )}
+    </DashboardShell>
   );
 }
