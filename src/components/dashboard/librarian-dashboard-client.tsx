@@ -56,8 +56,16 @@ export function LibrarianDashboardClient({
     return <DashboardShell loading />;
   }
 
+  if (!stats) {
+    return (
+      <DashboardShell>
+        <EmptyState icon={<BookOpen className="h-10 w-10" />} message="Failed to load dashboard data" />
+      </DashboardShell>
+    );
+  }
+
   const seatOccupancy =
-    stats?.seats?.total > 0
+    stats.seats.total > 0
       ? Math.round(((stats.seats.total - (stats.seats.available || 0)) / stats.seats.total) * 100)
       : 0;
 
