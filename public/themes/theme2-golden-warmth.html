@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkolMatrixa — Golden Warmth Theme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   THEME 2: GOLDEN WARMTH
+   Style: Elegant warm editorial — art deco meets modern
+   Font: DM Serif Display (headings) + Plus Jakarta Sans (body)
+   Palette: Warm cream, burnt gold, deep walnut, terracotta
+   ═══════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream: #FBF7F0;
+  --cream-dark: #F3EDE2;
+  --gold: #C8922A;
+  --gold-light: #E8B94E;
+  --gold-dark: #A07420;
+  --walnut: #2C1810;
+  --walnut-light: #4A2C1C;
+  --terracotta: #C45D3E;
+  --sage: #6B8F71;
+  --text-dark: #1A0E08;
+  --text-body: #5C4033;
+  --text-light: #9C8576;
+  --font-display: 'DM Serif Display', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--text-body);
+  overflow-x: hidden;
+  line-height: 1.65;
+}
+
+/* Decorative patterns */
+.pattern-dots {
+  background-image: radial-gradient(circle, var(--gold) 0.8px, transparent 0.8px);
+  background-size: 24px 24px;
+  opacity: 0.07;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+.container-sm { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+/* ═══ HEADER ═══ */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(251,247,240,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(200,146,42,0.12);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--walnut);
+}
+.logo-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(200,146,42,0.25);
+}
+.logo-name {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--walnut);
+}
+.logo-name em { font-style: italic; color: var(--gold); }
+
+nav { display: flex; gap: 2px; }
+nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+nav a:hover { color: var(--walnut); background: rgba(200,146,42,0.06); }
+
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.btn-text {
+  color: var(--text-body);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(200,146,42,0.2);
+  transition: all 0.2s;
+}
+.btn-text:hover { border-color: var(--gold); color: var(--gold-dark); }
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 16px rgba(200,146,42,0.3);
+}
+.btn-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(200,146,42,0.4); }
+
+.btn-gold-lg { padding: 16px 36px; font-size: 16px; border-radius: 14px; }
+.btn-walnut {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 36px;
+  border-radius: 14px;
+  background: var(--walnut);
+  color: var(--cream);
+  font-weight: 700;
+  font-size: 16px;
+  text-decoration: none;
+  transition: all 0.3s;
+  box-shadow: 0 4px 16px rgba(44,24,16,0.2);
+}
+.btn-walnut:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(44,24,16,0.3); }
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fade-up { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes draw-line { from { width: 0; } to { width: 100%; } }
+@keyframes float-y { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-10px) rotate(-2deg); } }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+.animate-up { animation: fade-up 0.7s ease-out forwards; opacity: 0; }
+.d1 { animation-delay: 0.1s; }
+.d2 { animation-delay: 0.2s; }
+.d3 { animation-delay: 0.35s; }
+.d4 { animation-delay: 0.5s; }
+.d5 { animation-delay: 0.65s; }
+
+/* ═══ HERO — Split diagonal layout ═══ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 72px;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 45%;
+  height: 100%;
+  background: var(--walnut);
+  clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 80px;
+  align-items: center;
+  padding: 80px 0;
+}
+.hero-left {}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(200,146,42,0.1);
+  border: 1px solid rgba(200,146,42,0.2);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold-dark);
+  margin-bottom: 28px;
+}
+.hero-tag-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: 68px;
+  font-weight: 400;
+  line-height: 1.08;
+  color: var(--walnut);
+  margin-bottom: 24px;
+}
+.hero h1 em { color: var(--gold); font-style: italic; }
+.hero-subtitle {
+  font-size: 18px;
+  color: var(--text-light);
+  line-height: 1.75;
+  max-width: 460px;
+  margin-bottom: 40px;
+}
+.hero-buttons { display: flex; gap: 14px; align-items: center; margin-bottom: 56px; }
+
+.hero-metrics {
+  display: flex;
+  gap: 40px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(200,146,42,0.15);
+}
+.metric-value {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--gold);
+}
+.metric-label { font-size: 12px; color: var(--text-light); font-weight: 600; letter-spacing: 0.5px; margin-top: 2px; }
+
+/* Hero right — stacked cards on dark */
+.hero-right {
+  position: relative;
+  z-index: 2;
+}
+.hero-card-stack {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin-left: auto;
+}
+.hero-stack-item {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  color: var(--cream);
+  margin-bottom: 16px;
+}
+.hero-stack-item:last-child { margin-bottom: 0; }
+.hsi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.hsi-title { font-size: 13px; font-weight: 600; opacity: 0.7; }
+.hsi-badge { font-size: 11px; font-weight: 700; background: rgba(200,146,42,0.3); color: var(--gold-light); padding: 3px 10px; border-radius: 100px; }
+.hsi-value { font-family: var(--font-display); font-size: 36px; margin-bottom: 8px; }
+.hsi-bar-row { display: flex; gap: 4px; }
+.hsi-bar { height: 6px; border-radius: 3px; flex: 1; }
+.hsi-bar:nth-child(1) { background: var(--gold-light); }
+.hsi-bar:nth-child(2) { background: var(--terracotta); }
+.hsi-bar:nth-child(3) { background: var(--sage); opacity: 0.6; }
+.hsi-mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.hsi-mini {
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 14px;
+}
+.hsi-mini-label { font-size: 11px; opacity: 0.5; margin-bottom: 4px; }
+.hsi-mini-value { font-family: var(--font-display); font-size: 22px; }
+
+/* Floating badge */
+.hero-float-badge {
+  position: absolute;
+  top: 20%;
+  left: -50px;
+  background: var(--cream);
+  color: var(--walnut);
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: 0 12px 40px rgba(44,24,16,0.15);
+  animation: float-y 5s ease-in-out infinite;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-float-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); }
+
+/* ═══ MARQUEE STRIP ═══ */
+.marquee-section {
+  background: var(--walnut);
+  padding: 18px 0;
+  overflow: hidden;
+  position: relative;
+}
+.marquee-track {
+  display: flex;
+  animation: marquee 30s linear infinite;
+  white-space: nowrap;
+}
+.marquee-item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 48px;
+  color: rgba(251,247,240,0.5);
+  font-size: 14px;
+  font-weight: 600;
+}
+.marquee-item .divider { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: 0.5; }
+
+/* ═══ SECTIONS ═══ */
+.section { padding: 120px 0; position: relative; }
+.section-label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 46px;
+  line-height: 1.15;
+  color: var(--walnut);
+  margin-bottom: 16px;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.section-desc { font-size: 17px; color: var(--text-light); line-height: 1.75; max-width: 560px; }
+.section-center { text-align: center; }
+.section-center .section-desc { margin: 0 auto; }
+
+/* ═══ FEATURES — Offset card grid ═══ */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 60px;
+}
+.feature-card {
+  background: white;
+  border: 1px solid rgba(200,146,42,0.1);
+  border-radius: 20px;
+  padding: 32px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(44,24,16,0.08); }
+.feature-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  transform: scaleX(0);
+  transition: transform 0.3s;
+  transform-origin: left;
+}
+.feature-card:hover::after { transform: scaleX(1); }
+/* Offset every other row */
+.feature-card:nth-child(4), .feature-card:nth-child(5), .feature-card:nth-child(6) { margin-top: -20px; }
+
+.feature-emoji { font-size: 28px; margin-bottom: 16px; display: inline-block; width: 52px; height: 52px; line-height: 52px; text-align: center; background: rgba(200,146,42,0.08); border-radius: 14px; }
+.feature-card h3 { font-family: var(--font-display); font-size: 20px; color: var(--walnut); margin-bottom: 8px; }
+.feature-card p { font-size: 14px; color: var(--text-light); line-height: 1.7; }
+
+/* ═══ WHY CHOOSE — Horizontal scroll cards ═══ */
+.why-section {
+  background: var(--cream-dark);
+  overflow: hidden;
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+  margin-top: 60px;
+}
+.why-list { display: flex; flex-direction: column; gap: 16px; }
+.why-item {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 16px;
+  transition: all 0.3s;
+  cursor: default;
+}
+.why-item:hover { background: white; box-shadow: 0 8px 32px rgba(44,24,16,0.05); }
+.why-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: rgba(200,146,42,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.why-item h3 { font-size: 15px; font-weight: 700; color: var(--walnut); margin-bottom: 4px; }
+.why-item p { font-size: 13px; color: var(--text-light); line-height: 1.6; }
+
+.why-visual {
+  position: relative;
+}
+.why-card-main {
+  background: white;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 20px 60px rgba(44,24,16,0.08);
+  border: 1px solid rgba(200,146,42,0.08);
+}
+.why-card-header { font-family: var(--font-display); font-size: 22px; color: var(--walnut); margin-bottom: 20px; }
+.why-chart-wrapper {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  height: 140px;
+  align-items: end;
+}
+.why-chart-bar {
+  border-radius: 6px 6px 0 0;
+  transition: height 0.5s;
+}
+
+/* ═══ INSTITUTION TYPES — Tabbed cards ═══ */
+.inst-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 60px;
+}
+.inst-card {
+  border-radius: 24px;
+  padding: 40px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.inst-card-school {
+  background: linear-gradient(135deg, rgba(200,146,42,0.06), rgba(200,146,42,0.02));
+  border: 1px solid rgba(200,146,42,0.12);
+}
+.inst-card-coaching {
+  background: linear-gradient(135deg, rgba(196,93,62,0.06), rgba(196,93,62,0.02));
+  border: 1px solid rgba(196,93,62,0.12);
+}
+.inst-card:hover { transform: translateY(-2px); }
+.inst-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.inst-card-school .inst-icon { background: linear-gradient(135deg, var(--gold), var(--gold-light)); box-shadow: 0 4px 16px rgba(200,146,42,0.3); }
+.inst-card-coaching .inst-icon { background: linear-gradient(135deg, var(--terracotta), #D97756); box-shadow: 0 4px 16px rgba(196,93,62,0.3); }
+.inst-card h3 { font-family: var(--font-display); font-size: 22px; color: var(--walnut); margin-bottom: 4px; }
+.inst-card .inst-sub { font-size: 13px; color: var(--text-light); margin-bottom: 20px; }
+.inst-features { list-style: none; }
+.inst-features li { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; color: var(--text-body); }
+.inst-features li .check { color: var(--gold); font-size: 15px; }
+
+/* ═══ HOW IT WORKS — Timeline ═══ */
+.steps-section { background: var(--walnut); color: var(--cream); position: relative; }
+.steps-section .section-label { color: var(--gold-light); }
+.steps-section .section-title { color: var(--cream); }
+.steps-section .section-title em { color: var(--gold-light); }
+
+.timeline {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 28px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gold), rgba(200,146,42,0.2));
+}
+.timeline-item {
+  display: flex;
+  gap: 32px;
+  padding: 32px 0;
+  position: relative;
+}
+.timeline-dot {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--walnut);
+  flex-shrink: 0;
+  z-index: 2;
+  box-shadow: 0 0 24px rgba(200,146,42,0.3);
+}
+.timeline-content { flex: 1; padding-top: 8px; }
+.timeline-content h3 { font-family: var(--font-display); font-size: 22px; margin-bottom: 8px; }
+.timeline-content p { font-size: 15px; color: rgba(251,247,240,0.6); line-height: 1.7; }
+
+/* ═══ PRICING ═══ */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 60px;
+}
+.pricing-card {
+  background: white;
+  border: 1px solid rgba(200,146,42,0.1);
+  border-radius: 24px;
+  padding: 36px 28px;
+  transition: all 0.3s;
+  position: relative;
+}
+.pricing-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(44,24,16,0.08); }
+.pricing-popular {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 1px var(--gold), 0 20px 60px rgba(200,146,42,0.15);
+  transform: translateY(-8px);
+}
+.pricing-popular:hover { transform: translateY(-12px); }
+.pricing-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 18px;
+  border-radius: 100px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.pricing-name { font-size: 16px; font-weight: 700; color: var(--walnut); margin-bottom: 12px; }
+.pricing-price { font-family: var(--font-display); font-size: 40px; color: var(--walnut); margin-bottom: 4px; }
+.pricing-period { font-size: 14px; color: var(--text-light); }
+.pricing-desc { font-size: 13px; color: var(--text-light); margin: 14px 0 24px; line-height: 1.6; }
+.pricing-features { list-style: none; margin-bottom: 28px; }
+.pricing-features li { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 13px; color: var(--text-body); }
+.pricing-features .check { color: var(--gold); }
+.pricing-features .x-mark { color: var(--text-light); opacity: 0.3; }
+
+.btn-plan {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.3s;
+  border: 1.5px solid rgba(200,146,42,0.2);
+  color: var(--walnut);
+  background: transparent;
+  cursor: pointer;
+}
+.btn-plan:hover { border-color: var(--gold); background: rgba(200,146,42,0.04); }
+.btn-plan-gold {
+  border: none;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: white;
+  box-shadow: 0 4px 20px rgba(200,146,42,0.3);
+}
+.btn-plan-gold:hover { box-shadow: 0 6px 28px rgba(200,146,42,0.4); }
+
+/* ═══ TESTIMONIALS — Masonry ═══ */
+.test-grid {
+  columns: 2;
+  column-gap: 20px;
+  margin-top: 60px;
+}
+.test-card {
+  break-inside: avoid;
+  background: white;
+  border: 1px solid rgba(200,146,42,0.08);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 20px;
+  transition: all 0.3s;
+}
+.test-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(44,24,16,0.06); }
+.test-stars { color: var(--gold); font-size: 13px; margin-bottom: 14px; letter-spacing: 2px; }
+.test-quote { font-size: 14px; color: var(--text-body); line-height: 1.8; font-style: italic; margin-bottom: 18px; }
+.test-author { display: flex; align-items: center; gap: 10px; padding-top: 14px; border-top: 1px solid rgba(200,146,42,0.08); }
+.test-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+}
+.test-name { font-size: 13px; font-weight: 700; color: var(--walnut); }
+.test-role { font-size: 11px; color: var(--text-light); }
+
+/* ═══ FAQ ═══ */
+.faq-list { margin-top: 60px; display: flex; flex-direction: column; gap: 10px; }
+.faq-item {
+  background: white;
+  border: 1px solid rgba(200,146,42,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.faq-item:hover { border-color: rgba(200,146,42,0.2); }
+details[open].faq-item { border-color: var(--gold); box-shadow: 0 8px 32px rgba(200,146,42,0.08); }
+.faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 22px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--walnut);
+  list-style: none;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-q .arrow { color: var(--text-light); transition: transform 0.3s; }
+details[open] .faq-q .arrow { transform: rotate(90deg); color: var(--gold); }
+.faq-a { padding: 0 22px 18px; font-size: 14px; color: var(--text-light); line-height: 1.7; }
+
+/* ═══ CTA ═══ */
+.cta-section {
+  background: linear-gradient(135deg, var(--walnut), var(--walnut-light));
+  padding: 100px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--gold) 0.6px, transparent 0.6px);
+  background-size: 20px 20px;
+  opacity: 0.04;
+}
+.cta-section h2 {
+  font-family: var(--font-display);
+  font-size: 48px;
+  color: var(--cream);
+  margin-bottom: 16px;
+  position: relative;
+}
+.cta-section h2 em { color: var(--gold-light); font-style: italic; }
+.cta-section p { font-size: 17px; color: rgba(251,247,240,0.6); max-width: 480px; margin: 0 auto 36px; line-height: 1.7; position: relative; }
+.cta-buttons { display: flex; gap: 14px; justify-content: center; position: relative; }
+.btn-cream {
+  display: inline-flex; align-items: center; gap: 8px; padding: 16px 36px; border-radius: 14px;
+  background: var(--cream); color: var(--walnut); font-weight: 700; font-size: 16px; text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15); transition: all 0.3s;
+}
+.btn-cream:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+.btn-ghost-light {
+  display: inline-flex; align-items: center; gap: 8px; padding: 16px 36px; border-radius: 14px;
+  border: 2px solid rgba(251,247,240,0.2); color: var(--cream); font-weight: 600; font-size: 16px;
+  text-decoration: none; transition: all 0.3s;
+}
+.btn-ghost-light:hover { border-color: rgba(251,247,240,0.4); background: rgba(251,247,240,0.05); }
+
+/* ═══ FOOTER ═══ */
+.footer { background: var(--cream-dark); padding: 64px 0 28px; border-top: 1px solid rgba(200,146,42,0.08); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid rgba(200,146,42,0.08); }
+.footer-brand p { font-size: 13px; color: var(--text-light); line-height: 1.7; margin-top: 14px; max-width: 260px; }
+.footer h4 { font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--walnut); margin-bottom: 14px; }
+.footer ul { list-style: none; }
+.footer ul li { margin-bottom: 8px; }
+.footer ul a { color: var(--text-light); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+.footer ul a:hover { color: var(--gold); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; font-size: 12px; color: var(--text-light); }
+
+/* ═══ SCROLL REVEAL ═══ */
+.reveal { opacity: 0; transform: translateY(28px); transition: all 0.6s cubic-bezier(0.4,0,0.2,1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 1024px) {
+  .hero::before { display: none; }
+  .hero-content { grid-template-columns: 1fr; text-align: center; }
+  .hero-subtitle { margin: 0 auto 40px; }
+  .hero-buttons { justify-content: center; }
+  .hero-metrics { justify-content: center; }
+  .hero-right { display: none; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .feature-card:nth-child(n) { margin-top: 0; }
+  .why-grid { grid-template-columns: 1fr; }
+  .inst-grid { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 380px; margin: 60px auto 0; }
+  .pricing-popular { transform: none; }
+  .test-grid { columns: 1; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  nav { display: none; }
+}
+@media (max-width: 768px) {
+  .hero h1 { font-size: 42px; }
+  .section-title { font-size: 32px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .timeline::before { display: none; }
+  .cta-section h2 { font-size: 34px; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .header-actions .btn-text { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <div class="logo-mark">📖</div>
+        <div class="logo-name">Skol<em>Matrixa</em></div>
+      </a>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it Works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="header-actions">
+        <a href="/login" class="btn-text">Sign In</a>
+        <a href="/register" class="btn-gold">Get Started →</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-tag animate-up d1"><span class="hero-tag-dot"></span> Trusted by 500+ Institutions</div>
+        <h1 class="animate-up d2">Manage your<br>institution with<br><em>elegance</em></h1>
+        <p class="hero-subtitle animate-up d3">
+          From admissions to alumni — a refined, all-in-one ERP built exclusively for Indian schools and coaching institutes.
+        </p>
+        <div class="hero-buttons animate-up d4">
+          <a href="/register" class="btn-gold btn-gold-lg">Start Free Trial →</a>
+          <a href="#features" class="btn-walnut">Explore Features</a>
+        </div>
+        <div class="hero-metrics animate-up d5">
+          <div><div class="metric-value">10K+</div><div class="metric-label">Students</div></div>
+          <div><div class="metric-value">500+</div><div class="metric-label">Institutions</div></div>
+          <div><div class="metric-value">99.9%</div><div class="metric-label">Uptime</div></div>
+          <div><div class="metric-value">24/7</div><div class="metric-label">Support</div></div>
+        </div>
+      </div>
+      <div class="hero-right animate-up d4">
+        <div class="hero-card-stack">
+          <div class="hero-float-badge"><span class="dot"></span> Live Dashboard</div>
+          <div class="hero-stack-item">
+            <div class="hsi-header"><span class="hsi-title">Revenue This Month</span><span class="hsi-badge">+12%</span></div>
+            <div class="hsi-value">₹4,28,500</div>
+            <div class="hsi-bar-row">
+              <div class="hsi-bar" style="flex:3"></div>
+              <div class="hsi-bar" style="flex:2"></div>
+              <div class="hsi-bar" style="flex:1"></div>
+            </div>
+          </div>
+          <div class="hero-stack-item">
+            <div class="hsi-mini-grid">
+              <div class="hsi-mini"><div class="hsi-mini-label">Students</div><div class="hsi-mini-value">2,847</div></div>
+              <div class="hsi-mini"><div class="hsi-mini-label">Attendance</div><div class="hsi-mini-value">96.8%</div></div>
+              <div class="hsi-mini"><div class="hsi-mini-label">Staff</div><div class="hsi-mini-value">124</div></div>
+              <div class="hsi-mini"><div class="hsi-mini-label">Fee Due</div><div class="hsi-mini-value">₹1.2L</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">Student Management <span class="divider"></span></div>
+    <div class="marquee-item">Fee Collection <span class="divider"></span></div>
+    <div class="marquee-item">Attendance Tracking <span class="divider"></span></div>
+    <div class="marquee-item">Exam & Report Cards <span class="divider"></span></div>
+    <div class="marquee-item">Timetable Builder <span class="divider"></span></div>
+    <div class="marquee-item">Staff & HR <span class="divider"></span></div>
+    <div class="marquee-item">Smart Notifications <span class="divider"></span></div>
+    <div class="marquee-item">Analytics Dashboard <span class="divider"></span></div>
+    <div class="marquee-item">Student Management <span class="divider"></span></div>
+    <div class="marquee-item">Fee Collection <span class="divider"></span></div>
+    <div class="marquee-item">Attendance Tracking <span class="divider"></span></div>
+    <div class="marquee-item">Exam & Report Cards <span class="divider"></span></div>
+    <div class="marquee-item">Timetable Builder <span class="divider"></span></div>
+    <div class="marquee-item">Staff & HR <span class="divider"></span></div>
+    <div class="marquee-item">Smart Notifications <span class="divider"></span></div>
+    <div class="marquee-item">Analytics Dashboard <span class="divider"></span></div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features" class="section">
+  <div class="container">
+    <div class="section-center reveal">
+      <div class="section-label">Features</div>
+      <div class="section-title">Everything your school<br>needs, <em>nothing</em> it doesn't</div>
+      <p class="section-desc">A curated suite of tools crafted specifically for Indian educational institutions.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal"><div class="feature-emoji">🎓</div><h3>Student Management</h3><p>Admissions, profiles, class assignments, CSV imports, and rich academic records — all unified.</p></div>
+      <div class="feature-card reveal"><div class="feature-emoji">👥</div><h3>Staff & HR</h3><p>Teachers and staff with roles, departments, subject mapping, and leave management.</p></div>
+      <div class="feature-card reveal"><div class="feature-emoji">📋</div><h3>Attendance Tracking</h3><p>Class or subject-wise attendance with reports, parent alerts, and monthly analytics.</p></div>
+      <div class="feature-card reveal"><div class="feature-emoji">📅</div><h3>Timetable Builder</h3><p>Visual scheduling with conflict detection, room allocation, and period copy tools.</p></div>
+      <div class="feature-card reveal"><div class="feature-emoji">📝</div><h3>Homework Portal</h3><p>Create, assign, and grade homework online with file submissions and completion tracking.</p></div>
+      <div class="feature-card reveal"><div class="feature-emoji">🔔</div><h3>Notifications</h3><p>Targeted in-app and email notifications to students, parents, and staff by role.</p></div>
+      <div class="feature-card reveal"><div class="feature-emoji">🏆</div><h3>Exams & Reports</h3><p>Schedule exams, enter marks, auto-calculate grades, generate PDF report cards.</p></div>
+      <div class="feature-card reveal"><div class="feature-emoji">💰</div><h3>Fee Management</h3><p>Structured fee plans, payment tracking, professional receipts, overdue reminders.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE -->
+<section class="section why-section">
+  <div class="container">
+    <div class="why-grid">
+      <div class="reveal">
+        <div class="section-label">Why Choose Us</div>
+        <div class="section-title">Built for the way<br><em>you</em> work</div>
+        <p class="section-desc" style="margin-bottom:36px;">Every feature designed with real feedback from Indian school administrators.</p>
+        <div class="why-list">
+          <div class="why-item"><div class="why-icon">🛡️</div><div><h3>Multi-tenant Security</h3><p>Fully isolated, encrypted environments per institution.</p></div></div>
+          <div class="why-item"><div class="why-icon">🔑</div><div><h3>Role-based Access</h3><p>Admin, Teacher, Accountant, Student, Parent — granular permissions.</p></div></div>
+          <div class="why-item"><div class="why-icon">📊</div><div><h3>Real-time Analytics</h3><p>Attendance, revenue, academic progress at your fingertips.</p></div></div>
+          <div class="why-item"><div class="why-icon">📄</div><div><h3>PDF Generation</h3><p>Report cards, receipts, and sheets auto-generated.</p></div></div>
+        </div>
+      </div>
+      <div class="why-visual reveal">
+        <div class="why-card-main">
+          <div class="why-card-header">Monthly Revenue</div>
+          <div class="why-chart-wrapper">
+            <div class="why-chart-bar" style="height:50%; background: linear-gradient(to top, var(--gold), var(--gold-light));"></div>
+            <div class="why-chart-bar" style="height:70%; background: linear-gradient(to top, var(--gold), var(--gold-light));"></div>
+            <div class="why-chart-bar" style="height:40%; background: linear-gradient(to top, var(--gold), var(--gold-light));"></div>
+            <div class="why-chart-bar" style="height:85%; background: linear-gradient(to top, var(--gold), var(--gold-light));"></div>
+            <div class="why-chart-bar" style="height:60%; background: linear-gradient(to top, var(--gold), var(--gold-light));"></div>
+            <div class="why-chart-bar" style="height:90%; background: linear-gradient(to top, var(--gold), var(--gold-light));"></div>
+            <div class="why-chart-bar" style="height:75%; background: linear-gradient(to top, var(--gold), var(--gold-light));"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTITUTION TYPES -->
+<section class="section">
+  <div class="container">
+    <div class="section-center reveal">
+      <div class="section-label">Built For You</div>
+      <div class="section-title">Tailored for every<br><em>institution</em> type</div>
+    </div>
+    <div class="inst-grid">
+      <div class="inst-card inst-card-school reveal">
+        <div class="inst-icon">🎓</div>
+        <h3>For Schools</h3>
+        <p class="inst-sub">CBSE, ICSE & State Board</p>
+        <ul class="inst-features">
+          <li><span class="check">✓</span> Class-wise student & subject management</li>
+          <li><span class="check">✓</span> Teacher–subject assignment system</li>
+          <li><span class="check">✓</span> Mark-based report card generation</li>
+          <li><span class="check">✓</span> Parent communication & notifications</li>
+          <li><span class="check">✓</span> Fee collection with PDF receipts</li>
+          <li><span class="check">✓</span> Daily class attendance tracking</li>
+        </ul>
+      </div>
+      <div class="inst-card inst-card-coaching reveal">
+        <div class="inst-icon">📘</div>
+        <h3>For Coaching Institutes</h3>
+        <p class="inst-sub">JEE, NEET & Competitive Exams</p>
+        <ul class="inst-features">
+          <li><span class="check">✓</span> Batch-based student enrollment</li>
+          <li><span class="check">✓</span> Multiple subject package support</li>
+          <li><span class="check">✓</span> Test scheduling & marks entry</li>
+          <li><span class="check">✓</span> Student performance analytics</li>
+          <li><span class="check">✓</span> Fee installment plan tracking</li>
+          <li><span class="check">✓</span> Assignment submission portal</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="section steps-section">
+  <div class="container">
+    <div class="section-center reveal">
+      <div class="section-label">Getting Started</div>
+      <div class="section-title">Up and running in<br><em>three simple steps</em></div>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">01</div>
+        <div class="timeline-content">
+          <h3>Register Your Institution</h3>
+          <p>Sign up as a School, Coaching Institute, or Library. Get instant access to your dedicated dashboard.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">02</div>
+        <div class="timeline-content">
+          <h3>Configure Your Setup</h3>
+          <p>Add academic year, classes, subjects, fee structures using our guided wizard. Ready in minutes.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">03</div>
+        <div class="timeline-content">
+          <h3>Start Managing Everything</h3>
+          <p>Add students, staff, mark attendance, schedule exams, collect fees — all from one place.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="section" style="background: var(--cream-dark);">
+  <div class="container">
+    <div class="section-center reveal">
+      <div class="section-label">Pricing</div>
+      <div class="section-title">Simple, <em>transparent</em> pricing</div>
+      <p class="section-desc">Start free, scale as you grow. No hidden fees.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal">
+        <div class="pricing-name">Starter</div>
+        <div class="pricing-price">Free</div>
+        <div class="pricing-desc">Perfect for small coaching centres getting started.</div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> Up to 100 students</li>
+          <li><span class="check">✓</span> 5 staff accounts</li>
+          <li><span class="check">✓</span> Basic attendance</li>
+          <li><span class="check">✓</span> Fee management</li>
+          <li><span class="x-mark">✗</span> PDF report cards</li>
+          <li><span class="x-mark">✗</span> Analytics</li>
+        </ul>
+        <a href="/register" class="btn-plan">Start Free</a>
+      </div>
+      <div class="pricing-card pricing-popular reveal">
+        <div class="pricing-badge">⭐ Most Popular</div>
+        <div class="pricing-name">Professional</div>
+        <div class="pricing-price">₹2,999<span class="pricing-period">/mo</span></div>
+        <div class="pricing-desc">Full management suite for growing schools.</div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> Up to 1,000 students</li>
+          <li><span class="check">✓</span> Unlimited staff</li>
+          <li><span class="check">✓</span> Advanced analytics</li>
+          <li><span class="check">✓</span> PDF reports & export</li>
+          <li><span class="check">✓</span> Timetable builder</li>
+          <li><span class="check">✓</span> Priority support</li>
+        </ul>
+        <a href="/register" class="btn-plan btn-plan-gold">Get Started</a>
+      </div>
+      <div class="pricing-card reveal">
+        <div class="pricing-name">Enterprise</div>
+        <div class="pricing-price">Custom</div>
+        <div class="pricing-desc">For large multi-branch institutions.</div>
+        <ul class="pricing-features">
+          <li><span class="check">✓</span> Unlimited everything</li>
+          <li><span class="check">✓</span> Multi-branch</li>
+          <li><span class="check">✓</span> Custom API</li>
+          <li><span class="check">✓</span> Dedicated manager</li>
+          <li><span class="check">✓</span> Custom branding</li>
+          <li><span class="check">✓</span> 24/7 support</li>
+        </ul>
+        <a href="/register" class="btn-plan">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="section">
+  <div class="container">
+    <div class="section-center reveal">
+      <div class="section-label">Testimonials</div>
+      <div class="section-title">Trusted by educators<br><em>across India</em></div>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-quote">"SkolMatrixa transformed how we run our school. Attendance and fee management alone saved us 10+ hours every week."</div>
+        <div class="test-author"><div class="test-avatar">PS</div><div><div class="test-name">Dr. Priya Sharma</div><div class="test-role">Principal, Delhi Public School</div></div></div>
+      </div>
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-quote">"As a coaching institute, we needed batch management that actually works. Delivered beyond expectations."</div>
+        <div class="test-author"><div class="test-avatar">RK</div><div><div class="test-name">Rajesh Kumar</div><div class="test-role">Director, Apex Coaching Centre</div></div></div>
+      </div>
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-quote">"Report card generation and the parent portal are incredible. Parents love the transparency."</div>
+        <div class="test-author"><div class="test-avatar">AD</div><div><div class="test-name">Anita Desai</div><div class="test-role">Administrator, St. Mary's Academy</div></div></div>
+      </div>
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-quote">"We migrated from pen-and-paper in a single weekend. The CSV import saved us weeks. Outstanding!"</div>
+        <div class="test-author"><div class="test-avatar">VS</div><div><div class="test-name">Vikram Singh</div><div class="test-role">Founder, Pinnacle Coaching</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section" style="background: var(--cream-dark);">
+  <div class="container-sm">
+    <div class="section-center reveal">
+      <div class="section-label">FAQ</div>
+      <div class="section-title">Questions? <em>Answered.</em></div>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item reveal"><summary class="faq-q">Is SkolMatrixa suitable for small institutions? <span class="arrow">›</span></summary><div class="faq-a">Absolutely. Scales from 50-student coaching centres to 3,000+ student schools. Free tier included.</div></details>
+      <details class="faq-item reveal"><summary class="faq-q">How long does the initial setup take? <span class="arrow">›</span></summary><div class="faq-a">Under 30 minutes with our guided wizard. Bulk import via CSV makes data migration effortless.</div></details>
+      <details class="faq-item reveal"><summary class="faq-q">Is my institution's data secure? <span class="arrow">›</span></summary><div class="faq-a">Yes — multi-tenant isolation, enterprise-grade encryption, daily backups, and 99.9% uptime.</div></details>
+      <details class="faq-item reveal"><summary class="faq-q">Can students and parents access the platform? <span class="arrow">›</span></summary><div class="faq-a">Yes. Dedicated student portal for grades, attendance, assignments, and fee status. Parents get email alerts.</div></details>
+      <details class="faq-item reveal"><summary class="faq-q">What makes SkolMatrixa different? <span class="arrow">›</span></summary><div class="faq-a">Purpose-built for Indian schools and coaching institutes with multi-tenant isolation and comprehensive features.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <h2 class="reveal">Ready to elevate your<br><em>institution?</em></h2>
+    <p class="reveal">Join 500+ schools already using SkolMatrixa. Start free, upgrade when you're ready.</p>
+    <div class="cta-buttons reveal">
+      <a href="/register" class="btn-cream">Start Free Trial →</a>
+      <a href="/contact" class="btn-ghost-light">Talk to Sales ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo"><div class="logo-mark">📖</div><div class="logo-name">Skol<em>Matrixa</em></div></a>
+        <p>India's leading cloud-based school management ERP for schools, coaching institutes, and libraries.</p>
+      </div>
+      <div><h4>Platform</h4><ul><li><a href="#features">Student Management</a></li><li><a href="#features">Staff & HR</a></li><li><a href="#features">Fee Management</a></li><li><a href="#features">Exams & Reports</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li>📧 hello@skolmatrixa.com</li><li>📞 +91-98765-43210</li><li>📍 Bangalore, India</li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SkolMatrixa. All rights reserved.</span>
+      <div style="display:flex;gap:16px;"><a href="/privacy" style="color:var(--text-light);text-decoration:none;">Privacy</a><a href="/terms" style="color:var(--text-light);text-decoration:none;">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector(a.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth' }); });
+});
+</script>
+</body>
+</html>

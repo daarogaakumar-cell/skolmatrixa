@@ -8,13 +8,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
   GraduationCap,
   BookOpen,
   Library,
   ChevronLeft,
   ArrowRight,
-  Loader2,
-  UserPlus,
 } from "lucide-react";
 
 type InstitutionType = "SCHOOL" | "COACHING_INSTITUTE" | "LIBRARY";
@@ -49,53 +55,45 @@ const TYPE_CONFIG = {
     label: "School",
     icon: GraduationCap,
     description: "K-12 schools, primary, middle, or senior secondary with standard curriculum",
-    gradient: "from-blue-500 to-indigo-600",
-    shadow: "shadow-blue-500/25",
-    bgHover: "hover:border-blue-400 hover:bg-blue-50/60",
-    iconColor: "text-blue-600",
-    badgeBg: "bg-blue-50 text-blue-700 border-blue-200",
-    sectionBg: "bg-blue-50/50 border-blue-100",
-    sectionTitle: "text-blue-700",
+    accent: "emerald",
+    cardClass:
+      "border-emerald-200 hover:border-emerald-400 bg-emerald-50/50 hover:bg-emerald-50",
+    iconClass: "text-emerald-600",
+    textClass: "text-emerald-600",
   },
   COACHING_INSTITUTE: {
     label: "Coaching Institute",
     icon: BookOpen,
     description: "JEE, NEET, competitive exam prep, skill development & specialised coaching",
-    gradient: "from-purple-500 to-violet-600",
-    shadow: "shadow-purple-500/25",
-    bgHover: "hover:border-purple-400 hover:bg-purple-50/60",
-    iconColor: "text-purple-600",
-    badgeBg: "bg-purple-50 text-purple-700 border-purple-200",
-    sectionBg: "bg-purple-50/50 border-purple-100",
-    sectionTitle: "text-purple-700",
+    accent: "coral",
+    cardClass:
+      "border-[#F97066]/30 hover:border-[#F97066]/60 bg-[#F97066]/5 hover:bg-[#F97066]/10",
+    iconClass: "text-[#F97066]",
+    textClass: "text-[#F97066]",
   },
   LIBRARY: {
     label: "Library",
     icon: Library,
     description: "Public, private, academic or school libraries and community reading centres",
-    gradient: "from-emerald-500 to-teal-600",
-    shadow: "shadow-emerald-500/25",
-    bgHover: "hover:border-emerald-400 hover:bg-emerald-50/60",
-    iconColor: "text-emerald-600",
-    badgeBg: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    sectionBg: "bg-emerald-50/50 border-emerald-100",
-    sectionTitle: "text-emerald-700",
+    accent: "amber",
+    cardClass:
+      "border-amber-200 hover:border-amber-400 bg-amber-50/50 hover:bg-amber-50",
+    iconClass: "text-amber-600",
+    textClass: "text-amber-600",
   },
 } as const;
 
 function TypeSelector({ onSelect }: { onSelect: (t: InstitutionType) => void }) {
   return (
     <div className="w-full max-w-2xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-          What type of institution are you?
-        </h1>
-        <p className="mt-1.5 text-sm text-gray-500">
-          Choose your institution type for a tailored setup experience
+      <div className="mb-8 text-center">
+        <h1 className="font-display text-3xl font-bold tracking-tight text-[#1C1C1E]">What type of <em className="italic text-emerald-600">institution</em> are you?</h1>
+        <p className="mt-2 text-[#8E8E93]">
+          Choose your institution type to get a tailored registration &amp; setup experience
         </p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-3">
         {(["SCHOOL", "COACHING_INSTITUTE", "LIBRARY"] as const).map((t) => {
           const cfg = TYPE_CONFIG[t];
           const Icon = cfg.icon;
@@ -104,18 +102,18 @@ function TypeSelector({ onSelect }: { onSelect: (t: InstitutionType) => void }) 
               key={t}
               type="button"
               onClick={() => onSelect(t)}
-              className={`group flex flex-col items-center gap-4 rounded-2xl border-2 border-gray-200 p-6 text-center transition-all duration-200 ${cfg.bgHover}`}
+              className={`group flex flex-col items-center gap-4 rounded-2xl border-2 p-6 text-center transition-all duration-200 ${cfg.cardClass}`}
             >
-              <div className={`flex h-14 w-14 items-center justify-center rounded-xl bg-linear-to-br ${cfg.gradient} ${cfg.shadow} shadow-lg`}>
-                <Icon className="h-7 w-7 text-white" />
+              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white shadow-sm">
+                <Icon className={`h-7 w-7 ${cfg.iconClass}`} />
               </div>
               <div>
-                <div className="font-semibold text-gray-900">{cfg.label}</div>
-                <div className="mt-1 text-xs leading-relaxed text-gray-500">
+                <div className="font-semibold text-foreground">{cfg.label}</div>
+                <div className="mt-1 text-xs leading-relaxed text-muted-foreground">
                   {cfg.description}
                 </div>
               </div>
-              <div className={`flex items-center gap-1 text-xs font-semibold ${cfg.iconColor} opacity-0 group-hover:opacity-100 transition-opacity`}>
+              <div className={`flex items-center gap-1 text-xs font-medium ${cfg.textClass}`}>
                 Get started <ArrowRight className="h-3 w-3" />
               </div>
             </button>
@@ -123,17 +121,12 @@ function TypeSelector({ onSelect }: { onSelect: (t: InstitutionType) => void }) 
         })}
       </div>
 
-      <div className="mt-8 flex items-center gap-3">
-        <div className="h-px flex-1 bg-gray-200" />
-        <span className="text-xs text-gray-400">Already registered?</span>
-        <div className="h-px flex-1 bg-gray-200" />
-      </div>
-      <Link
-        href="/login"
-        className="mt-4 flex h-10 w-full items-center justify-center rounded-md border-2 border-gray-200 bg-white text-sm font-semibold text-gray-700 transition-all hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50/50"
-      >
-        Sign in instead
-      </Link>
+      <p className="mt-6 text-center text-sm text-[#8E8E93]">
+        Already have an account?{" "}
+        <Link href="/login" className="font-medium text-emerald-600 hover:text-emerald-700 hover:underline">
+          Sign in
+        </Link>
+      </p>
     </div>
   );
 }
@@ -174,9 +167,6 @@ const LIBRARY_SPECS = [
   "Arts & Humanities",
   "Children's Library",
 ];
-
-const selectClass =
-  "flex h-10 w-full rounded-lg border border-gray-200 bg-white px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-amber-400/20 focus:border-amber-400 transition-colors";
 
 // ─── Registration Form ───────────────────────────────────────────────────────
 
@@ -223,264 +213,253 @@ function RegisterForm({
       : "e.g., City Central Library";
 
   return (
-    <div className="w-full max-w-lg mx-auto">
-      {/* Back button */}
-      <button
-        type="button"
-        onClick={onBack}
-        className="mb-5 flex items-center gap-1.5 text-sm text-gray-500 transition-colors hover:text-gray-900"
-      >
-        <ChevronLeft className="h-4 w-4" /> Change type
-      </button>
-
-      {/* Header */}
-      <div className="mb-6 flex items-center gap-3">
-        <div className={`flex h-11 w-11 items-center justify-center rounded-xl bg-linear-to-br ${cfg.gradient} ${cfg.shadow} shadow-lg`}>
-          <Icon className="h-5 w-5 text-white" />
-        </div>
-        <div>
-          <h1 className="text-xl font-bold tracking-tight text-gray-900">
-            Register {cfg.label}
-          </h1>
-          <p className="text-xs text-gray-500">
-            Create your account — pending admin approval
-          </p>
-        </div>
-      </div>
-
-      {/* Error */}
-      {error && (
-        <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
-          {error}
-        </div>
-      )}
-
-      <form onSubmit={onSubmit} className="space-y-4">
-        {/* ── Institution Name ── */}
-        <div className="space-y-1.5">
-          <Label htmlFor="institutionName" className="text-sm font-medium text-gray-700">
-            {cfg.label} Name *
-          </Label>
-          <Input
-            id="institutionName"
-            name="institutionName"
-            placeholder={placeholderName}
-            required
-            className="h-10 bg-white border-gray-200 focus-visible:border-amber-400 focus-visible:ring-amber-400/20"
-          />
-        </div>
-
-        {/* ── Contact ── */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-sm font-medium text-gray-700">Official Email *</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="info@institution.com"
-              required
-              className="h-10 bg-white border-gray-200 focus-visible:border-amber-400 focus-visible:ring-amber-400/20"
-            />
+    <Card className="w-full max-w-lg mx-auto">
+      <CardHeader>
+        <button
+          type="button"
+          onClick={onBack}
+          className="mb-3 flex w-fit items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ChevronLeft className="h-4 w-4" /> Change type
+        </button>
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted">
+            <Icon className={`h-5 w-5 ${cfg.iconClass}`} />
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="phone" className="text-sm font-medium text-gray-700">Phone</Label>
-            <Input
-              id="phone"
-              name="phone"
-              placeholder="+91 98765 43210"
-              className="h-10 bg-white border-gray-200 focus-visible:border-amber-400 focus-visible:ring-amber-400/20"
-            />
+          <div>
+            <CardTitle>Register {cfg.label}</CardTitle>
+            <CardDescription>
+              Create your {cfg.label.toLowerCase()} account — pending admin approval
+            </CardDescription>
           </div>
         </div>
+      </CardHeader>
 
-        {/* ── Location ── */}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <Label htmlFor="city" className="text-sm font-medium text-gray-700">City</Label>
-            <Input
-              id="city"
-              name="city"
-              placeholder="Mumbai"
-              className="h-10 bg-white border-gray-200 focus-visible:border-amber-400 focus-visible:ring-amber-400/20"
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="state" className="text-sm font-medium text-gray-700">State</Label>
-            <Input
-              id="state"
-              name="state"
-              placeholder="Maharashtra"
-              className="h-10 bg-white border-gray-200 focus-visible:border-amber-400 focus-visible:ring-amber-400/20"
-            />
-          </div>
-        </div>
-
-        {/* ── School-specific ── */}
-        {type === "SCHOOL" && (
-          <div className={`rounded-xl border ${cfg.sectionBg} p-4 space-y-3`}>
-            <p className={`text-xs font-bold uppercase tracking-widest ${cfg.sectionTitle}`}>
-              School Details
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="schoolLevel" className="text-xs font-medium text-gray-600">School Level</Label>
-                <select id="schoolLevel" name="schoolLevel" className={selectClass}>
-                  <option value="">Select...</option>
-                  {SCHOOL_LEVELS.map((l) => (
-                    <option key={l} value={l}>{l}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="boardAffiliation" className="text-xs font-medium text-gray-600">Board Affiliation</Label>
-                <select id="boardAffiliation" name="boardAffiliation" className={selectClass}>
-                  <option value="">Select...</option>
-                  {BOARDS.map((b) => (
-                    <option key={b} value={b}>{b}</option>
-                  ))}
-                </select>
-              </div>
+      <CardContent>
+        <form onSubmit={onSubmit} className="space-y-4">
+          {error && (
+            <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+              {error}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ── Coaching-specific ── */}
-        {type === "COACHING_INSTITUTE" && (
-          <div className={`rounded-xl border ${cfg.sectionBg} p-4 space-y-3`}>
-            <p className={`text-xs font-bold uppercase tracking-widest ${cfg.sectionTitle}`}>
-              Institute Details
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="coachingFocus" className="text-xs font-medium text-gray-600">Focus / Target Exam</Label>
-                <select id="coachingFocus" name="coachingFocus" className={selectClass}>
-                  <option value="">Select...</option>
-                  {COACHING_FOCUSES.map((f) => (
-                    <option key={f} value={f}>{f}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="teachingMode" className="text-xs font-medium text-gray-600">Teaching Mode</Label>
-                <select id="teachingMode" name="teachingMode" className={selectClass}>
-                  <option value="">Select...</option>
-                  {TEACHING_MODES.map((m) => (
-                    <option key={m} value={m}>{m}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── Library-specific ── */}
-        {type === "LIBRARY" && (
-          <div className={`rounded-xl border ${cfg.sectionBg} p-4 space-y-3`}>
-            <p className={`text-xs font-bold uppercase tracking-widest ${cfg.sectionTitle}`}>
-              Library Details
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="libraryType" className="text-xs font-medium text-gray-600">Library Type</Label>
-                <select id="libraryType" name="libraryType" className={selectClass}>
-                  <option value="">Select...</option>
-                  {LIBRARY_TYPES.map((t) => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="librarySpec" className="text-xs font-medium text-gray-600">Specialization</Label>
-                <select id="librarySpec" name="librarySpec" className={selectClass}>
-                  <option value="">Select...</option>
-                  {LIBRARY_SPECS.map((s) => (
-                    <option key={s} value={s}>{s}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── Admin Account ── */}
-        <div className="space-y-3 border-t border-gray-200 pt-5">
-          <p className="text-xs font-bold uppercase tracking-widest text-gray-500">
-            Admin Account
-          </p>
+          {/* ── Institution Name ── */}
           <div className="space-y-1.5">
-            <Label htmlFor="adminName" className="text-sm font-medium text-gray-700">Your Name *</Label>
+            <Label htmlFor="institutionName">{cfg.label} Name *</Label>
             <Input
-              id="adminName"
-              name="adminName"
-              placeholder="Full name"
+              id="institutionName"
+              name="institutionName"
+              placeholder={placeholderName}
               required
-              className="h-10 bg-white border-gray-200 focus-visible:border-amber-400 focus-visible:ring-amber-400/20"
             />
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="adminEmail" className="text-sm font-medium text-gray-700">Your Email *</Label>
-            <Input
-              id="adminEmail"
-              name="adminEmail"
-              type="email"
-              placeholder="you@example.com"
-              required
-              className="h-10 bg-white border-gray-200 focus-visible:border-amber-400 focus-visible:ring-amber-400/20"
-            />
-          </div>
+
+          {/* ── Contact ── */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
-              <Label htmlFor="adminPassword" className="text-sm font-medium text-gray-700">Password *</Label>
+              <Label htmlFor="email">Official Email *</Label>
               <Input
-                id="adminPassword"
-                name="adminPassword"
-                type="password"
-                placeholder="Min 8 characters"
+                id="email"
+                name="email"
+                type="email"
+                placeholder="info@institution.com"
                 required
-                className="h-10 bg-white border-gray-200 focus-visible:border-amber-400 focus-visible:ring-amber-400/20"
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700">Confirm *</Label>
-              <Input
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                placeholder="Re-enter"
-                required
-                className="h-10 bg-white border-gray-200 focus-visible:border-amber-400 focus-visible:ring-amber-400/20"
-              />
+              <Label htmlFor="phone">Phone</Label>
+              <Input id="phone" name="phone" placeholder="+91 98765 43210" />
             </div>
           </div>
-        </div>
 
-        <Button
-          type="submit"
-          disabled={loading}
-          className="h-11 w-full bg-linear-to-r from-amber-500 to-orange-500 text-white font-semibold shadow-lg shadow-amber-500/20 hover:from-amber-600 hover:to-orange-600 hover:shadow-amber-500/30 transition-all duration-200"
-        >
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Registering...
-            </>
-          ) : (
-            <>
-              <UserPlus className="mr-2 h-4 w-4" />
-              Register {cfg.label}
-            </>
+          {/* ── Location ── */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <Label htmlFor="city">City</Label>
+              <Input id="city" name="city" placeholder="Mumbai" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="state">State</Label>
+              <Input id="state" name="state" placeholder="Maharashtra" />
+            </div>
+          </div>
+
+          {/* ── School-specific ── */}
+          {type === "SCHOOL" && (
+            <div className="rounded-lg border bg-emerald-50/40 p-4 space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                School Details
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="schoolLevel">School Level</Label>
+                  <select
+                    id="schoolLevel"
+                    name="schoolLevel"
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                  >
+                    <option value="">Select...</option>
+                    {SCHOOL_LEVELS.map((l) => (
+                      <option key={l} value={l}>
+                        {l}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="boardAffiliation">Board Affiliation</Label>
+                  <select
+                    id="boardAffiliation"
+                    name="boardAffiliation"
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                  >
+                    <option value="">Select...</option>
+                    {BOARDS.map((b) => (
+                      <option key={b} value={b}>
+                        {b}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
           )}
-        </Button>
-      </form>
 
-      {/* Sign in link */}
-      <p className="mt-6 text-center text-sm text-gray-500">
+          {/* ── Coaching-specific ── */}
+          {type === "COACHING_INSTITUTE" && (
+            <div className="rounded-lg border bg-[#F97066]/5 p-4 space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-[#F97066]">
+                Institute Details
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="coachingFocus">Focus / Target Exam</Label>
+                  <select
+                    id="coachingFocus"
+                    name="coachingFocus"
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                  >
+                    <option value="">Select...</option>
+                    {COACHING_FOCUSES.map((f) => (
+                      <option key={f} value={f}>
+                        {f}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="teachingMode">Teaching Mode</Label>
+                  <select
+                    id="teachingMode"
+                    name="teachingMode"
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                  >
+                    <option value="">Select...</option>
+                    {TEACHING_MODES.map((m) => (
+                      <option key={m} value={m}>
+                        {m}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── Library-specific ── */}
+          {type === "LIBRARY" && (
+            <div className="rounded-lg border bg-emerald-50/40 p-4 space-y-3">
+              <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                Library Details
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <Label htmlFor="libraryType">Library Type</Label>
+                  <select
+                    id="libraryType"
+                    name="libraryType"
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                  >
+                    <option value="">Select...</option>
+                    {LIBRARY_TYPES.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="librarySpec">Specialization</Label>
+                  <select
+                    id="librarySpec"
+                    name="librarySpec"
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-ring"
+                  >
+                    <option value="">Select...</option>
+                    {LIBRARY_SPECS.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── Admin Account ── */}
+          <div className="space-y-3 border-t pt-4">
+            <p className="text-sm font-medium text-muted-foreground">Admin Account</p>
+            <div className="space-y-1.5">
+              <Label htmlFor="adminName">Your Name *</Label>
+              <Input id="adminName" name="adminName" placeholder="Full name" required />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="adminEmail">Your Email *</Label>
+              <Input
+                id="adminEmail"
+                name="adminEmail"
+                type="email"
+                placeholder="you@example.com"
+                required
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="adminPassword">Password *</Label>
+                <Input
+                  id="adminPassword"
+                  name="adminPassword"
+                  type="password"
+                  placeholder="Min 8 characters"
+                  required
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="confirmPassword">Confirm *</Label>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  placeholder="Re-enter"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <Button type="submit" className="w-full rounded-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20" disabled={loading}>
+            {loading ? "Registering..." : `Register ${cfg.label}`}
+          </Button>
+        </form>
+      </CardContent>
+
+      <CardFooter className="justify-center text-sm text-[#8E8E93]">
         Already have an account?{" "}
-        <Link href="/login" className="font-semibold text-amber-600 hover:text-amber-700 transition-colors">
+        <Link href="/login" className="ml-1 font-medium text-emerald-600 hover:text-emerald-700 hover:underline">
           Sign in
         </Link>
-      </p>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }

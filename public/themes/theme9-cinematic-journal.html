@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkolMatrixa — A Visual Journey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   THEME 9: CINEMATIC PHOTO JOURNAL  (IMAGE-HEAVY #2)
+   Full-bleed photographs, Ken Burns parallax,
+   documentary storytelling, editorial captions
+   Fonts: Fraunces (optical size serif) + Instrument Sans
+   Order: Full-screen hero photo → Photo grid story → Features over image → Split photo → Testimonials → Pricing → Photo CTA
+   Skipped: FAQ, How it works, Stats (visual confidence instead)
+   ═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0C0C0C;--off-black:#1A1A1A;--dark-gray:#2A2A2A;
+  --white:#FFFFFF;--off-white:#F7F6F3;
+  --warm:#E8DFD0;--cream:#FAF8F5;
+  --accent:#B8860B;--accent-light:#D4A843;
+  --text:#FAFAFA;--text-dim:rgba(255,255,255,.55);
+  --text-dark:#1A1A1A;--text-dark-dim:#777;
+  --font-serif:'Fraunces',serif;--font-sans:'Instrument Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-sans);background:var(--black);color:var(--text);line-height:1.7;overflow-x:hidden}
+
+/* ═══ HEADER ═══ */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;transition:all .3s}
+.hdr.solid{background:rgba(12,12,12,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.04)}
+.hdr-in{display:flex;align-items:center;justify-content:space-between;max-width:1260px;margin:0 auto;padding:0 32px;height:48px}
+.logo{text-decoration:none;color:var(--white);display:flex;align-items:center;gap:10px}
+.logo-sq{width:32px;height:32px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.logo-t{font-family:var(--font-serif);font-size:19px;font-weight:700}
+nav{display:flex;gap:4px}
+nav a{color:var(--text-dim);text-decoration:none;font-size:13px;font-weight:500;padding:6px 14px;border-radius:8px;transition:all .2s}
+nav a:hover{color:var(--white);background:rgba(255,255,255,.05)}
+.hdr-cta{display:flex;gap:8px}
+.hdr-btn{padding:7px 18px;border-radius:100px;font-size:12px;font-weight:600;text-decoration:none;transition:all .2s}
+.hdr-btn-g{color:var(--text-dim);border:1px solid rgba(255,255,255,.1)}
+.hdr-btn-g:hover{color:var(--white);border-color:var(--accent)}
+.hdr-btn-a{background:var(--accent);color:var(--black)}
+.hdr-btn-a:hover{background:var(--accent-light)}
+
+/* ═══ FULL-SCREEN HERO ═══ */
+.hero{position:relative;height:100vh;overflow:hidden;display:flex;align-items:flex-end}
+.hero-img{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=1800&q=80') center/cover no-repeat;animation:ken-burns 20s ease-in-out infinite alternate}
+@keyframes ken-burns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.08) translate(-1%,-1%)}}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(12,12,12,.9) 0%,rgba(12,12,12,.3) 40%,transparent 70%)}
+.hero-content{position:relative;z-index:2;max-width:1260px;margin:0 auto;padding:0 32px 80px;width:100%}
+.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.hero h1{font-family:var(--font-serif);font-size:72px;font-weight:900;line-height:1.05;letter-spacing:-2px;margin-bottom:16px;max-width:700px}
+.hero h1 em{font-style:italic;color:var(--accent-light)}
+.hero-desc{font-size:17px;color:var(--text-dim);max-width:440px;line-height:1.8;margin-bottom:32px}
+.hero-btns{display:flex;gap:12px}
+.btn-cine{display:inline-flex;align-items:center;gap:8px;padding:16px 32px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none;transition:all .3s}
+.btn-gold{background:var(--accent);color:var(--black)}
+.btn-gold:hover{background:var(--accent-light);transform:translateY(-2px)}
+.btn-glass{border:1.5px solid rgba(255,255,255,.2);color:var(--white)}
+.btn-glass:hover{border-color:var(--white);background:rgba(255,255,255,.05)}
+
+/* ═══ PHOTO STORY GRID ═══ */
+.photo-story{padding:0;margin:0}
+.ps-grid{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:300px 300px;gap:4px}
+.ps-item{position:relative;overflow:hidden}
+.ps-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
+.ps-item:hover img{transform:scale(1.05)}
+.ps-caption{position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(transparent,rgba(0,0,0,.75))}
+.ps-caption h3{font-family:var(--font-serif);font-size:20px;font-weight:700;margin-bottom:2px}
+.ps-caption p{font-size:12px;color:var(--text-dim)}
+.ps-item.wide{grid-column:span 2}
+.ps-item.tall{grid-row:span 2}
+
+/* ═══ FEATURES OVER IMAGE ═══ */
+.feat-visual{position:relative;padding:120px 0;overflow:hidden}
+.feat-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1577896851231-70ef18881754?w=1600&q=80') center/cover no-repeat;filter:brightness(.25)}
+.feat-content{position:relative;z-index:2;max-width:1260px;margin:0 auto;padding:0 32px}
+.feat-header{margin-bottom:48px;max-width:500px}
+.feat-header .eyebrow{font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.feat-header h2{font-family:var(--font-serif);font-size:46px;font-weight:900;line-height:1.1;margin-bottom:12px}
+.feat-header p{font-size:15px;color:var(--text-dim);line-height:1.8}
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.f-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:28px 20px;backdrop-filter:blur(8px);transition:all .3s}
+.f-card:hover{background:rgba(255,255,255,.07);border-color:rgba(184,134,11,.2);transform:translateY(-3px)}
+.f-icon{font-size:28px;margin-bottom:14px}
+.f-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.f-card p{font-size:12px;color:var(--text-dim);line-height:1.7}
+
+/* ═══ SPLIT PHOTO + TEXT ═══ */
+.split{display:grid;grid-template-columns:1fr 1fr}
+.split-img{position:relative;overflow:hidden;min-height:500px}
+.split-img img{width:100%;height:100%;object-fit:cover;display:block}
+.split-text{display:flex;flex-direction:column;justify-content:center;padding:64px;background:var(--off-black)}
+.split-text .eyebrow{font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.split-text h2{font-family:var(--font-serif);font-size:38px;font-weight:900;line-height:1.1;margin-bottom:12px}
+.split-text p{font-size:14px;color:var(--text-dim);line-height:1.8;margin-bottom:24px}
+.check-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.check-list li{display:flex;align-items:center;gap:10px;font-size:14px;color:rgba(255,255,255,.7)}
+.check-list .ck{color:var(--accent)}
+
+/* ═══ TESTIMONIALS ═══ */
+.testi{padding:100px 0;background:var(--off-black)}
+.testi-w{max-width:1260px;margin:0 auto;padding:0 32px}
+.testi-header{text-align:center;margin-bottom:48px}
+.testi-header .eyebrow{font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.testi-header h2{font-family:var(--font-serif);font-size:42px;font-weight:900}
+.testi-scroll{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.t-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:28px;transition:all .3s}
+.t-card:hover{border-color:rgba(184,134,11,.15)}
+.t-stars{color:#FBBF24;font-size:12px;letter-spacing:2px;margin-bottom:10px}
+.t-quote{font-family:var(--font-serif);font-size:14px;font-style:italic;color:rgba(255,255,255,.6);line-height:1.8;margin-bottom:18px}
+.t-auth{display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid rgba(255,255,255,.05)}
+.t-av{width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0}
+.t-av img{width:100%;height:100%;object-fit:cover}
+.t-name{font-size:13px;font-weight:700}
+.t-role{font-size:11px;color:var(--text-dim)}
+
+/* ═══ PRICING ═══ */
+.pricing{padding:100px 0;background:var(--cream);color:var(--text-dark)}
+.pricing-w{max-width:1260px;margin:0 auto;padding:0 32px}
+.pricing-header{text-align:center;margin-bottom:48px}
+.pricing-header .eyebrow{font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.pricing-header h2{font-family:var(--font-serif);font-size:42px;font-weight:900;color:var(--text-dark)}
+.pricing-header p{font-size:15px;color:var(--text-dark-dim);margin-top:8px}
+.p-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.p-card{background:var(--white);border-radius:20px;padding:32px 24px;position:relative;transition:all .3s;border:2px solid transparent}
+.p-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.06)}
+.p-pop{border-color:var(--accent);box-shadow:0 8px 32px rgba(184,134,11,.12)}
+.p-pop:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(184,134,11,.18)}
+.p-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--accent);color:var(--white);font-size:10px;font-weight:700;padding:4px 14px;border-radius:100px;letter-spacing:1px}
+.p-name{font-size:14px;font-weight:700;color:var(--text-dark-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.p-price{font-family:var(--font-serif);font-size:42px;font-weight:900;color:var(--text-dark)}
+.p-per{font-size:14px;color:var(--text-dark-dim);font-weight:400}
+.p-desc{font-size:13px;color:var(--text-dark-dim);margin:10px 0 18px;line-height:1.6}
+.p-feats{list-style:none;margin-bottom:24px}
+.p-feats li{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dark-dim);padding:4px 0}
+.pf-y{color:var(--accent)}
+.pf-n{color:#ccc}
+.btn-p{display:block;width:100%;padding:14px;border-radius:100px;text-align:center;font-weight:700;font-size:13px;text-decoration:none;transition:all .3s;border:1.5px solid #ddd;color:var(--text-dark);background:transparent;cursor:pointer}
+.btn-p:hover{border-color:var(--accent);color:var(--accent)}
+.btn-p-fill{background:var(--accent);color:var(--white);border:none}
+.btn-p-fill:hover{background:var(--accent-light);color:var(--black)}
+
+/* ═══ CTA — Full bleed image ═══ */
+.cta-photo{position:relative;height:480px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.cta-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&q=80') center/cover no-repeat}
+.cta-overlay{position:absolute;inset:0;background:rgba(12,12,12,.7)}
+.cta-inner{position:relative;z-index:2;text-align:center;max-width:560px}
+.cta-inner h2{font-family:var(--font-serif);font-size:46px;font-weight:900;line-height:1.1;margin-bottom:14px}
+.cta-inner p{font-size:16px;color:var(--text-dim);margin-bottom:28px;line-height:1.7}
+.cta-inner .cta-btns{display:flex;gap:12px;justify-content:center}
+
+/* ═══ FOOTER ═══ */
+.foot{padding:48px 0 20px;border-top:1px solid rgba(255,255,255,.06)}
+.foot-w{max-width:1260px;margin:0 auto;padding:0 32px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.06)}
+.foot-brand p{font-size:12px;color:var(--text-dim);margin-top:10px;line-height:1.7;max-width:220px}
+.foot h4{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:10px}
+.foot ul{list-style:none}
+.foot ul li{margin-bottom:5px}
+.foot ul a{color:var(--text-dim);text-decoration:none;font-size:12px;transition:color .2s}
+.foot ul a:hover{color:var(--accent)}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:11px;color:rgba(255,255,255,.25)}
+
+/* ═══ SCROLL REVEAL ═══ */
+.rv{opacity:0;transform:translateY(24px);transition:all .65s cubic-bezier(.4,0,.2,1)}
+.rv.vis{opacity:1;transform:translateY(0)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1024px){
+  .hero h1{font-size:48px}
+  .ps-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .ps-item.wide{grid-column:span 2}
+  .ps-item.tall{grid-row:span 1}
+  .feat-grid{grid-template-columns:repeat(2,1fr)}
+  .split{grid-template-columns:1fr}
+  .split-img{min-height:300px}
+  .split-text{padding:40px 28px}
+  .testi-scroll{grid-template-columns:repeat(2,1fr)}
+  .p-grid{grid-template-columns:1fr;max-width:360px;margin:0 auto}
+  nav{display:none}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .hero h1{font-size:36px}
+  .feat-header h2{font-size:32px}
+  .feat-grid{grid-template-columns:1fr}
+  .ps-grid{grid-template-columns:1fr}
+  .ps-item.wide{grid-column:span 1}
+  .testi-scroll{grid-template-columns:1fr}
+  .cta-inner h2{font-size:32px}
+  .foot-grid{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr" id="hdr">
+<div class="hdr-in">
+  <a href="/" class="logo"><div class="logo-sq">📚</div><span class="logo-t">SkolMatrixa</span></a>
+  <nav><a href="#features">Features</a><a href="#testimonials">Reviews</a><a href="#pricing">Pricing</a></nav>
+  <div class="hdr-cta"><a href="/login" class="hdr-btn hdr-btn-g">Sign In</a><a href="/register" class="hdr-btn hdr-btn-a">Start Free</a></div>
+</div>
+</header>
+
+<!-- HERO — Full screen with Ken Burns -->
+<section class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow rv">India's #1 School ERP Platform</div>
+    <h1 class="rv">Where education<br>meets <em>elegance</em></h1>
+    <p class="hero-desc rv">A cinematic approach to school management. Every detail crafted for clarity, from attendance to analytics.</p>
+    <div class="hero-btns rv">
+      <a href="/register" class="btn-cine btn-gold">Begin Your Story →</a>
+      <a href="#features" class="btn-cine btn-glass">See Capabilities</a>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO STORY GRID -->
+<section class="photo-story">
+  <div class="ps-grid">
+    <div class="ps-item wide">
+      <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=900&q=80" alt="Classroom">
+      <div class="ps-caption"><h3>Smart Classrooms</h3><p>Digital attendance tracking across every section</p></div>
+    </div>
+    <div class="ps-item tall">
+      <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&q=80" alt="Library">
+      <div class="ps-caption"><h3>Resource Hub</h3><p>Integrated library & homework portal</p></div>
+    </div>
+    <div class="ps-item">
+      <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80" alt="Students">
+      <div class="ps-caption"><h3>10,000+ Students</h3><p>Managed daily across India</p></div>
+    </div>
+    <div class="ps-item">
+      <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80" alt="Teacher">
+      <div class="ps-caption"><h3>Empowered Staff</h3><p>142 average staff per institution</p></div>
+    </div>
+    <div class="ps-item">
+      <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80" alt="Kids">
+      <div class="ps-caption"><h3>Every Child</h3><p>Complete academic journey tracking</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES OVER IMAGE -->
+<section id="features" class="feat-visual">
+  <div class="feat-bg"></div>
+  <div class="feat-content">
+    <div class="feat-header rv">
+      <div class="eyebrow">Capabilities</div>
+      <h2>Built for the<br>modern institution</h2>
+      <p>Every module designed with intention. Every pixel with purpose.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="f-card rv"><div class="f-icon">🎓</div><h3>Students</h3><p>Full lifecycle management, CSV imports, profiles and academic records.</p></div>
+      <div class="f-card rv"><div class="f-icon">👥</div><h3>Staff & HR</h3><p>Roles, departments, leave management, subject mapping.</p></div>
+      <div class="f-card rv"><div class="f-icon">📋</div><h3>Attendance</h3><p>Real-time class tracking with parent alerts and analytics.</p></div>
+      <div class="f-card rv"><div class="f-icon">📅</div><h3>Timetable</h3><p>Visual scheduling with conflict detection.</p></div>
+      <div class="f-card rv"><div class="f-icon">🏆</div><h3>Exams</h3><p>Schedule, grade, generate PDF report cards.</p></div>
+      <div class="f-card rv"><div class="f-icon">💰</div><h3>Fees</h3><p>Structured plans, receipts, overdue reminders.</p></div>
+      <div class="f-card rv"><div class="f-icon">📝</div><h3>Homework</h3><p>Assign, track submissions, grade online.</p></div>
+      <div class="f-card rv"><div class="f-icon">🔔</div><h3>Alerts</h3><p>Targeted notifications by role or class.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SPLIT PHOTO + TEXT -->
+<div class="split">
+  <div class="split-img">
+    <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?w=800&q=80" alt="School">
+  </div>
+  <div class="split-text">
+    <div class="eyebrow rv">Purpose Built</div>
+    <h2 class="rv">Designed for Indian<br>education</h2>
+    <p class="rv">Every feature tailored for CBSE, ICSE, and state board schools. Works for schools, coaching institutes, and libraries.</p>
+    <ul class="check-list rv">
+      <li><span class="ck">◆</span> Multi-tenant architecture</li>
+      <li><span class="ck">◆</span> 5 role-based access levels</li>
+      <li><span class="ck">◆</span> Smart CSV import wizard</li>
+      <li><span class="ck">◆</span> PDF generation engine</li>
+      <li><span class="ck">◆</span> Real-time analytics dashboard</li>
+      <li><span class="ck">◆</span> 99.9% uptime guarantee</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="testi">
+  <div class="testi-w">
+    <div class="testi-header rv">
+      <div class="eyebrow">Voices</div>
+      <h2>Stories from<br>the field</h2>
+    </div>
+    <div class="testi-scroll">
+      <div class="t-card rv"><div class="t-stars">★★★★★</div><div class="t-quote">"Saved 10+ hours every week. Parents love the transparency and real-time updates."</div><div class="t-auth"><div class="t-av"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80" alt="PS"></div><div><div class="t-name">Dr. Priya Sharma</div><div class="t-role">Principal, Delhi Public</div></div></div></div>
+      <div class="t-card rv"><div class="t-stars">★★★★★</div><div class="t-quote">"Batch management that works. Three platforms before this — finally settled."</div><div class="t-auth"><div class="t-av"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80" alt="RK"></div><div><div class="t-name">Rajesh Kumar</div><div class="t-role">Director, Apex Coaching</div></div></div></div>
+      <div class="t-card rv"><div class="t-stars">★★★★★</div><div class="t-quote">"Report cards are stunning. Teachers love the automated grading workflow."</div><div class="t-auth"><div class="t-av"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80" alt="AD"></div><div><div class="t-name">Anita Desai</div><div class="t-role">Admin, St. Mary's</div></div></div></div>
+      <div class="t-card rv"><div class="t-stars">★★★★★</div><div class="t-quote">"Paper to digital in one weekend. CSV import saved weeks of manual entry."</div><div class="t-auth"><div class="t-av"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80" alt="VS"></div><div><div class="t-name">Vikram Singh</div><div class="t-role">Founder, Pinnacle</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="pricing">
+  <div class="pricing-w">
+    <div class="pricing-header rv">
+      <div class="eyebrow">Investment</div>
+      <h2>Clear, honest pricing</h2>
+      <p>Start free. Scale as you grow.</p>
+    </div>
+    <div class="p-grid">
+      <div class="p-card rv">
+        <div class="p-name">Starter</div>
+        <div class="p-price">Free<span class="p-per"> forever</span></div>
+        <div class="p-desc">Small coaching centres getting started.</div>
+        <ul class="p-feats"><li><span class="pf-y">✓</span> Up to 100 students</li><li><span class="pf-y">✓</span> 5 staff accounts</li><li><span class="pf-y">✓</span> Basic attendance</li><li><span class="pf-y">✓</span> Fee management</li><li><span class="pf-n">✗</span> PDF reports</li><li><span class="pf-n">✗</span> Analytics</li></ul>
+        <a href="/register" class="btn-p">Get Started</a>
+      </div>
+      <div class="p-card p-pop rv">
+        <div class="p-badge">Popular</div>
+        <div class="p-name">Professional</div>
+        <div class="p-price">₹2,999<span class="p-per">/mo</span></div>
+        <div class="p-desc">Complete suite for growing schools.</div>
+        <ul class="p-feats"><li><span class="pf-y">✓</span> 1,000 students</li><li><span class="pf-y">✓</span> Unlimited staff</li><li><span class="pf-y">✓</span> Advanced analytics</li><li><span class="pf-y">✓</span> PDF report cards</li><li><span class="pf-y">✓</span> Timetable builder</li><li><span class="pf-y">✓</span> Priority support</li></ul>
+        <a href="/register" class="btn-p btn-p-fill">Start Trial →</a>
+      </div>
+      <div class="p-card rv">
+        <div class="p-name">Enterprise</div>
+        <div class="p-price">Custom</div>
+        <div class="p-desc">Multi-branch institutions.</div>
+        <ul class="p-feats"><li><span class="pf-y">✓</span> Unlimited everything</li><li><span class="pf-y">✓</span> Multi-branch</li><li><span class="pf-y">✓</span> Custom API</li><li><span class="pf-y">✓</span> Dedicated manager</li><li><span class="pf-y">✓</span> Custom branding</li><li><span class="pf-y">✓</span> 24/7 support</li></ul>
+        <a href="/contact" class="btn-p">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA — Full-bleed photo -->
+<section class="cta-photo">
+  <div class="cta-bg"></div>
+  <div class="cta-overlay"></div>
+  <div class="cta-inner">
+    <h2 class="rv">Begin your<br>institution's story</h2>
+    <p class="rv">Join 500+ schools writing their next chapter with SkolMatrixa.</p>
+    <div class="cta-btns rv">
+      <a href="/register" class="btn-cine btn-gold">Start Free Trial →</a>
+      <a href="/contact" class="btn-cine btn-glass">Contact Team ↗</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+<div class="foot-w">
+  <div class="foot-grid">
+    <div class="foot-brand"><a href="/" class="logo"><div class="logo-sq">📚</div><span class="logo-t">SkolMatrixa</span></a><p>India's premier school management platform for modern institutions.</p></div>
+    <div><h4>Platform</h4><ul><li><a href="#">Students</a></li><li><a href="#">Staff</a></li><li><a href="#">Fees</a></li><li><a href="#">Exams</a></li><li><a href="#">Attendance</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li></ul></div>
+    <div><h4>Reach Us</h4><ul><li>📧 hello@skolmatrixa.com</li><li>📞 +91-98765-43210</li><li>📍 Bangalore, India</li></ul></div>
+  </div>
+  <div class="foot-bot"><span>© 2026 SkolMatrixa. All rights reserved.</span><div style="display:flex;gap:16px"><a href="/privacy" style="color:var(--text-dim);text-decoration:none">Privacy</a><a href="/terms" style="color:var(--text-dim);text-decoration:none">Terms</a></div></div>
+</div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('hdr').classList.toggle('solid',scrollY>60)});
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'})})});
+</script>
+</body>
+</html>

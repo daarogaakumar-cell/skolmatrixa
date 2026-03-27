@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkolMatrixa — Neo Brutalist Theme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   THEME 3: NEO BRUTALIST
+   Style: Bold brutalism with playful colors & hard shadows
+   Font: Syne (display) + Space Mono (body/code)
+   Palette: Stark white, electric yellow, hot pink, black
+   ═══════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white: #FFFFFF;
+  --off-white: #F5F5F0;
+  --black: #0A0A0A;
+  --yellow: #DFFF00;
+  --pink: #FF3CAC;
+  --blue: #3B82F6;
+  --green: #10B981;
+  --orange: #FF6B35;
+  --shadow: 6px 6px 0px var(--black);
+  --shadow-sm: 4px 4px 0px var(--black);
+  --shadow-lg: 8px 8px 0px var(--black);
+  --border: 3px solid var(--black);
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-mono);
+  background: var(--off-white);
+  color: var(--black);
+  overflow-x: hidden;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+/* ═══ HEADER ═══ */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--white);
+  border-bottom: var(--border);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--black);
+}
+.logo-box {
+  width: 40px; height: 40px;
+  background: var(--yellow);
+  border: var(--border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s;
+}
+.logo:hover .logo-box { transform: rotate(-5deg); }
+.logo-text { font-family: var(--font-display); font-size: 22px; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; }
+
+nav { display: flex; gap: 0; }
+nav a {
+  color: var(--black);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.15s;
+}
+nav a:hover { background: var(--yellow); }
+
+.header-cta { display: flex; gap: 8px; align-items: center; }
+
+.btn-brutal {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: var(--yellow);
+  border: var(--border);
+  border-radius: 8px;
+  color: var(--black);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 14px;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s;
+  letter-spacing: -0.5px;
+}
+.btn-brutal:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--black); }
+.btn-brutal:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--black); }
+
+.btn-brutal-pink { background: var(--pink); color: white; }
+.btn-brutal-black { background: var(--black); color: var(--yellow); }
+.btn-brutal-white { background: var(--white); }
+
+.btn-brutal-lg { padding: 16px 32px; font-size: 16px; box-shadow: var(--shadow); }
+.btn-brutal-lg:hover { box-shadow: var(--shadow-lg); }
+
+.btn-outline-brutal {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 16px 32px; border: var(--border); border-radius: 8px;
+  background: var(--white); color: var(--black);
+  font-family: var(--font-display); font-weight: 800; font-size: 16px;
+  text-decoration: none; text-transform: uppercase; transition: all 0.15s;
+  box-shadow: var(--shadow);
+}
+.btn-outline-brutal:hover { background: var(--off-white); transform: translate(-2px, -2px); box-shadow: var(--shadow-lg); }
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes bounce-in { 0% { opacity: 0; transform: scale(0.8) rotate(-3deg); } 60% { transform: scale(1.05) rotate(1deg); } 100% { opacity: 1; transform: scale(1) rotate(0); } }
+@keyframes slide-right { from { opacity: 0; transform: translateX(-40px) rotate(-2deg); } to { opacity: 1; transform: translateX(0) rotate(0); } }
+@keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
+@keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+.animate-in { animation: bounce-in 0.5s ease-out forwards; opacity: 0; }
+.d1 { animation-delay: 0.1s; }
+.d2 { animation-delay: 0.2s; }
+.d3 { animation-delay: 0.35s; }
+.d4 { animation-delay: 0.5s; }
+
+/* ═══ HERO — Full-width brutalist ═══ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 64px;
+  position: relative;
+  overflow: hidden;
+  background: var(--off-white);
+}
+/* Decorative shapes */
+.hero-shape {
+  position: absolute;
+  border: var(--border);
+  z-index: 1;
+}
+.hero-shape-1 {
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  top: 15%;
+  right: 8%;
+  background: var(--yellow);
+  box-shadow: var(--shadow-lg);
+  animation: wiggle 5s ease-in-out infinite;
+}
+.hero-shape-2 {
+  width: 120px; height: 120px;
+  bottom: 20%;
+  left: 5%;
+  background: var(--pink);
+  box-shadow: var(--shadow);
+  transform: rotate(12deg);
+}
+.hero-shape-3 {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  top: 60%;
+  right: 20%;
+  background: var(--blue);
+  box-shadow: var(--shadow-sm);
+}
+.hero-shape-4 {
+  width: 60px; height: 60px;
+  top: 25%;
+  left: 15%;
+  background: var(--green);
+  box-shadow: var(--shadow-sm);
+  transform: rotate(-8deg);
+  border-radius: 12px;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 80px 0;
+}
+
+.hero-tag {
+  display: inline-block;
+  background: var(--black);
+  color: var(--yellow);
+  padding: 6px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  margin-bottom: 28px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: 82px;
+  font-weight: 800;
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: -3px;
+  margin-bottom: 24px;
+}
+.hero h1 .highlight {
+  background: var(--yellow);
+  padding: 0 12px;
+  border: var(--border);
+  box-shadow: var(--shadow-sm);
+  display: inline-block;
+  transform: rotate(-1deg);
+}
+.hero h1 .pink { color: var(--pink); }
+
+.hero-desc {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.8;
+  max-width: 560px;
+  margin-bottom: 40px;
+}
+.hero-buttons { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+
+.hero-stats-strip {
+  display: flex;
+  gap: 0;
+}
+.hero-stat-box {
+  padding: 16px 28px;
+  border: var(--border);
+  border-right: none;
+  background: var(--white);
+}
+.hero-stat-box:last-child { border-right: var(--border); }
+.hero-stat-box:nth-child(1) { box-shadow: var(--shadow-sm); }
+.stat-val { font-family: var(--font-display); font-size: 28px; font-weight: 800; }
+.stat-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #666; }
+
+/* ═══ TICKER STRIP ═══ */
+.ticker {
+  background: var(--black);
+  border-top: var(--border);
+  border-bottom: var(--border);
+  padding: 12px 0;
+  overflow: hidden;
+}
+.ticker-track {
+  display: flex;
+  animation: ticker 25s linear infinite;
+  white-space: nowrap;
+}
+.ticker-item {
+  flex-shrink: 0;
+  margin-right: 40px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--yellow);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.ticker-item .sep { color: var(--pink); margin-left: 40px; }
+
+/* ═══ SECTIONS ═══ */
+.section { padding: 100px 0; position: relative; }
+.section-tag {
+  display: inline-block;
+  background: var(--yellow);
+  border: var(--border);
+  padding: 4px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow-sm);
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 16px;
+}
+.section-title .highlight-inline { background: var(--yellow); padding: 0 8px; }
+.section-desc { font-size: 15px; color: #555; line-height: 1.7; max-width: 500px; }
+.section-center { text-align: center; }
+.section-center .section-desc { margin: 0 auto; }
+
+/* ═══ FEATURES — Bento brutalist ═══ */
+.features-bento {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 52px;
+}
+.feat-card {
+  background: var(--white);
+  border: var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.feat-card:hover { transform: translate(-3px, -3px); box-shadow: var(--shadow-lg); }
+.feat-card:nth-child(1) { grid-column: span 2; background: var(--yellow); }
+.feat-card:nth-child(4) { background: var(--pink); color: white; }
+.feat-card:nth-child(6) { background: var(--blue); color: white; }
+.feat-card:nth-child(8) { grid-column: span 2; background: var(--green); color: white; }
+
+.feat-emoji { font-size: 32px; margin-bottom: 14px; display: block; }
+.feat-card h3 { font-family: var(--font-display); font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.5px; margin-bottom: 6px; }
+.feat-card p { font-size: 12px; line-height: 1.6; opacity: 0.8; }
+
+/* ═══ HOW IT WORKS — Numbered boxes ═══ */
+.steps-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 52px;
+}
+.step-box {
+  background: var(--white);
+  border: var(--border);
+  border-radius: 12px;
+  padding: 32px 24px;
+  box-shadow: var(--shadow);
+  transition: all 0.15s;
+  text-align: center;
+}
+.step-box:hover { transform: translate(-3px, -3px); box-shadow: var(--shadow-lg); }
+.step-num {
+  display: inline-flex;
+  width: 60px; height: 60px;
+  align-items: center;
+  justify-content: center;
+  background: var(--yellow);
+  border: var(--border);
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+}
+.step-box:nth-child(2) .step-num { background: var(--pink); color: white; }
+.step-box:nth-child(3) .step-num { background: var(--blue); color: white; }
+.step-box h3 { font-family: var(--font-display); font-size: 16px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; }
+.step-box p { font-size: 12px; color: #555; line-height: 1.7; }
+
+/* ═══ PRICING — Stacked cards ═══ */
+.pricing-section { background: var(--black); color: var(--white); }
+.pricing-section .section-tag { background: var(--yellow); color: var(--black); }
+.pricing-section .section-title { color: var(--white); }
+.pricing-section .section-desc { color: #999; }
+
+.pricing-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 52px;
+}
+.price-card {
+  background: #1a1a1a;
+  border: 3px solid #333;
+  border-radius: 16px;
+  padding: 32px 24px;
+  transition: all 0.15s;
+  position: relative;
+}
+.price-card:hover { transform: translate(-3px, -3px); }
+.price-pop {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 3px var(--yellow);
+  transform: translateY(-8px);
+}
+.price-pop:hover { transform: translate(-3px, -11px); }
+.price-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--yellow);
+  color: var(--black);
+  border: var(--border);
+  padding: 4px 16px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 100px;
+  box-shadow: var(--shadow-sm);
+}
+.price-name { font-family: var(--font-display); font-size: 16px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; color: var(--white); }
+.price-amount { font-family: var(--font-display); font-size: 44px; font-weight: 800; color: var(--yellow); margin-bottom: 4px; }
+.price-period { font-size: 12px; color: #666; }
+.price-desc { font-size: 12px; color: #888; margin: 12px 0 24px; line-height: 1.6; }
+.price-features { list-style: none; margin-bottom: 28px; }
+.price-features li { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 12px; color: #ccc; }
+.price-features .c { color: var(--green); }
+.price-features .x { color: #444; }
+
+.btn-price {
+  display: block; width: 100%; padding: 13px; border-radius: 8px;
+  text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 13px;
+  text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px;
+  border: 3px solid #444; color: #ccc; background: transparent; cursor: pointer; transition: all 0.15s;
+}
+.btn-price:hover { border-color: var(--yellow); color: var(--yellow); }
+.btn-price-primary { border: none; background: var(--yellow); color: var(--black); box-shadow: var(--shadow-sm); }
+.btn-price-primary:hover { transform: translate(-2px,-2px); box-shadow: var(--shadow); }
+
+/* ═══ TESTIMONIALS — Cards with rotation ═══ */
+.test-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 52px;
+}
+.test-card {
+  background: var(--white);
+  border: var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+  transition: all 0.2s;
+}
+.test-card:nth-child(1) { transform: rotate(-1deg); }
+.test-card:nth-child(2) { transform: rotate(0.5deg); }
+.test-card:nth-child(3) { transform: rotate(0.8deg); }
+.test-card:nth-child(4) { transform: rotate(-0.5deg); }
+.test-card:hover { transform: rotate(0) translate(-3px, -3px); box-shadow: var(--shadow-lg); }
+
+.test-stars { color: var(--orange); font-size: 14px; margin-bottom: 12px; letter-spacing: 3px; }
+.test-quote { font-size: 13px; font-style: italic; line-height: 1.75; margin-bottom: 16px; color: #333; }
+.test-author { display: flex; align-items: center; gap: 10px; padding-top: 12px; border-top: 2px dashed #ddd; }
+.test-avatar {
+  width: 36px; height: 36px; border-radius: 8px;
+  border: 2px solid var(--black);
+  background: var(--yellow);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+}
+.test-name { font-family: var(--font-display); font-size: 13px; font-weight: 700; text-transform: uppercase; }
+.test-role { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ═══ FAQ ═══ */
+.faq-col {
+  max-width: 700px;
+  margin: 52px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.faq-item {
+  background: var(--white);
+  border: var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: all 0.15s;
+}
+.faq-item:hover { transform: translate(-2px, -2px); box-shadow: var(--shadow); }
+details[open].faq-item { border-color: var(--pink); }
+.faq-q {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 20px; cursor: pointer;
+  font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: -0.5px; list-style: none;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-q .arr { font-size: 18px; transition: transform 0.2s; }
+details[open] .faq-q .arr { transform: rotate(45deg); color: var(--pink); }
+.faq-a { padding: 0 20px 16px; font-size: 12px; color: #555; line-height: 1.7; }
+
+/* ═══ CTA ═══ */
+.cta-section {
+  background: var(--yellow);
+  border-top: var(--border);
+  border-bottom: var(--border);
+  padding: 80px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before, .cta-section::after {
+  content: '';
+  position: absolute;
+  border: var(--border);
+  border-radius: 50%;
+}
+.cta-section::before { width: 300px; height: 300px; top: -100px; right: -100px; background: var(--pink); box-shadow: var(--shadow-lg); }
+.cta-section::after { width: 180px; height: 180px; bottom: -60px; left: -60px; background: var(--blue); box-shadow: var(--shadow); }
+
+.cta-section h2 {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 16px;
+  position: relative;
+}
+.cta-section p { font-size: 15px; color: #333; max-width: 480px; margin: 0 auto 32px; line-height: 1.7; position: relative; }
+.cta-buttons { display: flex; gap: 12px; justify-content: center; position: relative; }
+
+/* ═══ FOOTER ═══ */
+.footer {
+  background: var(--black);
+  color: #999;
+  padding: 60px 0 24px;
+  border-top: var(--border);
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid #222; }
+.footer .logo-text { color: var(--white); }
+.footer-brand p { font-size: 12px; color: #666; line-height: 1.7; margin-top: 12px; }
+.footer h4 { font-family: var(--font-display); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--yellow); margin-bottom: 14px; }
+.footer ul { list-style: none; }
+.footer ul li { margin-bottom: 8px; }
+.footer ul a { color: #666; text-decoration: none; font-size: 12px; transition: color 0.2s; }
+.footer ul a:hover { color: var(--yellow); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; font-size: 11px; color: #444; }
+
+/* ═══ SCROLL REVEAL ═══ */
+.reveal { opacity: 0; transform: translateY(24px) rotate(-0.5deg); transition: all 0.5s cubic-bezier(0.4,0,0.2,1); }
+.reveal.visible { opacity: 1; transform: translateY(0) rotate(0); }
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 1024px) {
+  .hero h1 { font-size: 54px; }
+  .features-bento { grid-template-columns: repeat(2, 1fr); }
+  .feat-card:nth-child(1), .feat-card:nth-child(8) { grid-column: span 1; }
+  .pricing-row { grid-template-columns: 1fr; max-width: 380px; margin: 52px auto 0; }
+  .price-pop { transform: none; }
+  .hero-shape { display: none; }
+  .hero-stats-strip { flex-wrap: wrap; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  nav { display: none; }
+}
+@media (max-width: 768px) {
+  .hero h1 { font-size: 40px; letter-spacing: -1px; }
+  .section-title { font-size: 36px; }
+  .features-bento { grid-template-columns: 1fr; }
+  .steps-row { grid-template-columns: 1fr; }
+  .test-grid { grid-template-columns: 1fr; }
+  .test-card:nth-child(n) { transform: none; }
+  .cta-section h2 { font-size: 38px; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .header-cta .btn-brutal-white { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <div class="logo-box">📚</div>
+        <span class="logo-text">SKOLMATRIXA</span>
+      </a>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it Works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="header-cta">
+        <a href="/login" class="btn-brutal btn-brutal-white">Sign In</a>
+        <a href="/register" class="btn-brutal">Get Started →</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-shape hero-shape-1"></div>
+  <div class="hero-shape hero-shape-2"></div>
+  <div class="hero-shape hero-shape-3"></div>
+  <div class="hero-shape hero-shape-4"></div>
+
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-tag animate-in d1">// INDIA'S #1 SCHOOL ERP</div>
+      <h1 class="animate-in d2">
+        SCHOOL<br>
+        MANAGEMENT<br>
+        <span class="highlight">REIMAGINED</span>
+      </h1>
+      <p class="hero-desc animate-in d3">
+        Students. Staff. Attendance. Exams. Fees. Timetables.
+        All from one <strong>brutally powerful</strong> platform built for Indian schools & coaching institutes.
+      </p>
+      <div class="hero-buttons animate-in d4">
+        <a href="/register" class="btn-brutal btn-brutal-lg">Start Free ↗</a>
+        <a href="#features" class="btn-outline-brutal">Explore Features</a>
+      </div>
+      <div class="hero-stats-strip animate-in d4">
+        <div class="hero-stat-box"><div class="stat-val">10K+</div><div class="stat-lbl">Students</div></div>
+        <div class="hero-stat-box"><div class="stat-val">500+</div><div class="stat-lbl">Institutions</div></div>
+        <div class="hero-stat-box"><div class="stat-val">99.9%</div><div class="stat-lbl">Uptime</div></div>
+        <div class="hero-stat-box"><div class="stat-val">24/7</div><div class="stat-lbl">Support</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">Student Management <span class="sep">✦</span></span>
+    <span class="ticker-item">Fee Collection <span class="sep">✦</span></span>
+    <span class="ticker-item">Attendance <span class="sep">✦</span></span>
+    <span class="ticker-item">Exams & Reports <span class="sep">✦</span></span>
+    <span class="ticker-item">Timetable <span class="sep">✦</span></span>
+    <span class="ticker-item">Staff HR <span class="sep">✦</span></span>
+    <span class="ticker-item">Analytics <span class="sep">✦</span></span>
+    <span class="ticker-item">Notifications <span class="sep">✦</span></span>
+    <span class="ticker-item">Student Management <span class="sep">✦</span></span>
+    <span class="ticker-item">Fee Collection <span class="sep">✦</span></span>
+    <span class="ticker-item">Attendance <span class="sep">✦</span></span>
+    <span class="ticker-item">Exams & Reports <span class="sep">✦</span></span>
+    <span class="ticker-item">Timetable <span class="sep">✦</span></span>
+    <span class="ticker-item">Staff HR <span class="sep">✦</span></span>
+    <span class="ticker-item">Analytics <span class="sep">✦</span></span>
+    <span class="ticker-item">Notifications <span class="sep">✦</span></span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features" class="section">
+  <div class="container">
+    <div class="section-center reveal">
+      <div class="section-tag">Features</div>
+      <div class="section-title">EVERYTHING.<br><span class="highlight-inline">NOTHING ELSE.</span></div>
+      <p class="section-desc">Tools designed for schools. No bloat, no fluff.</p>
+    </div>
+    <div class="features-bento">
+      <div class="feat-card reveal"><span class="feat-emoji">🎓</span><h3>Student Management</h3><p>Admissions, profiles, CSV imports, and rich academic records unified.</p></div>
+      <div class="feat-card reveal"><span class="feat-emoji">👥</span><h3>Staff & HR</h3><p>Roles, departments, subject mapping, leave and employment records.</p></div>
+      <div class="feat-card reveal"><span class="feat-emoji">📋</span><h3>Attendance</h3><p>Per-class attendance with reports, parent alerts, monthly analytics.</p></div>
+      <div class="feat-card reveal"><span class="feat-emoji">📅</span><h3>Timetable</h3><p>Visual scheduling, conflict detection, room allocation.</p></div>
+      <div class="feat-card reveal"><span class="feat-emoji">📝</span><h3>Homework</h3><p>Assign, grade, track with file uploads.</p></div>
+      <div class="feat-card reveal"><span class="feat-emoji">🔔</span><h3>Notifications</h3><p>Targeted in-app & email alerts.</p></div>
+      <div class="feat-card reveal"><span class="feat-emoji">🏆</span><h3>Exams & Reports</h3><p>Schedule, mark, auto-grade, PDF report cards.</p></div>
+      <div class="feat-card reveal"><span class="feat-emoji">💰</span><h3>Fee Management</h3><p>Fee plans, payments, receipts, reminders.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works" class="section" style="background: var(--white);">
+  <div class="container">
+    <div class="section-center reveal">
+      <div class="section-tag">Get Started</div>
+      <div class="section-title">THREE STEPS.<br>THAT'S IT.</div>
+    </div>
+    <div class="steps-row">
+      <div class="step-box reveal"><div class="step-num">01</div><h3>Register</h3><p>Sign up as a School, Coaching Institute, or Library. Instant dashboard access.</p></div>
+      <div class="step-box reveal"><div class="step-num">02</div><h3>Configure</h3><p>Add classes, subjects, fee structures with our guided wizard.</p></div>
+      <div class="step-box reveal"><div class="step-num">03</div><h3>Manage</h3><p>Students, staff, attendance, exams, fees — all from one place.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="section pricing-section">
+  <div class="container">
+    <div class="section-center reveal">
+      <div class="section-tag">Pricing</div>
+      <div class="section-title">NO HIDDEN<br>FEES. EVER.</div>
+      <p class="section-desc">Start free. Scale up. Simple.</p>
+    </div>
+    <div class="pricing-row">
+      <div class="price-card reveal">
+        <div class="price-name">Starter</div>
+        <div class="price-amount">Free</div>
+        <div class="price-desc">For small coaching centres getting started.</div>
+        <ul class="price-features">
+          <li><span class="c">✓</span> Up to 100 students</li>
+          <li><span class="c">✓</span> 5 staff accounts</li>
+          <li><span class="c">✓</span> Basic attendance</li>
+          <li><span class="c">✓</span> Fee management</li>
+          <li><span class="x">✗</span> PDF reports</li>
+          <li><span class="x">✗</span> Analytics</li>
+        </ul>
+        <a href="/register" class="btn-price">Start Free</a>
+      </div>
+      <div class="price-card price-pop reveal">
+        <div class="price-badge">★ MOST POPULAR</div>
+        <div class="price-name">Professional</div>
+        <div class="price-amount">₹2,999<span class="price-period">/mo</span></div>
+        <div class="price-desc">Full suite for growing schools.</div>
+        <ul class="price-features">
+          <li><span class="c">✓</span> 1,000 students</li>
+          <li><span class="c">✓</span> Unlimited staff</li>
+          <li><span class="c">✓</span> Advanced analytics</li>
+          <li><span class="c">✓</span> PDF reports</li>
+          <li><span class="c">✓</span> Timetable builder</li>
+          <li><span class="c">✓</span> Priority support</li>
+        </ul>
+        <a href="/register" class="btn-price btn-price-primary">Get Started</a>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-name">Enterprise</div>
+        <div class="price-amount">Custom</div>
+        <div class="price-desc">Multi-branch. Dedicated infra.</div>
+        <ul class="price-features">
+          <li><span class="c">✓</span> Unlimited everything</li>
+          <li><span class="c">✓</span> Multi-branch</li>
+          <li><span class="c">✓</span> Custom API</li>
+          <li><span class="c">✓</span> Dedicated manager</li>
+          <li><span class="c">✓</span> Custom branding</li>
+          <li><span class="c">✓</span> 24/7 support</li>
+        </ul>
+        <a href="/register" class="btn-price">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="section">
+  <div class="container">
+    <div class="section-center reveal">
+      <div class="section-tag">Reviews</div>
+      <div class="section-title">THEY SAID IT.<br>NOT US.</div>
+    </div>
+    <div class="test-grid">
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-quote">"Transformed how we run our school. Saved 10+ hours every week on attendance and fees alone."</div>
+        <div class="test-author"><div class="test-avatar">PS</div><div><div class="test-name">Dr. Priya Sharma</div><div class="test-role">Principal, Delhi Public School</div></div></div>
+      </div>
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-quote">"Batch management that actually works. Delivered beyond expectations for our coaching institute."</div>
+        <div class="test-author"><div class="test-avatar">RK</div><div><div class="test-name">Rajesh Kumar</div><div class="test-role">Director, Apex Coaching</div></div></div>
+      </div>
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-quote">"Report cards and parent portal are incredible. Parents love the transparency we now offer."</div>
+        <div class="test-author"><div class="test-avatar">AD</div><div><div class="test-name">Anita Desai</div><div class="test-role">Admin, St. Mary's Academy</div></div></div>
+      </div>
+      <div class="test-card reveal">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-quote">"Migrated from pen-and-paper in a single weekend. CSV import saved us weeks. Outstanding!"</div>
+        <div class="test-author"><div class="test-avatar">VS</div><div><div class="test-name">Vikram Singh</div><div class="test-role">Founder, Pinnacle Coaching</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="section" style="background: var(--white);">
+  <div class="container">
+    <div class="section-center reveal">
+      <div class="section-tag">FAQ</div>
+      <div class="section-title">QUESTIONS?<br><span class="highlight-inline">ANSWERED.</span></div>
+    </div>
+    <div class="faq-col">
+      <details class="faq-item reveal"><summary class="faq-q">IS IT SUITABLE FOR SMALL INSTITUTIONS? <span class="arr">+</span></summary><div class="faq-a">Yes. Scales from 50-student centres to 3,000+ student schools. Free tier included.</div></details>
+      <details class="faq-item reveal"><summary class="faq-q">HOW LONG DOES SETUP TAKE? <span class="arr">+</span></summary><div class="faq-a">Under 30 minutes with guided wizard. CSV import for data migration.</div></details>
+      <details class="faq-item reveal"><summary class="faq-q">IS MY DATA SECURE? <span class="arr">+</span></summary><div class="faq-a">Multi-tenant isolation, enterprise encryption, daily backups, 99.9% uptime.</div></details>
+      <details class="faq-item reveal"><summary class="faq-q">CAN PARENTS ACCESS IT? <span class="arr">+</span></summary><div class="faq-a">Yes. Student portal for grades, attendance, assignments. Parents get email alerts.</div></details>
+      <details class="faq-item reveal"><summary class="faq-q">WHAT MAKES YOU DIFFERENT? <span class="arr">+</span></summary><div class="faq-a">Purpose-built for Indian schools with multi-tenant isolation and comprehensive features.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <h2 class="reveal">READY TO<br>START?</h2>
+    <p class="reveal">Join 500+ schools already using SkolMatrixa. Start free today.</p>
+    <div class="cta-buttons reveal">
+      <a href="/register" class="btn-brutal btn-brutal-black btn-brutal-lg">Start Free ↗</a>
+      <a href="/contact" class="btn-outline-brutal">Talk to Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo"><div class="logo-box">📚</div><span class="logo-text">SKOLMATRIXA</span></a>
+        <p>India's leading school management ERP for schools, coaching institutes, and libraries.</p>
+      </div>
+      <div><h4>Platform</h4><ul><li><a href="#">Students</a></li><li><a href="#">Staff</a></li><li><a href="#">Fees</a></li><li><a href="#">Exams</a></li><li><a href="#">Attendance</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li></ul></div>
+      <div><h4>Contact</h4><ul><li>📧 hello@skolmatrixa.com</li><li>📞 +91-98765-43210</li><li>📍 Bangalore, India</li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 SkolMatrixa</span>
+      <div style="display:flex;gap:16px;"><a href="/privacy" style="color:#444;text-decoration:none;">Privacy</a><a href="/terms" style="color:#444;text-decoration:none;">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector(a.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth' }); });
+});
+</script>
+</body>
+</html>

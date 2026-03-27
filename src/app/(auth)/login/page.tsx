@@ -7,7 +7,7 @@ import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, Mail, KeyRound, LogIn } from "lucide-react";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function LoginPage() {
   return (
@@ -21,8 +21,6 @@ function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
-  const registered = searchParams.get("registered");
-  const reset = searchParams.get("reset");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -43,7 +41,7 @@ function LoginForm() {
       });
 
       if (result?.error) {
-        setError("Invalid email or password. Please try again.");
+        setError("Invalid email or password");
       } else {
         router.push(callbackUrl);
         router.refresh();
@@ -56,115 +54,58 @@ function LoginForm() {
   }
 
   return (
-    <div>
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-          Welcome back
-        </h1>
-        <p className="mt-1.5 text-sm text-gray-500">
-          Sign in to your SkolMatrixa dashboard
-        </p>
-      </div>
-
-      {/* Success banners */}
-      {registered && (
-        <div className="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-          <span className="font-medium">Registration successful!</span> Your account is pending admin approval. You&apos;ll receive an email once approved.
-        </div>
-      )}
-      {reset && (
-        <div className="mb-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
-          Password reset successful. Sign in with your new password.
-        </div>
-      )}
-
-      {/* Error */}
-      {error && (
-        <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
-          {error}
-        </div>
-      )}
-
-      {/* Form */}
-      <form onSubmit={onSubmit} className="space-y-5">
-        <div className="space-y-1.5">
-          <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-            Email address
-          </Label>
-          <div className="relative">
-            <Mail className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+    <Card className="border-[#1C1C1E]/5 shadow-lg shadow-[#1C1C1E]/3 bg-white">
+      <CardHeader className="text-center">
+        <CardTitle className="font-display text-2xl text-[#1C1C1E]">Sign In to <em className="italic text-emerald-600">SkolMatrixa</em></CardTitle>
+        <CardDescription className="text-[#8E8E93]">Enter your credentials to access your dashboard</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={onSubmit} className="space-y-4">
+          {error && (
+            <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+              {error}
+            </div>
+          )}
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               name="email"
               type="email"
-              placeholder="you@institution.com"
+              placeholder="you@example.com"
               required
               autoComplete="email"
-              className="h-11 pl-10 bg-white border-gray-200 focus-visible:border-amber-400 focus-visible:ring-amber-400/20"
+              className="border-[#1C1C1E]/10 focus:border-emerald-600 focus:ring-emerald-600/20"
             />
           </div>
-        </div>
-
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-              Password
-            </Label>
-            <Link
-              href="/forgot-password"
-              className="text-xs font-medium text-amber-600 hover:text-amber-700 transition-colors"
-            >
-              Forgot password?
-            </Link>
-          </div>
-          <div className="relative">
-            <KeyRound className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               name="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder="••••••••"
               required
               autoComplete="current-password"
-              className="h-11 pl-10 bg-white border-gray-200 focus-visible:border-amber-400 focus-visible:ring-amber-400/20"
+              className="border-[#1C1C1E]/10 focus:border-emerald-600 focus:ring-emerald-600/20"
             />
           </div>
-        </div>
-
-        <Button
-          type="submit"
-          disabled={loading}
-          className="h-11 w-full bg-linear-to-r from-amber-500 to-orange-500 text-white font-semibold shadow-lg shadow-amber-500/20 hover:from-amber-600 hover:to-orange-600 hover:shadow-amber-500/30 transition-all duration-200"
-        >
-          {loading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Signing in...
-            </>
-          ) : (
-            <>
-              <LogIn className="mr-2 h-4 w-4" />
-              Sign In
-            </>
-          )}
-        </Button>
-      </form>
-
-      {/* Divider */}
-      <div className="mt-8 flex items-center gap-3">
-        <div className="h-px flex-1 bg-gray-200" />
-        <span className="text-xs text-gray-400">New to SkolMatrixa?</span>
-        <div className="h-px flex-1 bg-gray-200" />
-      </div>
-
-      {/* Register link */}
-      <Link
-        href="/register"
-        className="mt-4 flex h-11 w-full items-center justify-center rounded-md border-2 border-gray-200 bg-white text-sm font-semibold text-gray-700 transition-all hover:border-amber-300 hover:text-amber-700 hover:bg-amber-50/50"
-      >
-        Register your institution
-      </Link>
-    </div>
+          <Button type="submit" className="w-full rounded-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20" disabled={loading}>
+            {loading ? "Signing in..." : "Sign In"}
+          </Button>
+        </form>
+      </CardContent>
+      <CardFooter className="flex flex-col gap-2 text-center text-sm">
+        <Link href="/forgot-password" className="text-emerald-600 hover:text-emerald-700 hover:underline">
+          Forgot your password?
+        </Link>
+        <p className="text-[#8E8E93]">
+          Don&apos;t have an account?{" "}
+          <Link href="/register" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">
+            Register your institution
+          </Link>
+        </p>
+      </CardFooter>
+    </Card>
   );
 }

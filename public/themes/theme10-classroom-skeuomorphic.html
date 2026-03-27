@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkolMatrixa — The Digital Classroom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   THEME 10: CLASSROOM SKEUOMORPHIC
+   Textured chalkboard, notebook paper, wooden desk feel,
+   playful school metaphors, warm + fun + trustworthy
+   Fonts: Baloo 2 (friendly rounded display) + Nunito (soft body)
+   Order: Chalkboard Hero → Notebook Features → Desk Stats → Report Card Pricing → Testimonial Sticky Notes → Book CTA
+   Skipped: FAQ, How it works (the metaphorical design itself guides)
+   THIS IS ENTIRELY DIFFERENT: uses physical textures, school objects as design metaphors
+   ═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --chalk:#E8E4DB;--chalk-bright:#FAFAF5;
+  --board:#1A3D2E;--board-dark:#143127;--board-rim:#5C4033;
+  --wood:#8B6F47;--wood-light:#C9AB7A;--wood-dark:#5C4033;
+  --paper:#FFFFF0;--paper-line:rgba(59,130,246,.12);
+  --red:#DC3545;--blue:#2563EB;--yellow:#FBBF24;--green:#22C55E;
+  --text:#2C1810;--text-soft:#5C5044;--text-muted:#9B9086;
+  --font-display:'Baloo 2',cursive;--font-body:'Nunito',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--chalk);color:var(--text-soft);line-height:1.7;overflow-x:hidden}
+
+/* ═══ HEADER — Wooden ruler bar ═══ */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:100;background:linear-gradient(180deg,var(--wood) 0%,var(--wood-dark) 100%);padding:0;box-shadow:0 4px 12px rgba(0,0,0,.15);border-bottom:3px solid var(--wood-light)}
+.hdr-in{display:flex;align-items:center;justify-content:space-between;max-width:1140px;margin:0 auto;padding:0 28px;height:56px}
+.logo{text-decoration:none;color:var(--chalk-bright);display:flex;align-items:center;gap:10px}
+.logo-apple{font-size:22px}
+.logo-t{font-family:var(--font-display);font-size:20px;font-weight:700}
+nav{display:flex;gap:2px}
+nav a{color:rgba(255,255,255,.6);text-decoration:none;font-size:13px;font-weight:600;padding:6px 14px;border-radius:8px;transition:all .2s}
+nav a:hover{color:var(--chalk-bright);background:rgba(255,255,255,.08)}
+.hdr-btns{display:flex;gap:8px}
+.hdr-b{padding:7px 18px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;transition:all .2s}
+.hdr-b-g{color:rgba(255,255,255,.65);border:1.5px solid rgba(255,255,255,.2)}
+.hdr-b-g:hover{color:#fff;border-color:#fff}
+.hdr-b-y{background:var(--yellow);color:var(--text);border:none}
+.hdr-b-y:hover{background:#F59E0B}
+
+/* ═══ CHALKBOARD HERO ═══ */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;background:linear-gradient(145deg,var(--board) 0%,var(--board-dark) 100%);padding:80px 0 60px}
+/* Chalk dust texture */
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none}
+/* Board rim */
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:12px;background:linear-gradient(180deg,var(--wood-light),var(--wood-dark))}
+.hero-w{max-width:1140px;margin:0 auto;padding:0 28px;position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+
+.hero-left{color:var(--chalk)}
+.hero-doodle{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--yellow);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.hero-doodle::before{content:'✏️'}
+.hero h1{font-family:var(--font-display);font-size:58px;font-weight:800;line-height:1.1;margin-bottom:16px;color:var(--chalk)}
+.hero h1 .underline{text-decoration:underline;text-decoration-style:wavy;text-decoration-color:var(--yellow);text-underline-offset:6px}
+.hero-sub{font-size:16px;color:rgba(232,228,219,.55);line-height:1.8;margin-bottom:28px;max-width:420px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-chalk{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;transition:all .3s;font-family:var(--font-body)}
+.btn-yellow{background:var(--yellow);color:var(--text);box-shadow:0 4px 16px rgba(251,191,36,.3)}
+.btn-yellow:hover{background:#F59E0B;transform:translateY(-2px);box-shadow:0 8px 24px rgba(251,191,36,.4)}
+.btn-white-o{border:2px solid rgba(232,228,219,.3);color:var(--chalk)}
+.btn-white-o:hover{border-color:var(--chalk);background:rgba(255,255,255,.06)}
+
+/* Chalkboard drawings */
+.hero-right{position:relative}
+.chalk-card{background:rgba(255,255,255,.06);border:2px dashed rgba(232,228,219,.15);border-radius:16px;padding:24px;margin-bottom:14px;color:var(--chalk);position:relative}
+.chalk-card::before{content:'';position:absolute;top:-8px;right:12px;width:20px;height:20px;background:var(--red);border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.chalk-card:nth-child(2)::before{background:var(--blue)}
+.chalk-card:nth-child(3)::before{background:var(--green)}
+.cc-title{font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:4px}
+.cc-val{font-family:var(--font-display);font-size:32px;font-weight:800;color:var(--yellow)}
+.cc-desc{font-size:12px;color:rgba(232,228,219,.4)}
+
+/* ═══ NOTEBOOK FEATURES ═══ */
+.features{padding:100px 0;position:relative;background:var(--paper);
+  background-image:repeating-linear-gradient(transparent,transparent 31px,var(--paper-line) 31px,var(--paper-line) 32px);
+  background-size:100% 32px}
+/* Red margin line */
+.features::before{content:'';position:absolute;top:0;bottom:0;left:calc(50% - 520px);width:2px;background:rgba(220,53,69,.15)}
+.feat-w{max-width:1140px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+.feat-header{text-align:center;margin-bottom:48px}
+.feat-header h2{font-family:var(--font-display);font-size:42px;font-weight:800;color:var(--text);line-height:1.1;margin-bottom:8px}
+.feat-header p{font-size:15px;color:var(--text-muted)}
+
+.feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.feat-card{background:var(--chalk-bright);border-radius:12px;padding:24px 18px;border:1px solid rgba(0,0,0,.04);box-shadow:0 2px 8px rgba(0,0,0,.03);transition:all .3s;position:relative}
+.feat-card:hover{transform:translateY(-4px) rotate(-0.5deg);box-shadow:0 12px 32px rgba(0,0,0,.08)}
+/* Tape effect */
+.feat-card::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);width:40px;height:14px;background:rgba(251,191,36,.5);border-radius:2px}
+.feat-card:nth-child(2)::before{background:rgba(37,99,235,.3)}
+.feat-card:nth-child(3)::before{background:rgba(34,197,94,.3)}
+.feat-card:nth-child(4)::before{background:rgba(220,53,69,.3)}
+.feat-card:nth-child(5)::before{background:rgba(168,85,247,.3)}
+.feat-card:nth-child(6)::before{background:rgba(249,115,22,.3)}
+.feat-card:nth-child(7)::before{background:rgba(20,184,166,.3)}
+.feat-card:nth-child(8)::before{background:rgba(236,72,153,.3)}
+
+.fi{font-size:32px;margin-bottom:12px}
+.feat-card h3{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px}
+.feat-card p{font-size:12px;color:var(--text-muted);line-height:1.6}
+
+/* ═══ DESK STATS ═══ */
+.stats{padding:80px 0;background:linear-gradient(180deg,var(--wood-light) 0%,var(--wood) 100%);position:relative}
+.stats::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");pointer-events:none}
+.stats-w{max-width:1140px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.stat-card{background:var(--paper);border-radius:12px;padding:28px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.08);transform:rotate(var(--r,0deg));transition:all .3s}
+.stat-card:hover{transform:rotate(0deg) translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.12)}
+.stat-num{font-family:var(--font-display);font-size:36px;font-weight:800;color:var(--text)}
+.stat-label{font-size:12px;color:var(--text-muted);font-weight:600}
+.stat-icon{font-size:28px;margin-bottom:8px}
+
+/* ═══ REPORT CARD PRICING ═══ */
+.pricing{padding:100px 0;background:var(--chalk);position:relative}
+.price-w{max-width:1140px;margin:0 auto;padding:0 28px}
+.price-header{text-align:center;margin-bottom:48px}
+.price-header h2{font-family:var(--font-display);font-size:42px;font-weight:800;color:var(--text);margin-bottom:8px}
+.price-header p{font-size:15px;color:var(--text-muted)}
+
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.price-card{background:var(--paper);border-radius:16px;padding:32px 24px;border:1px solid rgba(0,0,0,.05);position:relative;transition:all .3s;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.08)}
+.price-pop{border:2px solid var(--red);box-shadow:0 4px 16px rgba(220,53,69,.1)}
+.price-pop:hover{box-shadow:0 12px 40px rgba(220,53,69,.15)}
+/* Gold star badge */
+.price-star{position:absolute;top:-14px;right:16px;font-size:28px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.15))}
+
+.pc-grade{display:inline-block;font-family:var(--font-display);font-size:11px;font-weight:700;background:rgba(37,99,235,.1);color:var(--blue);padding:4px 12px;border-radius:6px;margin-bottom:12px;letter-spacing:1px}
+.price-pop .pc-grade{background:rgba(220,53,69,.08);color:var(--red)}
+.pc-name{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px}
+.pc-amount{font-family:var(--font-display);font-size:40px;font-weight:800;color:var(--text)}
+.pc-per{font-size:14px;color:var(--text-muted);font-weight:400}
+.pc-desc{font-size:13px;color:var(--text-muted);margin:8px 0 20px;line-height:1.6}
+.pc-list{list-style:none;margin-bottom:24px}
+.pc-list li{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-soft);padding:4px 0}
+.pc-y{color:var(--green)}
+.pc-n{color:#ccc}
+.btn-pc{display:block;width:100%;padding:14px;border-radius:10px;text-align:center;font-family:var(--font-display);font-weight:700;font-size:14px;text-decoration:none;transition:all .3s;cursor:pointer}
+.btn-pc-o{background:transparent;color:var(--text);border:2px solid rgba(0,0,0,.08)}
+.btn-pc-o:hover{border-color:var(--blue);color:var(--blue)}
+.btn-pc-red{background:var(--red);color:#fff;border:none;box-shadow:0 4px 12px rgba(220,53,69,.2)}
+.btn-pc-red:hover{background:#C82333;transform:translateY(-1px)}
+
+/* ═══ TESTIMONIAL STICKY NOTES ═══ */
+.testi{padding:100px 0;background:linear-gradient(145deg,var(--board) 0%,var(--board-dark) 100%);position:relative}
+.testi::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none}
+.testi-w{max-width:1140px;margin:0 auto;padding:0 28px;position:relative;z-index:1}
+.testi-header{text-align:center;margin-bottom:48px;color:var(--chalk)}
+.testi-header h2{font-family:var(--font-display);font-size:42px;font-weight:800;margin-bottom:8px}
+.testi-header p{font-size:14px;color:rgba(232,228,219,.4)}
+
+.sticky-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.sticky{border-radius:4px;padding:24px 20px;box-shadow:0 4px 12px rgba(0,0,0,.15);transform:rotate(var(--r,0deg));transition:all .3s;position:relative}
+.sticky:hover{transform:rotate(0deg) translateY(-6px);box-shadow:0 12px 32px rgba(0,0,0,.2);z-index:2}
+.sticky-1{background:#FFF9C4;color:#5D4037}
+.sticky-2{background:#FFCCBC;color:#4E342E}
+.sticky-3{background:#C8E6C9;color:#1B5E20}
+.sticky-4{background:#BBDEFB;color:#0D47A1}
+/* Push pin */
+.sticky::before{content:'📌';position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:18px}
+.sticky-stars{font-size:12px;margin-bottom:8px}
+.sticky-quote{font-size:13px;line-height:1.7;font-style:italic;margin-bottom:14px}
+.sticky-name{font-family:var(--font-display);font-size:13px;font-weight:700}
+.sticky-role{font-size:11px;opacity:.6}
+
+/* ═══ BOOK CTA ═══ */
+.cta{padding:80px 0;background:var(--chalk);text-align:center}
+.cta-w{max-width:1140px;margin:0 auto;padding:0 28px}
+.cta-book{background:linear-gradient(135deg,var(--red),#B71C1C);border-radius:20px;padding:64px 40px;color:#fff;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(220,53,69,.2)}
+/* Book spine effect */
+.cta-book::before{content:'';position:absolute;top:0;bottom:0;left:24px;width:3px;background:rgba(255,255,255,.15);border-radius:2px}
+.cta-book::after{content:'';position:absolute;top:0;bottom:0;left:30px;width:1px;background:rgba(255,255,255,.08)}
+.cta-book h2{font-family:var(--font-display);font-size:42px;font-weight:800;line-height:1.1;margin-bottom:12px}
+.cta-book p{font-size:16px;color:rgba(255,255,255,.7);max-width:420px;margin:0 auto 28px;line-height:1.7}
+.cta-btns{display:flex;gap:12px;justify-content:center}
+.btn-cta-w{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:10px;background:#fff;color:var(--text);font-weight:700;font-size:14px;text-decoration:none;font-family:var(--font-display);transition:all .3s;box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.btn-cta-w:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.btn-cta-o{display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:10px;border:2px solid rgba(255,255,255,.3);color:#fff;font-weight:600;font-size:14px;text-decoration:none;font-family:var(--font-display);transition:all .3s}
+.btn-cta-o:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+
+/* ═══ FOOTER ═══ */
+.foot{background:var(--wood-dark);color:rgba(255,255,255,.35);padding:48px 0 20px}
+.foot-w{max-width:1140px;margin:0 auto;padding:0 28px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;padding-bottom:28px;border-bottom:1px solid rgba(255,255,255,.06)}
+.foot .logo{color:var(--chalk)}
+.foot-brand p{font-size:12px;color:rgba(255,255,255,.25);margin-top:10px;line-height:1.7;max-width:220px}
+.foot h4{font-family:var(--font-display);font-size:12px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:10px}
+.foot ul{list-style:none}
+.foot ul li{margin-bottom:5px}
+.foot ul a{color:rgba(255,255,255,.25);text-decoration:none;font-size:12px;transition:color .2s}
+.foot ul a:hover{color:var(--yellow)}
+.foot-bot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:11px}
+
+/* ═══ SCROLL REVEAL ═══ */
+.rv{opacity:0;transform:translateY(24px);transition:all .6s cubic-bezier(.4,0,.2,1)}
+.rv.vis{opacity:1;transform:translateY(0)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1024px){
+  .hero h1{font-size:40px}
+  .hero-w{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .feat-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .price-grid{grid-template-columns:1fr;max-width:360px;margin:0 auto}
+  .sticky-grid{grid-template-columns:repeat(2,1fr)}
+  nav{display:none}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .hero h1{font-size:32px}
+  .feat-header h2,.price-header h2,.testi-header h2,.cta-book h2{font-size:30px}
+  .feat-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr}
+  .sticky-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+  .hero-btns,.cta-btns{flex-direction:column;align-items:flex-start}
+  .cta-btns{align-items:center}
+  .cta-book{padding:48px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER — Wooden ruler -->
+<header class="hdr">
+<div class="hdr-in">
+  <a href="/" class="logo"><span class="logo-apple">🍎</span><span class="logo-t">SkolMatrixa</span></a>
+  <nav><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#testimonials">Reviews</a></nav>
+  <div class="hdr-btns"><a href="/login" class="hdr-b hdr-b-g">Log In</a><a href="/register" class="hdr-b hdr-b-y">Enroll Free ✏️</a></div>
+</div>
+</header>
+
+<!-- CHALKBOARD HERO -->
+<section class="hero">
+  <div class="hero-w">
+    <div class="hero-left">
+      <div class="hero-doodle rv">School Management Reimagined</div>
+      <h1 class="rv">Your school's<br><span class="underline">digital notebook</span></h1>
+      <p class="hero-sub rv">Like a perfect lesson plan — organized, intuitive, and ready for anything. Manage students, staff, exams, and fees from one beautiful platform.</p>
+      <div class="hero-btns rv">
+        <a href="/register" class="btn-chalk btn-yellow">Start Free Trial ✏️</a>
+        <a href="#features" class="btn-chalk btn-white-o">See Features →</a>
+      </div>
+    </div>
+    <div class="hero-right rv">
+      <div class="chalk-card">
+        <div class="cc-title">Students Today</div>
+        <div class="cc-val">2,847</div>
+        <div class="cc-desc">↑ 12% from last month</div>
+      </div>
+      <div class="chalk-card">
+        <div class="cc-title">Attendance Rate</div>
+        <div class="cc-val">96.8%</div>
+        <div class="cc-desc">Class average this week</div>
+      </div>
+      <div class="chalk-card">
+        <div class="cc-title">Fees Collected</div>
+        <div class="cc-val">₹12.4L</div>
+        <div class="cc-desc">78% of target achieved</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTEBOOK FEATURES -->
+<section id="features" class="features">
+  <div class="feat-w">
+    <div class="feat-header rv">
+      <h2>📓 Everything in one notebook</h2>
+      <p>Every module your school needs, neatly organized.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card rv"><div class="fi">🎓</div><h3>Student Management</h3><p>Admissions, profiles, class assignments, CSV imports & complete academic records.</p></div>
+      <div class="feat-card rv"><div class="fi">👩‍🏫</div><h3>Staff & HR</h3><p>Teachers, departments, roles, subject mapping, leave management & attendance.</p></div>
+      <div class="feat-card rv"><div class="fi">📋</div><h3>Attendance Tracking</h3><p>Class or subject-wise tracking with analytics dashboards and parent alerts.</p></div>
+      <div class="feat-card rv"><div class="fi">📅</div><h3>Timetable Builder</h3><p>Visual scheduling with conflict detection, room allocation & period copy.</p></div>
+      <div class="feat-card rv"><div class="fi">📝</div><h3>Homework Portal</h3><p>Assign, track submissions, grade online with completion analytics.</p></div>
+      <div class="feat-card rv"><div class="fi">🏆</div><h3>Exams & Reports</h3><p>Schedule exams, auto-grade, generate professional PDF report cards.</p></div>
+      <div class="feat-card rv"><div class="fi">💰</div><h3>Fee Management</h3><p>Structured plans, payment tracking, PDF receipts & overdue reminders.</p></div>
+      <div class="feat-card rv"><div class="fi">🔔</div><h3>Smart Notifications</h3><p>Targeted in-app and email alerts by role, class, or individual student.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DESK STATS -->
+<section class="stats">
+  <div class="stats-w">
+    <div class="stats-grid">
+      <div class="stat-card rv" style="--r:-2deg"><div class="stat-icon">🎓</div><div class="stat-num">10,000+</div><div class="stat-label">Students Managed</div></div>
+      <div class="stat-card rv" style="--r:1.5deg"><div class="stat-icon">🏫</div><div class="stat-num">500+</div><div class="stat-label">Institutions</div></div>
+      <div class="stat-card rv" style="--r:-1deg"><div class="stat-icon">⚡</div><div class="stat-num">99.9%</div><div class="stat-label">Uptime</div></div>
+      <div class="stat-card rv" style="--r:2deg"><div class="stat-icon">🛎️</div><div class="stat-num">24/7</div><div class="stat-label">Support</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORT CARD PRICING -->
+<section id="pricing" class="pricing">
+  <div class="price-w">
+    <div class="price-header rv">
+      <h2>📊 Your Report Card</h2>
+      <p>Choose the plan that fits your institution's grade.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card rv">
+        <div class="pc-grade">GRADE: STARTER</div>
+        <div class="pc-name">Starter</div>
+        <div class="pc-amount">Free<span class="pc-per"> forever</span></div>
+        <div class="pc-desc">For small coaching centres getting started.</div>
+        <ul class="pc-list"><li><span class="pc-y">✓</span> Up to 100 students</li><li><span class="pc-y">✓</span> 5 staff accounts</li><li><span class="pc-y">✓</span> Basic attendance</li><li><span class="pc-y">✓</span> Fee management</li><li><span class="pc-n">✗</span> PDF reports</li><li><span class="pc-n">✗</span> Analytics</li></ul>
+        <a href="/register" class="btn-pc btn-pc-o">Enroll Free</a>
+      </div>
+      <div class="price-card price-pop rv">
+        <div class="price-star">⭐</div>
+        <div class="pc-grade">GRADE: A+</div>
+        <div class="pc-name">Professional</div>
+        <div class="pc-amount">₹2,999<span class="pc-per">/mo</span></div>
+        <div class="pc-desc">Complete suite for growing schools.</div>
+        <ul class="pc-list"><li><span class="pc-y">✓</span> 1,000 students</li><li><span class="pc-y">✓</span> Unlimited staff</li><li><span class="pc-y">✓</span> Advanced analytics</li><li><span class="pc-y">✓</span> PDF report cards</li><li><span class="pc-y">✓</span> Timetable builder</li><li><span class="pc-y">✓</span> Priority support</li></ul>
+        <a href="/register" class="btn-pc btn-pc-red">Start 14-day Trial ✏️</a>
+      </div>
+      <div class="price-card rv">
+        <div class="pc-grade">GRADE: ENTERPRISE</div>
+        <div class="pc-name">Enterprise</div>
+        <div class="pc-amount">Custom</div>
+        <div class="pc-desc">Multi-branch institutions & chains.</div>
+        <ul class="pc-list"><li><span class="pc-y">✓</span> Unlimited everything</li><li><span class="pc-y">✓</span> Multi-branch</li><li><span class="pc-y">✓</span> Custom API</li><li><span class="pc-y">✓</span> Dedicated manager</li><li><span class="pc-y">✓</span> Custom branding</li><li><span class="pc-y">✓</span> 24/7 support</li></ul>
+        <a href="/contact" class="btn-pc btn-pc-o">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL STICKY NOTES on chalkboard -->
+<section id="testimonials" class="testi">
+  <div class="testi-w">
+    <div class="testi-header rv">
+      <h2>📌 Notes from the faculty room</h2>
+      <p>What educators are saying about SkolMatrixa</p>
+    </div>
+    <div class="sticky-grid">
+      <div class="sticky sticky-1 rv" style="--r:-2deg">
+        <div class="sticky-stars">⭐⭐⭐⭐⭐</div>
+        <div class="sticky-quote">"Saved us 10+ hours every week. Parents love the real-time transparency."</div>
+        <div class="sticky-name">Dr. Priya Sharma</div>
+        <div class="sticky-role">Principal, Delhi Public School</div>
+      </div>
+      <div class="sticky sticky-2 rv" style="--r:1.5deg">
+        <div class="sticky-stars">⭐⭐⭐⭐⭐</div>
+        <div class="sticky-quote">"Batch management that actually works. Tried three others before this."</div>
+        <div class="sticky-name">Rajesh Kumar</div>
+        <div class="sticky-role">Director, Apex Coaching</div>
+      </div>
+      <div class="sticky sticky-3 rv" style="--r:-1deg">
+        <div class="sticky-stars">⭐⭐⭐⭐⭐</div>
+        <div class="sticky-quote">"Report cards are stunning. Teachers love the automated grading."</div>
+        <div class="sticky-name">Anita Desai</div>
+        <div class="sticky-role">Administrator, St. Mary's</div>
+      </div>
+      <div class="sticky sticky-4 rv" style="--r:2.5deg">
+        <div class="sticky-stars">⭐⭐⭐⭐⭐</div>
+        <div class="sticky-quote">"Paper to digital in one weekend. CSV import is a lifesaver."</div>
+        <div class="sticky-name">Vikram Singh</div>
+        <div class="sticky-role">Founder, Pinnacle Coaching</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK CTA -->
+<section class="cta">
+  <div class="cta-w">
+    <div class="cta-book rv">
+      <h2>Open a new chapter<br>for your school 📖</h2>
+      <p>Join 500+ institutions. Free forever tier available. No credit card required.</p>
+      <div class="cta-btns">
+        <a href="/register" class="btn-cta-w">Start Free Trial ✏️</a>
+        <a href="/contact" class="btn-cta-o">Talk to Our Team →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="foot">
+<div class="foot-w">
+  <div class="foot-grid">
+    <div class="foot-brand"><a href="/" class="logo"><span class="logo-apple">🍎</span><span class="logo-t">SkolMatrixa</span></a><p>India's leading school management platform for modern educational institutions.</p></div>
+    <div><h4>Platform</h4><ul><li><a href="#">Students</a></li><li><a href="#">Staff</a></li><li><a href="#">Fees</a></li><li><a href="#">Exams</a></li><li><a href="#">Attendance</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="/about">About</a></li><li><a href="/contact">Contact</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li>📧 hello@skolmatrixa.com</li><li>📞 +91-98765-43210</li><li>📍 Bangalore, India</li></ul></div>
+  </div>
+  <div class="foot-bot"><span>© 2026 SkolMatrixa. All rights reserved.</span><div style="display:flex;gap:16px"><a href="/privacy" style="color:rgba(255,255,255,.25);text-decoration:none">Privacy</a><a href="/terms" style="color:rgba(255,255,255,.25);text-decoration:none">Terms</a></div></div>
+</div>
+</footer>
+
+<script>
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('vis')})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'})})});
+</script>
+</body>
+</html>
