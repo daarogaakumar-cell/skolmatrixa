@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkolMatrixa — Nebula Ascent Theme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════
+   THEME 11: NEBULA ASCENT
+   Style: Dark Cinematic Parallax + Cosmic Luxury
+   Font: Playfair Display (headings) + Inter (body)
+   Palette: Obsidian · Indigo · Celestial Gold · Violet
+   ═══════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --obsidian:       #05050f;
+  --obsidian-2:     #0a0a1f;
+  --deep-space:     #0d0d2b;
+  --indigo-glow:    #4f46e5;
+  --indigo-bright:  #6366f1;
+  --violet:         #7c3aed;
+  --violet-bright:  #a78bfa;
+  --gold:           #f5c842;
+  --gold-warm:      #fbbf24;
+  --gold-dim:       #d97706;
+  --stardust:       rgba(245,200,66,0.12);
+  --nebula-1:       rgba(79,70,229,0.25);
+  --nebula-2:       rgba(124,58,237,0.2);
+  --nebula-3:       rgba(245,200,66,0.08);
+  --text-primary:   #f0f0ff;
+  --text-secondary: #a5a5c0;
+  --text-muted:     #5c5c80;
+  --card-bg:        rgba(79,70,229,0.06);
+  --card-border:    rgba(99,102,241,0.18);
+  --card-hover-bg:  rgba(79,70,229,0.12);
+
+  /* Font scale */
+  --fs-hero:    clamp(2.8rem, 7vw, 6rem);
+  --fs-h2:      clamp(2rem, 4vw, 3.2rem);
+  --fs-h3:      clamp(1.3rem, 2.5vw, 1.8rem);
+  --fs-body:    clamp(0.95rem, 1.5vw, 1.1rem);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--obsidian);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ─── CANVAS: particle stars ─── */
+#star-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ─── CURSOR AURA ─── */
+.cursor-aura {
+  position: fixed;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  transition: transform 0.06s linear;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.4s, backdrop-filter 0.4s, border-bottom 0.4s;
+}
+nav.scrolled {
+  background: rgba(5,5,15,0.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(99,102,241,0.15);
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--gold); }
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-cta {
+  background: linear-gradient(135deg, var(--indigo-glow), var(--violet));
+  color: #fff;
+  padding: 0.6rem 1.6rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid rgba(245,200,66,0.2);
+  transition: all 0.3s;
+}
+.nav-cta:hover {
+  background: linear-gradient(135deg, var(--indigo-bright), var(--violet-bright));
+  box-shadow: 0 0 30px rgba(99,102,241,0.5);
+}
+
+/* ─── SECTION BASE ─── */
+section { position: relative; z-index: 2; }
+
+/* ═══════════════════════════════════════
+   HERO — full viewport cosmic scene
+═══════════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  padding: 6rem 2rem 4rem;
+}
+
+/* Multi-layer nebula parallax */
+.nebula-layer {
+  position: absolute;
+  inset: -20%;
+  will-change: transform;
+  pointer-events: none;
+}
+.nebula-layer-1 {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(79,70,229,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(124,58,237,0.3) 0%, transparent 55%);
+}
+.nebula-layer-2 {
+  background:
+    radial-gradient(ellipse 70% 45% at 60% 20%, rgba(245,200,66,0.1) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 35% at 30% 80%, rgba(99,102,241,0.2) 0%, transparent 50%);
+}
+.nebula-layer-3 {
+  background:
+    radial-gradient(ellipse 40% 60% at 50% 50%, rgba(124,58,237,0.12) 0%, transparent 60%);
+}
+
+/* Floating planet orbs */
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+.orb-1 {
+  width: 320px; height: 320px;
+  top: 8%; right: 5%;
+  background: radial-gradient(circle at 35% 35%, rgba(99,102,241,0.25), rgba(79,70,229,0.1) 50%, transparent 70%);
+  border: 1px solid rgba(99,102,241,0.2);
+  box-shadow: inset 0 0 80px rgba(99,102,241,0.1), 0 0 80px rgba(79,70,229,0.15);
+  animation: orb-float 12s ease-in-out infinite;
+}
+.orb-2 {
+  width: 180px; height: 180px;
+  bottom: 15%; left: 8%;
+  background: radial-gradient(circle at 40% 35%, rgba(245,200,66,0.2), rgba(251,191,36,0.05) 50%, transparent 70%);
+  border: 1px solid rgba(245,200,66,0.15);
+  box-shadow: inset 0 0 50px rgba(245,200,66,0.07), 0 0 50px rgba(245,200,66,0.1);
+  animation: orb-float 9s ease-in-out infinite reverse;
+}
+.orb-3 {
+  width: 90px; height: 90px;
+  top: 30%; left: 12%;
+  background: radial-gradient(circle, rgba(167,139,250,0.3), transparent 70%);
+  border: 1px solid rgba(167,139,250,0.2);
+  animation: orb-float 7s ease-in-out infinite 2s;
+}
+@keyframes orb-float {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  33%      { transform: translateY(-22px) rotate(5deg); }
+  66%      { transform: translateY(12px) rotate(-3deg); }
+}
+
+/* Hero text */
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.2rem;
+  background: rgba(245,200,66,0.08);
+  border: 1px solid rgba(245,200,66,0.25);
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: reveal-up 0.8s ease 0.3s forwards;
+}
+.hero-eyebrow-dot {
+  width: 7px; height: 7px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(245,200,66,0.5); }
+  50%      { opacity: 0.6; box-shadow: 0 0 0 6px rgba(245,200,66,0); }
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-hero);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: reveal-up 0.9s ease 0.5s forwards;
+}
+.hero-title .line-1 { display: block; color: var(--text-primary); }
+.hero-title .line-2 {
+  display: block;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--violet-bright) 50%, var(--indigo-bright) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-title .line-3 { display: block; color: var(--text-secondary); font-style: italic; font-size: 70%; }
+
+.hero-sub {
+  max-width: 600px;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  color: var(--text-secondary);
+  line-height: 1.75;
+  margin-bottom: 3rem;
+  opacity: 0;
+  animation: reveal-up 0.9s ease 0.7s forwards;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0;
+  animation: reveal-up 0.9s ease 0.9s forwards;
+}
+.btn-primary {
+  position: relative;
+  padding: 0.9rem 2.4rem;
+  background: linear-gradient(135deg, var(--indigo-glow), var(--violet));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--indigo-bright), var(--violet-bright));
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: inherit;
+}
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary:hover { box-shadow: 0 0 50px rgba(99,102,241,0.5), 0 8px 30px rgba(79,70,229,0.4); transform: translateY(-2px); }
+.btn-primary span { position: relative; z-index: 1; }
+
+.btn-ghost {
+  padding: 0.9rem 2.4rem;
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.btn-ghost:hover {
+  border-color: rgba(245,200,66,0.5);
+  color: var(--gold);
+  background: rgba(245,200,66,0.06);
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: reveal-up 1s ease 1.5s forwards;
+}
+.scroll-hint-text { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+.scroll-mouse {
+  width: 22px; height: 36px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  padding-top: 6px;
+}
+.scroll-mouse-dot {
+  width: 4px; height: 8px;
+  background: var(--gold);
+  border-radius: 2px;
+  animation: scroll-dot 2s ease-in-out infinite;
+}
+@keyframes scroll-dot {
+  0%   { transform: translateY(0); opacity: 1; }
+  80%  { transform: translateY(14px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════
+   STATS TICKER
+═══════════════════════════════════════ */
+.stats-ticker {
+  padding: 2rem 0;
+  overflow: hidden;
+  border-top: 1px solid rgba(99,102,241,0.1);
+  border-bottom: 1px solid rgba(99,102,241,0.1);
+  background: linear-gradient(90deg, rgba(79,70,229,0.04), rgba(124,58,237,0.04));
+}
+.ticker-track {
+  display: flex;
+  gap: 4rem;
+  animation: ticker-scroll 25s linear infinite;
+  width: max-content;
+}
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  white-space: nowrap;
+  padding: 0 1rem;
+}
+.ticker-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--gold);
+}
+.ticker-label { font-size: 0.9rem; color: var(--text-secondary); }
+.ticker-dot { color: rgba(99,102,241,0.4); font-size: 1.5rem; }
+@keyframes ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ═══════════════════════════════════════
+   PARALLAX STORY SECTION
+═══════════════════════════════════════ */
+.story-section {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 8rem 0;
+}
+
+.story-bg {
+  position: absolute;
+  inset: -30%;
+  will-change: transform;
+}
+.story-bg-1 {
+  background:
+    radial-gradient(ellipse 90% 60% at 10% 50%, rgba(79,70,229,0.18) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 80% at 90% 30%, rgba(124,58,237,0.15) 0%, transparent 55%);
+}
+.story-bg-2 {
+  background:
+    radial-gradient(ellipse 70% 50% at 70% 70%, rgba(245,200,66,0.07) 0%, transparent 55%);
+}
+
+.story-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+.story-container.reverse { direction: rtl; }
+.story-container.reverse > * { direction: ltr; }
+
+.story-visual {
+  position: relative;
+  height: 480px;
+}
+
+/* 3D floating card cluster */
+.float-card-cluster { position: relative; width: 100%; height: 100%; }
+.float-card {
+  position: absolute;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  transition: transform 0.6s cubic-bezier(0.23,1,0.32,1), box-shadow 0.6s;
+  will-change: transform;
+  cursor: default;
+}
+.float-card:hover {
+  transform: translateY(-12px) !important;
+  border-color: rgba(99,102,241,0.4);
+  box-shadow: 0 30px 80px rgba(79,70,229,0.3), 0 0 0 1px rgba(99,102,241,0.2);
+}
+.fc-main {
+  width: 75%; top: 50%; left: 50%;
+  transform: translate(-55%, -50%) rotate(-2deg);
+  padding: 2rem;
+  z-index: 3;
+  animation: fc-float-1 8s ease-in-out infinite;
+}
+.fc-top {
+  width: 55%; top: 5%; right: 2%;
+  transform: rotate(4deg);
+  z-index: 4;
+  animation: fc-float-2 6s ease-in-out infinite 1s;
+}
+.fc-bottom {
+  width: 50%; bottom: 2%; left: 0%;
+  transform: rotate(-3deg);
+  z-index: 2;
+  animation: fc-float-3 10s ease-in-out infinite 2s;
+}
+@keyframes fc-float-1 {
+  0%,100% { transform: translate(-55%,-50%) rotate(-2deg) translateY(0); }
+  50%      { transform: translate(-55%,-50%) rotate(-1deg) translateY(-14px); }
+}
+@keyframes fc-float-2 {
+  0%,100% { transform: rotate(4deg) translateY(0); }
+  50%      { transform: rotate(3deg) translateY(-10px); }
+}
+@keyframes fc-float-3 {
+  0%,100% { transform: rotate(-3deg) translateY(0); }
+  50%      { transform: rotate(-2deg) translateY(10px); }
+}
+
+.fc-icon {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--indigo-glow), var(--violet));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 8px 24px rgba(79,70,229,0.4);
+}
+.fc-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem; }
+.fc-value { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 800; color: var(--gold); }
+.fc-change { font-size: 0.75rem; color: #34d399; margin-top: 0.3rem; }
+.fc-spark { display: flex; gap: 3px; align-items: flex-end; margin-top: 0.8rem; height: 30px; }
+.spark-bar {
+  flex: 1;
+  border-radius: 3px;
+  background: linear-gradient(to top, var(--indigo-glow), var(--violet-bright));
+  opacity: 0.7;
+}
+
+/* Chart mini */
+.mini-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 40px;
+  margin-top: 0.8rem;
+}
+.mc-bar {
+  width: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to top, var(--gold-dim), var(--gold));
+}
+
+/* Story text side */
+.story-text .section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--indigo-bright);
+  margin-bottom: 1.2rem;
+}
+.story-text .section-tag::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--indigo-bright);
+  border-radius: 2px;
+}
+
+.story-text h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-h2);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+.story-text h2 em {
+  font-style: italic;
+  color: var(--gold);
+}
+.story-text p {
+  font-size: var(--fs-body);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.feature-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 50px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  transition: all 0.3s;
+}
+.pill:hover { border-color: rgba(245,200,66,0.4); color: var(--gold); background: var(--stardust); }
+.pill-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo-bright); }
+
+/* ═══════════════════════════════════════
+   FEATURES GRID  
+═══════════════════════════════════════ */
+.features-section {
+  padding: 9rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.features-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 0%, rgba(79,70,229,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(124,58,237,0.06) 0%, transparent 60%);
+}
+
+/* Animated grid lines  */
+.features-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(99,102,241,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99,102,241,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 40%, transparent 100%);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 5rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.section-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--fs-h2);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.2rem;
+}
+.section-header h2 em { font-style: italic; color: var(--gold); }
+.section-header p { font-size: var(--fs-body); color: var(--text-secondary); }
+
+.features-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 2.2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+  opacity: 0;
+  transform: translateY(40px);
+}
+.feature-card.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--indigo-bright), var(--gold), transparent);
+  opacity: 0;
+  transform: scaleX(0);
+  transition: all 0.5s ease;
+}
+.feature-card:hover::before { opacity: 1; transform: scaleX(1); }
+.feature-card:hover {
+  background: var(--card-hover-bg);
+  border-color: rgba(99,102,241,0.35);
+  transform: translateY(-8px) !important;
+  box-shadow: 0 24px 60px rgba(79,70,229,0.2), 0 0 0 1px rgba(99,102,241,0.15);
+}
+
+.fc-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+.tag-core    { background: rgba(59,130,246,0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.2); }
+.tag-daily   { background: rgba(249,115,22,0.15); color: #fb923c; border: 1px solid rgba(249,115,22,0.2); }
+.tag-academic{ background: rgba(236,72,153,0.15); color: #f472b6; border: 1px solid rgba(236,72,153,0.2); }
+.tag-planning{ background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.2); }
+.tag-finance { background: rgba(132,204,22,0.15); color: #a3e635; border: 1px solid rgba(132,204,22,0.2); }
+.tag-comm    { background: rgba(6,182,212,0.15);  color: #22d3ee; border: 1px solid rgba(6,182,212,0.2); }
+
+.fc-icon-wrap {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--indigo-glow), var(--violet));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.4rem;
+  font-size: 1.5rem;
+  box-shadow: 0 8px 24px rgba(79,70,229,0.3);
+  transition: all 0.3s;
+}
+.feature-card:hover .fc-icon-wrap {
+  box-shadow: 0 12px 35px rgba(79,70,229,0.5);
+  transform: scale(1.08);
+}
+.fc-h { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; }
+.fc-p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; }
+
+/* ═══════════════════════════════════════
+   PARALLAX ORBIT SECTION
+═══════════════════════════════════════ */
+.orbit-section {
+  min-height: 80vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 8rem 0;
+}
+.orbit-bg {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 50%, rgba(79,70,229,0.15) 0%, transparent 60%);
+  will-change: transform;
+}
+
+.orbit-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+.orbit-visual {
+  position: relative;
+  height: 420px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(99,102,241,0.15);
+}
+.ring-1 { width: 380px; height: 380px; animation: ring-spin 30s linear infinite; }
+.ring-2 { width: 280px; height: 280px; animation: ring-spin 20s linear infinite reverse; }
+.ring-3 { width: 180px; height: 180px; animation: ring-spin 15s linear infinite 1s; }
+
+.ring-1::before { content: ''; position: absolute; top: -4px; left: 50%; width: 8px; height: 8px; background: var(--indigo-bright); border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 12px var(--indigo-bright); }
+.ring-2::before { content: ''; position: absolute; top: -4px; left: 50%; width: 7px; height: 7px; background: var(--gold); border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 10px var(--gold); }
+.ring-3::before { content: ''; position: absolute; top: -3px; left: 50%; width: 6px; height: 6px; background: var(--violet-bright); border-radius: 50%; transform: translateX(-50%); box-shadow: 0 0 8px var(--violet-bright); }
+
+@keyframes ring-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.orbit-center {
+  position: absolute;
+  width: 90px; height: 90px;
+  background: radial-gradient(circle, rgba(79,70,229,0.7), rgba(124,58,237,0.5));
+  border-radius: 50%;
+  border: 2px solid rgba(99,102,241,0.4);
+  box-shadow: 0 0 60px rgba(79,70,229,0.4), inset 0 0 30px rgba(124,58,237,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  z-index: 10;
+  animation: center-pulse 4s ease-in-out infinite;
+}
+@keyframes center-pulse {
+  0%,100% { box-shadow: 0 0 60px rgba(79,70,229,0.4), inset 0 0 30px rgba(124,58,237,0.3); }
+  50%      { box-shadow: 0 0 100px rgba(79,70,229,0.6), inset 0 0 40px rgba(124,58,237,0.5); }
+}
+
+.orbit-steps { display: flex; flex-direction: column; gap: 2rem; }
+.orbit-step {
+  display: flex;
+  gap: 1.5rem;
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.6s cubic-bezier(0.23,1,0.32,1);
+}
+.orbit-step.revealed { opacity: 1; transform: translateX(0); }
+.orbit-step-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: rgba(245,200,66,0.15);
+  line-height: 1;
+  min-width: 50px;
+  letter-spacing: -0.05em;
+}
+.orbit-step-body h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.4rem; }
+.orbit-step-body p  { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; }
+
+/* ═══════════════════════════════════════
+   TESTIMONIALS
+═══════════════════════════════════════ */
+.testimonials-section {
+  padding: 9rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.testimonials-bg {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(ellipse 80% 50% at 80% 50%, rgba(124,58,237,0.1) 0%, transparent 55%);
+  will-change: transform;
+}
+.testimonials-track {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.testi-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 2.2rem;
+  position: relative;
+  transition: all 0.4s;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.testi-card.revealed { opacity: 1; transform: translateY(0); }
+.testi-card:hover {
+  border-color: rgba(245,200,66,0.25);
+  box-shadow: 0 20px 50px rgba(79,70,229,0.15);
+  transform: translateY(-6px) !important;
+}
+.testi-quote-icon { font-size: 2.5rem; color: rgba(245,200,66,0.2); font-family: Georgia, serif; line-height: 1; margin-bottom: 1rem; }
+.testi-text { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.8rem; font-style: italic; }
+.testi-stars { display: flex; gap: 3px; margin-bottom: 1.2rem; }
+.star { color: var(--gold); font-size: 0.85rem; }
+.testi-author { display: flex; align-items: center; gap: 1rem; }
+.testi-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--indigo-glow), var(--violet));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 2px solid rgba(99,102,241,0.3);
+  flex-shrink: 0;
+}
+.testi-name { font-size: 0.9rem; font-weight: 600; }
+.testi-role { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.1rem; }
+
+/* ═══════════════════════════════════════
+   CTA SECTION
+═══════════════════════════════════════ */
+.cta-section {
+  padding: 9rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-bg {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(79,70,229,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 20% 20%, rgba(124,58,237,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 50% at 80% 80%, rgba(245,200,66,0.08) 0%, transparent 55%);
+  will-change: transform;
+}
+.cta-glow-ring {
+  position: absolute;
+  width: 600px; height: 600px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(99,102,241,0.12);
+  border-radius: 50%;
+  animation: ring-pulse 4s ease-in-out infinite;
+}
+.cta-glow-ring-2 {
+  width: 900px; height: 900px;
+  animation: ring-pulse 4s ease-in-out infinite 1.5s;
+}
+@keyframes ring-pulse {
+  0%,100% { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+  50%      { opacity: 0.2; transform: translate(-50%,-50%) scale(1.05); }
+}
+.cta-content { position: relative; z-index: 5; }
+.cta-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+.cta-section h2 em { font-style: italic; color: var(--gold); }
+.cta-section p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 500px;
+  margin: 0 auto 3rem;
+}
+.cta-actions { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+footer {
+  padding: 4rem 3rem 3rem;
+  border-top: 1px solid rgba(99,102,241,0.1);
+  position: relative;
+  z-index: 2;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.footer-brand { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 800; }
+.footer-brand span { color: var(--gold); }
+.footer-tagline { font-size: 0.82rem; color: var(--text-muted); margin-top: 0.3rem; }
+.footer-links { display: flex; gap: 2rem; }
+.footer-links a { font-size: 0.85rem; color: var(--text-muted); text-decoration: none; transition: color 0.3s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 0.78rem; color: var(--text-muted); }
+
+/* ═══════════════════════════════════════
+   REVEAL ANIMATIONS
+═══════════════════════════════════════ */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.23,1,0.32,1), transform 0.8s cubic-bezier(0.23,1,0.32,1);
+}
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+/* Stagger children */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
+}
+.reveal-stagger.active > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0s; }
+.reveal-stagger.active > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.1s; }
+.reveal-stagger.active > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.2s; }
+.reveal-stagger.active > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.3s; }
+.reveal-stagger.active > *:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.4s; }
+.reveal-stagger.active > *:nth-child(6) { opacity: 1; transform: none; transition-delay: 0.5s; }
+.reveal-stagger.active > *:nth-child(7) { opacity: 1; transform: none; transition-delay: 0.6s; }
+.reveal-stagger.active > *:nth-child(8) { opacity: 1; transform: none; transition-delay: 0.7s; }
+
+/* Horizontal line separator */
+.divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(99,102,241,0.2), rgba(245,200,66,0.15), rgba(99,102,241,0.2), transparent);
+  margin: 0;
+}
+
+/* Counter numbers */
+.counter-num {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--gold), var(--violet-bright));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .story-container, .orbit-content { grid-template-columns: 1fr; gap: 3rem; }
+  .story-container.reverse { direction: ltr; }
+  .testimonials-track { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .story-visual { height: 320px; }
+  .orbit-visual { height: 280px; }
+  .features-grid { grid-template-columns: 1fr; padding: 0 1.5rem; }
+  nav { padding: 1rem 1.5rem; }
+  .hero { padding: 5rem 1.5rem 3rem; }
+}
+
+/* ─── FLOATING PARTICLES (CSS only) ─── */
+.float-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.fp {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(99,102,241,0.4);
+  animation: fp-float linear infinite;
+}
+@keyframes fp-float {
+  0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.2; }
+  100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Cursor aura -->
+<div class="cursor-aura" id="cursor-aura"></div>
+
+<!-- Particle canvas -->
+<canvas id="star-canvas"></canvas>
+
+<!-- ─── NAV ─── -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo">Skol<span>Matrix</span></a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <a href="/register" class="nav-cta">Get Started Free</a>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     HERO
+═══════════════════════════════════════ -->
+<section class="hero">
+  <!-- Nebula parallax layers -->
+  <div class="nebula-layer nebula-layer-1" data-parallax="0.15"></div>
+  <div class="nebula-layer nebula-layer-2" data-parallax="0.08"></div>
+  <div class="nebula-layer nebula-layer-3" data-parallax="0.05"></div>
+
+  <!-- Floating orbs -->
+  <div class="orb orb-1" data-parallax="0.12"></div>
+  <div class="orb orb-2" data-parallax="0.09"></div>
+  <div class="orb orb-3" data-parallax="0.2"></div>
+
+  <!-- Floating particles -->
+  <div class="float-particles" id="hero-particles"></div>
+
+  <!-- Hero content -->
+  <div style="position:relative; z-index:10; display:flex; flex-direction:column; align-items:center;">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      The Future of School Management
+    </div>
+
+    <h1 class="hero-title">
+      <span class="line-1">Elevate Every</span>
+      <span class="line-2">Academic Journey</span>
+      <span class="line-3">Beyond the ordinary</span>
+    </h1>
+
+    <p class="hero-sub">
+      SkolMatrixa unifies students, staff, attendance, fees, exams, and communication in one cosmic command center — built for schools and coaching institutes that demand excellence.
+    </p>
+
+    <div class="hero-actions">
+      <a href="/register" class="btn-primary"><span>Start Free Trial ✦</span></a>
+      <a href="/about" class="btn-ghost">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
+        Watch the Demo
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="scroll-hint">
+    <span class="scroll-hint-text">Scroll to explore</span>
+    <div class="scroll-mouse"><div class="scroll-mouse-dot"></div></div>
+  </div>
+</section>
+
+<!-- ─── STATS TICKER ─── -->
+<div class="stats-ticker">
+  <div class="ticker-track" id="ticker-track">
+    <div class="ticker-item">
+      <span class="ticker-value">10K+</span>
+      <span class="ticker-label">Students Managed</span>
+    </div>
+    <span class="ticker-dot">✦</span>
+    <div class="ticker-item">
+      <span class="ticker-value">500+</span>
+      <span class="ticker-label">Institutions Served</span>
+    </div>
+    <span class="ticker-dot">✦</span>
+    <div class="ticker-item">
+      <span class="ticker-value">₹50L+</span>
+      <span class="ticker-label">Fees Processed</span>
+    </div>
+    <span class="ticker-dot">✦</span>
+    <div class="ticker-item">
+      <span class="ticker-value">99.9%</span>
+      <span class="ticker-label">Platform Uptime</span>
+    </div>
+    <span class="ticker-dot">✦</span>
+    <div class="ticker-item">
+      <span class="ticker-value">5M+</span>
+      <span class="ticker-label">Notifications Sent</span>
+    </div>
+    <span class="ticker-dot">✦</span>
+    <!-- duplicate for loop -->
+    <div class="ticker-item">
+      <span class="ticker-value">10K+</span>
+      <span class="ticker-label">Students Managed</span>
+    </div>
+    <span class="ticker-dot">✦</span>
+    <div class="ticker-item">
+      <span class="ticker-value">500+</span>
+      <span class="ticker-label">Institutions Served</span>
+    </div>
+    <span class="ticker-dot">✦</span>
+    <div class="ticker-item">
+      <span class="ticker-value">₹50L+</span>
+      <span class="ticker-label">Fees Processed</span>
+    </div>
+    <span class="ticker-dot">✦</span>
+    <div class="ticker-item">
+      <span class="ticker-value">99.9%</span>
+      <span class="ticker-label">Platform Uptime</span>
+    </div>
+    <span class="ticker-dot">✦</span>
+    <div class="ticker-item">
+      <span class="ticker-value">5M+</span>
+      <span class="ticker-label">Notifications Sent</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     STORY SECTION 1 — Who is it for
+═══════════════════════════════════════ -->
+<section class="story-section" id="features">
+  <div class="story-bg story-bg-1" data-parallax="0.10"></div>
+
+  <div class="story-container">
+    <div class="story-visual">
+      <div class="float-card-cluster">
+        <!-- Main dashboard card -->
+        <div class="float-card fc-main">
+          <div class="fc-icon">📊</div>
+          <div class="fc-title">Live Dashboard</div>
+          <div class="fc-value">94.8%</div>
+          <div class="fc-change">↑ 3.2% this term</div>
+          <div class="fc-spark">
+            <div class="spark-bar" style="height:40%"></div>
+            <div class="spark-bar" style="height:65%"></div>
+            <div class="spark-bar" style="height:45%"></div>
+            <div class="spark-bar" style="height:80%"></div>
+            <div class="spark-bar" style="height:60%"></div>
+            <div class="spark-bar" style="height:90%"></div>
+            <div class="spark-bar" style="height:75%"></div>
+            <div class="spark-bar" style="height:100%"></div>
+          </div>
+        </div>
+        <!-- Top card -->
+        <div class="float-card fc-top">
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.3rem">Attendance Today</div>
+          <div class="fc-value" style="font-size:1.6rem">287</div>
+          <div class="fc-change">Present / 302 students</div>
+        </div>
+        <!-- Bottom card -->
+        <div class="float-card fc-bottom">
+          <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.3rem">Fees This Month</div>
+          <div class="fc-value" style="font-size:1.4rem">₹2.4L</div>
+          <div class="mini-chart">
+            <div class="mc-bar" style="height:40%"></div>
+            <div class="mc-bar" style="height:60%"></div>
+            <div class="mc-bar" style="height:75%"></div>
+            <div class="mc-bar" style="height:55%"></div>
+            <div class="mc-bar" style="height:90%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="story-text reveal">
+      <div class="section-tag">Total Visibility</div>
+      <h2>Your school, <em>unified</em> in one dashboard</h2>
+      <p>No more spreadsheets. No more scattered data. SkolMatrixa gives every stakeholder — admins, teachers, parents — a real-time window into what matters most.</p>
+      <div class="feature-pills">
+        <span class="pill"><span class="pill-dot"></span>Live attendance</span>
+        <span class="pill"><span class="pill-dot"></span>Fee tracking</span>
+        <span class="pill"><span class="pill-dot"></span>Exam analytics</span>
+        <span class="pill"><span class="pill-dot"></span>Staff schedules</span>
+        <span class="pill"><span class="pill-dot"></span>Parent portal</span>
+      </div>
+      <a href="/register" class="btn-primary"><span>Explore the Dashboard →</span></a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════
+     FEATURES GRID
+═══════════════════════════════════════ -->
+<section class="features-section" id="capabilities">
+  <div class="features-bg"></div>
+
+  <div class="section-header reveal" style="padding:0 2rem">
+    <div class="section-tag" style="display:inline-flex;align-items:center;gap:0.5rem;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:1rem;">
+      <span style="display:block;width:24px;height:2px;background:var(--gold);border-radius:2px;"></span>
+      Everything You Need
+    </div>
+    <h2>Capabilities that <em>transform</em> operations</h2>
+    <p>Every feature built with purpose — from the smallest notification to large-scale fee reconciliation.</p>
+  </div>
+
+  <div class="features-grid reveal-stagger">
+    <div class="feature-card">
+      <div class="fc-tag tag-core">Core</div>
+      <div class="fc-icon-wrap">🎓</div>
+      <h3 class="fc-h">Student Management</h3>
+      <p class="fc-p">Complete lifecycle — admissions, profiles, class assignments, CSV bulk imports, and rich academic records all in one place.</p>
+    </div>
+    <div class="feature-card">
+      <div class="fc-tag tag-core">Core</div>
+      <div class="fc-icon-wrap">👥</div>
+      <h3 class="fc-h">Staff & HR</h3>
+      <p class="fc-p">Manage teachers and staff with defined roles, departments, subject assignments, leave tracking and employment records.</p>
+    </div>
+    <div class="feature-card">
+      <div class="fc-tag tag-daily">Daily</div>
+      <div class="fc-icon-wrap">✅</div>
+      <h3 class="fc-h">Attendance Tracking</h3>
+      <p class="fc-p">Mark attendance per class or subject with real-time reports, automated parent alerts, and monthly analytics.</p>
+    </div>
+    <div class="feature-card">
+      <div class="fc-tag tag-planning">Planning</div>
+      <div class="fc-icon-wrap">📅</div>
+      <h3 class="fc-h">Timetable Builder</h3>
+      <p class="fc-p">Visual class scheduling with teacher conflict detection, room allocation, and easy period copy tools.</p>
+    </div>
+    <div class="feature-card">
+      <div class="fc-tag tag-academic">Academic</div>
+      <div class="fc-icon-wrap">📝</div>
+      <h3 class="fc-h">Exams & Report Cards</h3>
+      <p class="fc-p">Schedule exams, enter marks by subject, auto-calculate grades, and generate beautiful PDF report cards.</p>
+    </div>
+    <div class="feature-card">
+      <div class="fc-tag tag-finance">Finance</div>
+      <div class="fc-icon-wrap">💳</div>
+      <h3 class="fc-h">Fee Management</h3>
+      <p class="fc-p">Define structured fee plans, track all payments, generate professional receipts, and send overdue reminders.</p>
+    </div>
+    <div class="feature-card">
+      <div class="fc-tag tag-comm">Communication</div>
+      <div class="fc-icon-wrap">🔔</div>
+      <h3 class="fc-h">Smart Notifications</h3>
+      <p class="fc-p">Send targeted in-app and email notifications to students, parents, and staff by role or class.</p>
+    </div>
+    <div class="feature-card">
+      <div class="fc-tag tag-academic">Academic</div>
+      <div class="fc-icon-wrap">📚</div>
+      <h3 class="fc-h">Library System</h3>
+      <p class="fc-p">Manage your book catalog, track issue and return records, and automate overdue reminders for students.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════
+     ORBIT SECTION — HOW IT WORKS
+═══════════════════════════════════════ -->
+<section class="orbit-section" id="how-it-works">
+  <div class="orbit-bg" data-parallax="0.08"></div>
+
+  <div class="orbit-content">
+    <div class="orbit-visual">
+      <div class="orbit-ring ring-1"></div>
+      <div class="orbit-ring ring-2"></div>
+      <div class="orbit-ring ring-3"></div>
+      <div class="orbit-center">🏫</div>
+    </div>
+
+    <div>
+      <div class="section-tag" style="display:inline-flex;align-items:center;gap:0.5rem;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--indigo-bright);margin-bottom:1.2rem;">
+        <span style="display:block;width:24px;height:2px;background:var(--indigo-bright);border-radius:2px;"></span>
+        Getting Started
+      </div>
+      <h2 class="reveal" style="font-family:'Playfair Display',serif;font-size:var(--fs-h2);font-weight:800;line-height:1.15;letter-spacing:-0.02em;margin-bottom:3rem;">
+        Launch in <em style="font-style:italic;color:var(--gold)">three steps.</em>
+      </h2>
+
+      <div class="orbit-steps">
+        <div class="orbit-step">
+          <div class="orbit-step-num">01</div>
+          <div class="orbit-step-body">
+            <h3>Register Your Institution</h3>
+            <p>Sign up as a School or Coaching Institute. Get instant access to your dedicated management dashboard.</p>
+          </div>
+        </div>
+        <div class="orbit-step">
+          <div class="orbit-step-num">02</div>
+          <div class="orbit-step-body">
+            <h3>Configure Your Setup</h3>
+            <p>Add academic year, classes, subjects, and fee structures using our guided setup wizard. Ready in minutes.</p>
+          </div>
+        </div>
+        <div class="orbit-step">
+          <div class="orbit-step-num">03</div>
+          <div class="orbit-step-body">
+            <h3>Start Managing Everything</h3>
+            <p>Add students, staff, mark attendance, schedule exams, collect fees — manage everything from one command center.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ═══════════════════════════════════════
+     TESTIMONIALS
+═══════════════════════════════════════ -->
+<section class="testimonials-section" id="testimonials">
+  <div class="testimonials-bg" data-parallax="0.07"></div>
+
+  <div class="section-header reveal" style="padding:0 2rem; margin-bottom:4rem;">
+    <div style="display:inline-flex;align-items:center;gap:0.5rem;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:700;color:var(--violet-bright);margin-bottom:1rem;">
+      <span style="display:block;width:24px;height:2px;background:var(--violet-bright);border-radius:2px;"></span>
+      Trusted Voices
+    </div>
+    <h2>What educators say about <em>SkolMatrixa</em></h2>
+  </div>
+
+  <div class="testimonials-track reveal-stagger">
+    <div class="testi-card">
+      <div class="testi-quote-icon">"</div>
+      <p class="testi-text">SkolMatrixa transformed how we run our school. Attendance and fee management alone saved us 10+ hours every week. The parent notification system is absolutely brilliant.</p>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <div class="testi-author">
+        <div class="testi-avatar">PS</div>
+        <div>
+          <div class="testi-name">Dr. Priya Sharma</div>
+          <div class="testi-role">Principal · Delhi Public School</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote-icon">"</div>
+      <p class="testi-text">As a coaching institute, we needed batch management that actually works. SkolMatrixa delivered beyond expectations — intuitive, fast, and completely reliable.</p>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <div class="testi-author">
+        <div class="testi-avatar">RK</div>
+        <div>
+          <div class="testi-name">Rajesh Kumar</div>
+          <div class="testi-role">Director · Apex Coaching Centre</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote-icon">"</div>
+      <p class="testi-text">Report card generation and the parent portal are incredible. Parents love the transparency and our admin team saves days of manual work every term.</p>
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <div class="testi-author">
+        <div class="testi-avatar">AD</div>
+        <div>
+          <div class="testi-name">Anita Desai</div>
+          <div class="testi-role">Administrator · St. Mary's Academy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CTA
+═══════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="cta-bg" data-parallax="0.06"></div>
+  <div class="cta-glow-ring"></div>
+  <div class="cta-glow-ring cta-glow-ring-2"></div>
+
+  <div class="cta-content reveal">
+    <h2>Ready to <em>ascend</em>?</h2>
+    <p>Join hundreds of institutions already transforming education with SkolMatrixa.</p>
+    <div class="cta-actions">
+      <a href="/register" class="btn-primary"><span>Create Free Account ✦</span></a>
+      <a href="/contact" class="btn-ghost">Talk to Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Skol<span>Matrix</span></div>
+      <div class="footer-tagline">The command center for modern education.</div>
+    </div>
+    <div class="footer-links">
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/contact">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 SkolMatrixa · Built for educators</div>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════
+   STAR PARTICLE CANVAS
+══════════════════════════════════════ */
+(function() {
+  const canvas = document.getElementById('star-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, stars = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function createStars() {
+    stars = [];
+    const count = Math.floor((W * H) / 4500);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.2 + 0.2,
+        alpha: Math.random() * 0.7 + 0.1,
+        speed: Math.random() * 0.3 + 0.05,
+        twinkleSpeed: Math.random() * 0.02 + 0.005,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+  }
+
+  let t = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.016;
+    for (const s of stars) {
+      const a = s.alpha * (0.5 + 0.5 * Math.sin(t * s.twinkleSpeed * 60 + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200,210,255,${a})`;
+      ctx.fill();
+      // Slow drift upward
+      s.y -= s.speed * 0.3;
+      if (s.y < -2) { s.y = H + 2; s.x = Math.random() * W; }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  createStars();
+  draw();
+  window.addEventListener('resize', () => { resize(); createStars(); });
+})();
+
+/* ══════════════════════════════════════
+   CURSOR AURA
+══════════════════════════════════════ */
+(function() {
+  const aura = document.getElementById('cursor-aura');
+  let mx = window.innerWidth/2, my = window.innerHeight/2;
+  let ax = mx, ay = my;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animate() {
+    ax += (mx - ax) * 0.08;
+    ay += (my - ay) * 0.08;
+    aura.style.left = ax + 'px';
+    aura.style.top  = ay + 'px';
+    requestAnimationFrame(animate);
+  }
+  animate();
+})();
+
+/* ══════════════════════════════════════
+   NAV SCROLL
+══════════════════════════════════════ */
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+/* ══════════════════════════════════════
+   PARALLAX
+══════════════════════════════════════ */
+(function() {
+  const parallaxEls = document.querySelectorAll('[data-parallax]');
+
+  function onScroll() {
+    const sy = window.scrollY;
+    parallaxEls.forEach(el => {
+      const speed = parseFloat(el.getAttribute('data-parallax'));
+      el.style.transform = `translateY(${sy * speed}px)`;
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ══════════════════════════════════════
+   INTERSECTION OBSERVER REVEALS
+══════════════════════════════════════ */
+(function() {
+  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger, .feature-card, .testi-card, .orbit-step');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        if (el.classList.contains('feature-card') || el.classList.contains('testi-card')) {
+          const items = el.parentElement.querySelectorAll('.feature-card, .testi-card');
+          const idx = Array.from(items).indexOf(el);
+          setTimeout(() => {
+            el.classList.add('revealed');
+          }, idx * 80);
+        } else if (el.classList.contains('orbit-step')) {
+          const steps = el.parentElement.querySelectorAll('.orbit-step');
+          const idx = Array.from(steps).indexOf(el);
+          setTimeout(() => {
+            el.classList.add('revealed');
+          }, idx * 150);
+        } else {
+          el.classList.add('active');
+        }
+        io.unobserve(el);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  revealEls.forEach(el => io.observe(el));
+})();
+
+/* ══════════════════════════════════════
+   HERO FLOATING PARTICLES (CSS generated)
+══════════════════════════════════════ */
+(function() {
+  const container = document.getElementById('hero-particles');
+  for (let i = 0; i < 22; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'fp';
+    const size = Math.random() * 4 + 2;
+    dot.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${8 + Math.random()*14}s;
+      animation-delay:${-Math.random()*20}s;
+      opacity:${0.2 + Math.random()*0.5};
+      background: ${Math.random()>0.5 ? `rgba(99,102,241,0.5)` : `rgba(245,200,66,0.4)`};
+    `;
+    container.appendChild(dot);
+  }
+})();
+
+/* ══════════════════════════════════════
+   COUNTER ANIMATION
+══════════════════════════════════════ */
+(function() {
+  function animateCount(el, target, suffix, duration) {
+    const start = performance.now();
+    const isNum = !isNaN(parseFloat(target));
+    const numVal = parseFloat(target);
+
+    function step(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      if (isNum) {
+        const cur = numVal * ease;
+        el.textContent = (Number.isInteger(numVal) ? Math.round(cur) : cur.toFixed(1)) + suffix;
+      }
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  const counters = document.querySelectorAll('.counter-num[data-value]');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const raw = el.getAttribute('data-value');
+        const suffix = el.getAttribute('data-suffix') || '';
+        animateCount(el, raw, suffix, 1800);
+        io.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => io.observe(c));
+})();
+
+/* ══════════════════════════════════════
+   FEATURE CARD 3D TILT
+══════════════════════════════════════ */
+(function() {
+  document.querySelectorAll('.feature-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      card.style.transform = `translateY(-8px) rotateX(${-y*10}deg) rotateY(${x*10}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+    });
+  });
+})();
+</script>
+</body>
+</html>

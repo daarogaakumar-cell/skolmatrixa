@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkolMatrixa — Golden Meridian Theme</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600;1,700&family=Nunito+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════
+   THEME 12: GOLDEN MERIDIAN
+   Style: Warm Luxury · Editorial · Botanical Parallax
+   Font: Cormorant Garamond (display) + Nunito Sans (body)
+   Palette: Honey Gold · Warm Ivory · Terracotta · Forest
+   ═══════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Core palette */
+  --ivory:          #fdf8f0;
+  --ivory-2:        #f9f2e3;
+  --ivory-3:        #f3ead7;
+  --parchment:      #ede0c4;
+  --gold-light:     #f5c94a;
+  --gold:           #d4a017;
+  --gold-deep:      #a07820;
+  --amber:          #c47d2a;
+  --terracotta:     #c2603a;
+  --terracotta-lt:  #e08060;
+  --forest:         #2d5016;
+  --forest-mid:     #3d6e1f;
+  --forest-lt:      #5a9035;
+  --sand:           #c8a96e;
+  --sand-lt:        #e8d4a0;
+  --ink:            #1a140a;
+  --ink-mid:        #3a2e1e;
+  --ink-lt:         #5c4c3a;
+  --text-secondary: #7a6452;
+  --text-muted:     #9c8870;
+
+  /* Shadows */
+  --shadow-warm: 0 8px 40px rgba(180,130,30,0.15);
+  --shadow-deep: 0 20px 80px rgba(90,50,10,0.2);
+
+  /* Font scale */
+  --fs-hero:    clamp(3rem, 7.5vw, 6.5rem);
+  --fs-h2:      clamp(2.2rem, 4.5vw, 3.6rem);
+  --fs-h3:      clamp(1.4rem, 2.5vw, 1.9rem);
+  --fs-body:    clamp(0.95rem, 1.5vw, 1.1rem);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  background: var(--ivory);
+  color: var(--ink);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* ─── TEXTURE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ─── NAV ─── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.4rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.5s, backdrop-filter 0.5s, box-shadow 0.5s;
+}
+nav.scrolled {
+  background: rgba(253,248,240,0.92);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 rgba(180,130,30,0.12);
+}
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+.nav-logo span { color: var(--gold-deep); }
+.nav-links {
+  display: flex;
+  gap: 2.2rem;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--ink-lt);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0; right: 100%;
+  height: 1px;
+  background: var(--gold);
+  transition: right 0.3s;
+}
+.nav-links a:hover::after { right: 0; }
+.nav-links a:hover { color: var(--gold-deep); }
+.nav-cta {
+  background: var(--ink);
+  color: var(--ivory);
+  padding: 0.65rem 1.8rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: all 0.3s;
+  text-transform: uppercase;
+}
+.nav-cta:hover {
+  background: var(--gold-deep);
+  color: var(--ivory);
+  box-shadow: var(--shadow-warm);
+}
+
+/* ─── SECTION BASE ─── */
+section { position: relative; z-index: 1; }
+
+/* ═══════════════════════════════════════
+   HERO — Layered landscape parallax
+═══════════════════════════════════════ */
+.hero {
+  height: 100vh;
+  min-height: 700px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* SKY gradient */
+.hero-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #fce9c8 0%,
+    #fad89a 25%,
+    #f9cb7e 45%,
+    #f5b84a 65%,
+    #e8973a 80%,
+    #c8703f 100%
+  );
+}
+
+/* Sun glow */
+.hero-sun {
+  position: absolute;
+  width: 260px; height: 260px;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #fff8e0 0%, #ffe87a 35%, #f5c94a 60%, transparent 75%);
+  filter: blur(8px);
+  opacity: 0.85;
+  animation: sun-breathe 8s ease-in-out infinite;
+}
+@keyframes sun-breathe {
+  0%,100% { transform: translateX(-50%) scale(1); opacity: 0.85; }
+  50%      { transform: translateX(-50%) scale(1.08); opacity: 0.95; }
+}
+
+/* Sun rays */
+.hero-sun-rays {
+  position: absolute;
+  width: 700px; height: 700px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -38%);
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255,220,80,0.1) 2deg,
+    transparent 4deg,
+    transparent 10deg,
+    rgba(255,220,80,0.08) 12deg,
+    transparent 14deg
+  );
+  animation: rays-spin 40s linear infinite;
+}
+@keyframes rays-spin { to { transform: translate(-50%,-38%) rotate(360deg); } }
+
+/* Mountain layers – SVG silhouettes */
+.hero-mountain {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* Forest layer (closest) */
+.ml-forest {
+  bottom: 0;
+  height: 35vh;
+  background:
+    repeating-linear-gradient(
+      transparent 0%,
+      transparent 60%,
+      var(--forest) 60%
+    );
+  /* Use clip-path for tree silhouette */
+  clip-path: polygon(
+    0% 100%, 0% 70%, 1.5% 55%, 3% 70%, 4% 45%, 5.5% 65%, 6.5% 40%,
+    7.5% 58%, 8% 35%, 9% 52%, 10% 30%, 11% 48%, 12.5% 28%,
+    13.5% 46%, 15% 25%, 16.5% 44%, 17.5% 22%, 19% 42%, 20% 20%,
+    21% 40%, 22.5% 18%, 24% 38%, 25.5% 16%, 27% 36%, 28.5% 14%,
+    30% 34%, 31.5% 12%, 33% 32%, 35% 10%, 37% 30%, 39% 8%,
+    41% 28%, 43% 6%, 45% 26%, 47% 4%, 49% 24%, 51% 4%,
+    53% 24%, 55% 6%, 57% 26%, 59% 8%, 61% 28%, 63% 10%,
+    65% 30%, 67% 12%, 69% 32%, 71% 14%, 73% 36%, 75% 16%,
+    77% 40%, 78.5% 18%, 80% 42%, 81.5% 22%, 83% 44%, 84.5% 25%,
+    86% 46%, 87.5% 28%, 89% 48%, 90.5% 30%, 92% 52%,
+    93% 35%, 94% 58%, 95% 40%, 96.5% 65%, 97.5% 42%,
+    98.5% 70%, 100% 55%, 100% 100%
+  );
+  background: var(--forest);
+  opacity: 0.95;
+}
+
+/* Mid mountain */
+.ml-mid {
+  bottom: 0;
+  height: 45vh;
+  clip-path: polygon(
+    0% 100%, 0% 75%, 5% 55%, 12% 40%, 20% 30%,
+    30% 20%, 40% 14%, 50% 10%, 60% 14%,
+    70% 20%, 80% 30%, 88% 40%, 95% 55%, 100% 75%, 100% 100%
+  );
+  background: linear-gradient(180deg, #4d7a2a 0%, var(--forest) 100%);
+  opacity: 0.7;
+}
+
+/* Far mountain */
+.ml-far {
+  bottom: 0;
+  height: 55vh;
+  clip-path: polygon(
+    0% 100%, 0% 85%, 8% 65%, 18% 50%, 30% 38%, 42% 28%,
+    50% 22%, 58% 28%, 70% 38%, 82% 50%, 92% 65%, 100% 85%, 100% 100%
+  );
+  background: linear-gradient(180deg, rgba(80,110,50,0.4) 0%, rgba(45,80,22,0.5) 100%);
+}
+
+/* Atmospheric haze at horizon */
+.hero-haze {
+  position: absolute;
+  bottom: 28%; left: 0; right: 0;
+  height: 12vh;
+  background: linear-gradient(
+    to top,
+    transparent,
+    rgba(253,210,120,0.18),
+    transparent
+  );
+  pointer-events: none;
+}
+
+/* Hero text */
+.hero-content {
+  position: relative;
+  z-index: 20;
+  max-width: 800px;
+  padding: 0 2rem;
+  margin-top: -8vh;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1.4rem;
+  background: rgba(30,20,5,0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(245,201,74,0.35);
+  border-radius: 3px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 1.8rem;
+  opacity: 0;
+  animation: reveal-up 0.9s ease 0.3s forwards;
+}
+.hero-badge-line {
+  width: 20px; height: 1px;
+  background: var(--gold-light);
+}
+
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: var(--fs-hero);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ivory);
+  text-shadow: 0 4px 40px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3);
+  margin-bottom: 1.6rem;
+  opacity: 0;
+  animation: reveal-up 1s ease 0.5s forwards;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--gold-light);
+  text-shadow: 0 0 60px rgba(245,201,74,0.6), 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  color: rgba(255,248,224,0.85);
+  line-height: 1.8;
+  max-width: 560px;
+  margin: 0 auto 2.8rem;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  opacity: 0;
+  animation: reveal-up 1s ease 0.7s forwards;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: reveal-up 1s ease 0.9s forwards;
+}
+
+.btn-gold {
+  padding: 1rem 2.6rem;
+  background: linear-gradient(135deg, #d4a017, #c47d2a);
+  color: var(--ivory);
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.35s;
+  box-shadow: 0 8px 30px rgba(180,100,20,0.4);
+  position: relative;
+  overflow: hidden;
+}
+.btn-gold::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+.btn-gold:hover::before { left: 120%; }
+.btn-gold:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 50px rgba(180,100,20,0.5);
+}
+
+.btn-outline-light {
+  padding: 1rem 2.4rem;
+  background: transparent;
+  color: var(--ivory);
+  border: 1px solid rgba(255,248,224,0.5);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  backdrop-filter: blur(8px);
+}
+.btn-outline-light:hover {
+  background: rgba(255,248,224,0.12);
+  border-color: var(--gold-light);
+  color: var(--gold-light);
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  z-index: 30;
+  opacity: 0;
+  animation: reveal-up 1s ease 1.8s forwards;
+}
+.scroll-hint-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,248,224,0.55);
+  font-weight: 600;
+}
+.scroll-chevron {
+  width: 28px; height: 28px;
+  border: 1.5px solid rgba(255,248,224,0.35);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: chevron-bounce 2s ease-in-out infinite;
+}
+.scroll-chevron svg { width: 14px; height: 14px; stroke: rgba(255,248,224,0.55); }
+@keyframes chevron-bounce {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+
+/* ═══════════════════════════════════════
+   INTRO BAND
+═══════════════════════════════════════ */
+.intro-band {
+  background: var(--ink);
+  padding: 4rem 3rem;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+.intro-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--gold-deep), var(--amber), var(--terracotta), var(--amber), var(--gold-deep));
+  height: 2px;
+  top: 0;
+}
+.intro-band-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  align-items: center;
+}
+.ib-stat {
+  text-align: center;
+  padding: 1rem;
+  position: relative;
+}
+.ib-stat:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 20%; bottom: 20%;
+  width: 1px;
+  background: rgba(255,255,255,0.08);
+}
+.ib-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 3.5vw, 3rem);
+  font-weight: 700;
+  color: var(--gold-light);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.ib-label { font-size: 0.82rem; color: rgba(255,248,224,0.55); font-weight: 600; letter-spacing: 0.05em; }
+
+/* ═══════════════════════════════════════
+   ABOUT / STORY SECTION
+═══════════════════════════════════════ */
+.about-section {
+  background: var(--ivory-2);
+  padding: 10rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative botanical SVG elements */
+.botanical-left {
+  position: absolute;
+  left: -60px;
+  top: 10%;
+  width: 280px;
+  opacity: 0.12;
+  pointer-events: none;
+  will-change: transform;
+}
+.botanical-right {
+  position: absolute;
+  right: -80px;
+  bottom: 10%;
+  width: 320px;
+  opacity: 0.1;
+  pointer-events: none;
+  will-change: transform;
+  transform: scaleX(-1) rotate(15deg);
+}
+
+.about-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+/* Editorial image block */
+.about-visual {
+  position: relative;
+}
+.main-img-frame {
+  width: 100%;
+  aspect-ratio: 4/5;
+  background: linear-gradient(135deg, var(--parchment), var(--sand-lt));
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: var(--shadow-deep);
+  position: relative;
+}
+.main-img-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(30,20,10,0.5) 100%);
+}
+.img-placeholder {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 6rem;
+  opacity: 0.25;
+}
+
+/* Floating metric overlay card */
+.about-float-card {
+  position: absolute;
+  bottom: -2rem;
+  right: -2.5rem;
+  background: var(--ink);
+  color: var(--ivory);
+  padding: 1.6rem 2rem;
+  border-radius: 6px;
+  box-shadow: var(--shadow-deep);
+  min-width: 220px;
+  z-index: 5;
+  border-top: 2px solid var(--gold);
+  animation: card-float 7s ease-in-out infinite;
+}
+@keyframes card-float {
+  0%,100% { transform: translateY(0) rotate(-1deg); }
+  50%      { transform: translateY(-12px) rotate(0deg); }
+}
+.afc-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,248,224,0.5); font-weight: 700; }
+.afc-value { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 700; color: var(--gold-light); margin: 0.2rem 0; }
+.afc-note  { font-size: 0.78rem; color: rgba(255,248,224,0.6); }
+
+/* Second float card */
+.about-float-card-2 {
+  position: absolute;
+  top: -1.5rem;
+  left: -2rem;
+  background: var(--ivory);
+  color: var(--ink);
+  padding: 1.3rem 1.6rem;
+  border-radius: 6px;
+  box-shadow: var(--shadow-warm);
+  min-width: 180px;
+  z-index: 5;
+  border-left: 3px solid var(--gold);
+  animation: card-float 9s ease-in-out infinite 2s;
+}
+.afc2-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); font-weight: 700; }
+.afc2-value { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--gold-deep); margin: 0.2rem 0; }
+.afc2-note  { font-size: 0.75rem; color: var(--text-secondary); }
+
+/* About text */
+.about-text .kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 1.4rem;
+}
+.about-text .kicker-line {
+  width: 36px; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+.about-text h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1.4rem;
+}
+.about-text h2 em { font-style: italic; color: var(--terracotta); }
+
+.about-text p {
+  font-size: var(--fs-body);
+  color: var(--text-secondary);
+  line-height: 1.85;
+  margin-bottom: 1.8rem;
+}
+
+.feature-list {
+  list-style: none;
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  font-size: 0.95rem;
+  color: var(--ink-lt);
+}
+.fl-check {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--amber));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  font-size: 0.65rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(180,100,20,0.35);
+}
+
+/* ═══════════════════════════════════════
+   FEATURE BENTO GRID
+═══════════════════════════════════════ */
+.bento-section {
+  background: var(--ivory-3);
+  padding: 10rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.bento-band {
+  position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--forest), var(--gold), var(--terracotta), var(--gold), var(--forest));
+}
+
+.bento-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 5rem;
+  padding: 0 2rem;
+}
+.bento-header .pretitle {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--forest-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+}
+.bento-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.bento-header h2 em { font-style: italic; color: var(--gold-deep); }
+.bento-header p { font-size: var(--fs-body); color: var(--text-secondary); }
+
+.bento-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  gap: 1.5rem;
+}
+
+.bento-card {
+  background: var(--ivory);
+  border: 1px solid var(--parchment);
+  border-radius: 8px;
+  padding: 2.2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.45s cubic-bezier(0.23,1,0.32,1);
+  opacity: 0;
+  transform: translateY(30px);
+  cursor: default;
+}
+.bento-card.revealed { opacity: 1; transform: translateY(0); }
+.bento-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--amber));
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
+  transform-origin: left;
+}
+.bento-card:hover::before { transform: scaleX(1); }
+.bento-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: var(--shadow-warm);
+  border-color: var(--sand-lt);
+}
+.bento-card.wide { grid-column: span 2; }
+.bento-card.tall { grid-row: span 2; }
+
+.bc-icon {
+  width: 56px; height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin-bottom: 1.4rem;
+  transition: transform 0.3s;
+}
+.bento-card:hover .bc-icon { transform: scale(1.08) rotate(-3deg); }
+
+.bc-icon-gold     { background: rgba(212,160,23,0.1); border: 1px solid rgba(212,160,23,0.2); }
+.bc-icon-terra    { background: rgba(194,96,58,0.1);  border: 1px solid rgba(194,96,58,0.2); }
+.bc-icon-forest   { background: rgba(45,80,22,0.1);   border: 1px solid rgba(45,80,22,0.2); }
+.bc-icon-amber    { background: rgba(196,125,42,0.1); border: 1px solid rgba(196,125,42,0.2); }
+
+.bc-tag {
+  position: absolute;
+  top: 1.4rem; right: 1.4rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.7rem;
+  border-radius: 3px;
+  background: var(--ivory-3);
+  color: var(--text-muted);
+  border: 1px solid var(--parchment);
+}
+
+.bc-h {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.7rem;
+  line-height: 1.25;
+}
+.bc-p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.75; }
+
+/* Wide card chart decoration */
+.bc-bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 50px;
+  margin-top: 1.2rem;
+}
+.bcb { 
+  flex: 1;
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(to top, var(--gold), var(--gold-light));
+  opacity: 0.7;
+  transition: height 0.8s ease;
+}
+
+/* ═══════════════════════════════════════
+   HOW IT WORKS — EDITORIAL TIMELINE
+═══════════════════════════════════════ */
+.timeline-section {
+  background: var(--ink);
+  padding: 10rem 0;
+  position: relative;
+  overflow: hidden;
+}
+.timeline-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+/* Warm light bokeh effect */
+.bokeh-wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.bokeh {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  will-change: transform;
+}
+.bokeh-1 { width: 500px; height: 500px; top: -100px; left: -100px; background: rgba(212,160,23,0.07); }
+.bokeh-2 { width: 400px; height: 400px; bottom: -80px; right: -80px; background: rgba(194,96,58,0.09); }
+.bokeh-3 { width: 300px; height: 300px; top: 40%; left: 30%; background: rgba(212,160,23,0.05); }
+
+.timeline-header {
+  text-align: center;
+  padding: 0 2rem;
+  margin-bottom: 6rem;
+}
+.timeline-header .pretitle {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.2rem;
+}
+.timeline-header h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ivory);
+  line-height: 1.15;
+}
+.timeline-header h2 em { font-style: italic; color: var(--gold-light); }
+
+.timeline-steps {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  position: relative;
+}
+.timeline-steps::before {
+  content: '';
+  position: absolute;
+  left: calc(3rem + 28px);
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(212,160,23,0.3) 10%, rgba(212,160,23,0.3) 90%, transparent);
+}
+
+.tl-step {
+  display: flex;
+  gap: 2.5rem;
+  margin-bottom: 4.5rem;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.7s cubic-bezier(0.23,1,0.32,1);
+  position: relative;
+}
+.tl-step.revealed { opacity: 1; transform: translateX(0); }
+.tl-step:last-child { margin-bottom: 0; }
+
+.tl-num {
+  width: 56px; height: 56px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: rgba(212,160,23,0.12);
+  border: 1px solid rgba(212,160,23,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold);
+  position: relative;
+  z-index: 2;
+}
+.tl-body { padding-top: 0.6rem; }
+.tl-body h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ivory);
+  margin-bottom: 0.6rem;
+}
+.tl-body p { font-size: 0.95rem; color: rgba(255,248,224,0.55); line-height: 1.8; }
+
+/* ═══════════════════════════════════════
+   TESTIMONIALS — Magazine style
+═══════════════════════════════════════ */
+.magazine-section {
+  background: var(--ivory-2);
+  padding: 10rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.magazine-header {
+  max-width: 1200px;
+  margin: 0 auto 5rem;
+  padding: 0 3rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.mh-title .pretitle {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  margin-bottom: 0.8rem;
+}
+.mh-title h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.mh-title h2 em { font-style: italic; color: var(--gold-deep); }
+.mh-caption { font-size: 0.9rem; color: var(--text-secondary); max-width: 260px; text-align: right; }
+
+.magazine-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 3rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2rem;
+  align-start: start;
+}
+
+.mg-card {
+  background: var(--ivory);
+  border: 1px solid var(--parchment);
+  border-radius: 8px;
+  padding: 2.4rem;
+  position: relative;
+  opacity: 0;
+  transform: translateY(25px);
+  transition: all 0.6s cubic-bezier(0.23,1,0.32,1);
+}
+.mg-card.revealed { opacity: 1; transform: translateY(0); }
+.mg-card:hover {
+  box-shadow: var(--shadow-warm);
+  transform: translateY(-6px) !important;
+  border-color: var(--sand-lt);
+}
+
+.mg-card.featured {
+  background: var(--ink);
+  color: var(--ivory);
+  border-color: rgba(212,160,23,0.2);
+  border-top: 3px solid var(--gold);
+}
+
+.mg-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem;
+  line-height: 0.5;
+  color: var(--gold);
+  opacity: 0.4;
+  margin-bottom: 0.8rem;
+}
+.mg-card.featured .mg-quote { opacity: 0.6; }
+
+.mg-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.7;
+  color: var(--ink-lt);
+  margin-bottom: 1.8rem;
+}
+.mg-card.featured .mg-text { color: rgba(255,248,224,0.85); font-size: 1.25rem; }
+
+.mg-stars { display: flex; gap: 3px; margin-bottom: 1.4rem; }
+.mg-star  { color: var(--gold); font-size: 0.9rem; }
+
+.mg-author { display: flex; align-items: center; gap: 1rem; }
+.mg-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--amber));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+  border: 2px solid rgba(212,160,23,0.3);
+}
+.mg-card.featured .mg-avatar { border-color: rgba(245,201,74,0.5); }
+.mg-name { font-size: 0.9rem; font-weight: 700; }
+.mg-card.featured .mg-name { color: var(--ivory); }
+.mg-role { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.1rem; }
+.mg-card.featured .mg-role { color: rgba(255,248,224,0.5); }
+
+/* ═══════════════════════════════════════
+   CTA — Warm full bleed
+═══════════════════════════════════════ */
+.cta-section {
+  position: relative;
+  overflow: hidden;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Warm gradient sky for CTA */
+.cta-background {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #fce6aa 0%,
+    #f5c94a 20%,
+    #e8963a 45%,
+    #c2503a 70%,
+    #7a1e1e 100%
+  );
+}
+.cta-bg-mountain {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 50%;
+  will-change: transform;
+}
+.cta-forest {
+  height: 100%;
+  clip-path: polygon(
+    0% 100%, 0% 50%, 3% 30%, 7% 20%, 12% 12%, 18% 6%,
+    25% 2%, 35% 0%, 50% 3%, 65% 0%, 75% 2%, 82% 6%,
+    88% 12%, 93% 20%, 97% 30%, 100% 50%, 100% 100%
+  );
+  background: var(--forest);
+  opacity: 0.9;
+}
+
+.cta-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 4rem 2rem;
+  max-width: 700px;
+}
+.cta-content h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  font-weight: 700;
+  color: var(--ivory);
+  text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+.cta-content h2 em { font-style: italic; color: var(--gold-light); }
+.cta-content p {
+  font-size: 1.1rem;
+  color: rgba(255,248,224,0.8);
+  max-width: 480px;
+  margin: 0 auto 3rem;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.cta-btns { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+.btn-ivory {
+  padding: 1rem 2.4rem;
+  background: var(--ivory);
+  color: var(--ink);
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+.btn-ivory:hover { transform: translateY(-3px); box-shadow: 0 16px 50px rgba(0,0,0,0.3); background: linear-gradient(135deg, var(--ivory), #fff); }
+
+/* ═══════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════ */
+footer {
+  background: var(--ink);
+  padding: 4rem 3rem 3rem;
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid rgba(212,160,23,0.15);
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--ivory); }
+.footer-brand span { color: var(--gold); }
+.footer-tagline { font-size: 0.8rem; color: rgba(255,248,224,0.4); margin-top: 0.2rem; font-style: italic; }
+.footer-links { display: flex; gap: 2rem; }
+.footer-links a { font-size: 0.82rem; color: rgba(255,248,224,0.45); text-decoration: none; transition: color 0.3s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 0.75rem; color: rgba(255,248,224,0.3); }
+
+/* ═══════════════════════════════════════
+   SHARED ANIMATION UTILS
+═══════════════════════════════════════ */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal { opacity: 0; transform: translateY(35px); transition: opacity 0.85s cubic-bezier(0.23,1,0.32,1), transform 0.85s cubic-bezier(0.23,1,0.32,1); }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+.reveal-stagger > * {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
+}
+.reveal-stagger.active > *:nth-child(1) { opacity: 1; transform: none; transition-delay: 0s; }
+.reveal-stagger.active > *:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.1s; }
+.reveal-stagger.active > *:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.2s; }
+.reveal-stagger.active > *:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.3s; }
+
+/* Gold wave divider */
+.wave-divider {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  line-height: 0;
+}
+.wave-divider svg { display: block; width: 100%; }
+
+/* Responsive */
+@media (max-width: 900px) {
+  .about-grid, .magazine-grid { grid-template-columns: 1fr; }
+  .bento-grid { grid-template-columns: 1fr 1fr; }
+  .bento-card.wide { grid-column: span 2; }
+  .intro-band-inner { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { display: none; }
+  .footer-inner { flex-direction: column; text-align: center; }
+  .footer-links { justify-content: center; }
+  .magazine-header { flex-direction: column; align-items: flex-start; }
+  .mh-caption { text-align: left; max-width: 100%; }
+}
+@media (max-width: 600px) {
+  .bento-grid { grid-template-columns: 1fr; }
+  .bento-card.wide { grid-column: span 1; }
+  .intro-band-inner { grid-template-columns: 1fr 1fr; }
+  nav { padding: 1rem 1.5rem; }
+  .hero-content { padding: 0 1.5rem; }
+  .timeline-steps::before { left: calc(1.5rem + 28px); }
+  .timeline-steps { padding: 0 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo">Skol<span>Matrix</span></a>
+  <ul class="nav-links">
+    <li><a href="#capabilities">Features</a></li>
+    <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <a href="/register" class="nav-cta">Begin Journey</a>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     HERO — Golden Horizon with landscape
+═══════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <!-- Layered parallax bg -->
+  <div class="hero-sky"></div>
+  <div class="hero-sun"></div>
+  <div class="hero-sun-rays"></div>
+  <div class="hero-haze"></div>
+  <div class="hero-mountain ml-far"    data-parallax="0.25"></div>
+  <div class="hero-mountain ml-mid"    data-parallax="0.18"></div>
+  <div class="hero-mountain ml-forest" data-parallax="0.08"></div>
+
+  <!-- Content -->
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-line"></span>
+      Trusted by 500+ Institutions
+      <span class="hero-badge-line" style="transform:scaleX(-1)"></span>
+    </div>
+
+    <h1 class="hero-title">
+      Where <em>Knowledge</em><br>Meets Clarity
+    </h1>
+
+    <p class="hero-sub">
+      SkolMatrixa is the elegant command centre for schools and coaching institutes — bringing students, staff, attendance, fees, and communication into one beautiful whole.
+    </p>
+
+    <div class="hero-actions">
+      <a href="/register" class="btn-gold">Begin Your Journey</a>
+      <a href="/about" class="btn-outline-light">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16" fill="currentColor" stroke="none"/></svg>
+        Watch Demo
+      </a>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="scroll-hint" onclick="document.getElementById('stats').scrollIntoView({behavior:'smooth'})">
+    <span class="scroll-hint-label">Discover More</span>
+    <div class="scroll-chevron">
+      <svg viewBox="0 0 14 14" fill="none"><polyline points="3,5 7,9 11,5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     INTRO STATS BAND
+═══════════════════════════════════════ -->
+<div class="intro-band" id="stats">
+  <div class="intro-band-inner">
+    <div class="ib-stat">
+      <div class="ib-value" data-count="10000" data-suffix="+">10,000+</div>
+      <div class="ib-label">Students Managed</div>
+    </div>
+    <div class="ib-stat">
+      <div class="ib-value" data-count="500" data-suffix="+">500+</div>
+      <div class="ib-label">Institutions Served</div>
+    </div>
+    <div class="ib-stat">
+      <div class="ib-value">99.9%</div>
+      <div class="ib-label">Platform Uptime</div>
+    </div>
+    <div class="ib-stat">
+      <div class="ib-value">5M+</div>
+      <div class="ib-label">Notifications Sent</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     ABOUT / STORY
+═══════════════════════════════════════ -->
+<section class="about-section" id="about">
+  <!-- Botanical SVG ornaments -->
+  <svg class="botanical-left" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg" data-parallax-el="0.05">
+    <path d="M100 300 Q80 250 70 200 Q60 150 90 100 Q110 70 100 20" stroke="#2d5016" stroke-width="3" fill="none"/>
+    <path d="M100 200 Q60 180 40 150 Q30 130 50 120" stroke="#2d5016" stroke-width="2" fill="none"/>
+    <path d="M100 200 Q140 175 155 145 Q165 120 145 110" stroke="#2d5016" stroke-width="2" fill="none"/>
+    <path d="M90 160 Q55 145 40 115 Q30 95 52 88" stroke="#2d5016" stroke-width="1.5" fill="none"/>
+    <path d="M92 130 Q130 110 148 80 Q158 57 138 50" stroke="#2d5016" stroke-width="1.5" fill="none"/>
+    <ellipse cx="50" cy="140" rx="18" ry="12" transform="rotate(-30 50 140)" fill="#2d5016" opacity="0.4"/>
+    <ellipse cx="148" cy="125" rx="16" ry="11" transform="rotate(20 148 125)" fill="#2d5016" opacity="0.4"/>
+    <ellipse cx="42" cy="105" rx="14" ry="9" transform="rotate(-45 42 105)" fill="#2d5016" opacity="0.3"/>
+    <ellipse cx="140" cy="65" rx="15" ry="10" transform="rotate(10 140 65)" fill="#2d5016" opacity="0.3"/>
+  </svg>
+  <svg class="botanical-right" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg" data-parallax-el="0.07">
+    <path d="M100 300 Q80 250 70 200 Q60 150 90 100 Q110 70 100 20" stroke="#2d5016" stroke-width="3" fill="none"/>
+    <path d="M100 200 Q60 180 40 150 Q30 130 50 120" stroke="#2d5016" stroke-width="2" fill="none"/>
+    <path d="M100 200 Q140 175 155 145 Q165 120 145 110" stroke="#2d5016" stroke-width="2" fill="none"/>
+    <path d="M90 160 Q55 145 40 115 Q30 95 52 88" stroke="#2d5016" stroke-width="1.5" fill="none"/>
+    <ellipse cx="50" cy="140" rx="18" ry="12" transform="rotate(-30 50 140)" fill="#2d5016" opacity="0.4"/>
+    <ellipse cx="148" cy="125" rx="16" ry="11" transform="rotate(20 148 125)" fill="#2d5016" opacity="0.4"/>
+  </svg>
+
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="main-img-frame">
+        <div class="img-placeholder">
+          <span>🏫</span>
+        </div>
+      </div>
+      <!-- Floating metric card -->
+      <div class="about-float-card">
+        <div class="afc-label">Attendance Rate</div>
+        <div class="afc-value">94.8%</div>
+        <div class="afc-note">↑ 3.2% vs last term</div>
+      </div>
+      <!-- Second float card -->
+      <div class="about-float-card-2">
+        <div class="afc2-label">Fees Collected</div>
+        <div class="afc2-value">₹2.4L</div>
+        <div class="afc2-note">This month</div>
+      </div>
+    </div>
+
+    <div class="about-text reveal">
+      <div class="kicker">
+        <span class="kicker-line"></span>
+        Our Purpose
+      </div>
+      <h2>Built for <em>educators</em> who refuse to settle</h2>
+      <p>SkolMatrixa was born from frustration with clunky, disconnected tools. We built the system we always wished existed — elegant, powerful, and deeply human.</p>
+      <ul class="feature-list">
+        <li><span class="fl-check">✓</span>Multi-tenant, fully isolated per institution</li>
+        <li><span class="fl-check">✓</span>Role-based access — Admin, Teacher, Student, Parent</li>
+        <li><span class="fl-check">✓</span>Bulk CSV import for data migration</li>
+        <li><span class="fl-check">✓</span>Beautiful PDF reports, receipts & report cards</li>
+        <li><span class="fl-check">✓</span>Real-time analytics and attendance insights</li>
+        <li><span class="fl-check">✓</span>WhatsApp & email notification integration</li>
+      </ul>
+      <a href="/register" class="btn-gold">Start Free Trial →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Wave divider -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" fill="#f3ead7" xmlns="http://www.w3.org/2000/svg" style="background:#fdf8f0;">
+    <path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════
+     BENTO FEATURE GRID
+═══════════════════════════════════════ -->
+<section class="bento-section" id="capabilities">
+  <div class="bento-band"></div>
+
+  <div class="bento-header reveal">
+    <div class="pretitle">
+      <span style="display:block;width:28px;height:1px;background:currentColor;"></span>
+      Complete Capabilities
+      <span style="display:block;width:28px;height:1px;background:currentColor;"></span>
+    </div>
+    <h2>Every tool your <em>institution</em> deserves</h2>
+    <p>From the first admission to the last report card — SkolMatrixa handles it all with grace.</p>
+  </div>
+
+  <div class="bento-grid">
+    <!-- Wide card -->
+    <div class="bento-card wide">
+      <span class="bc-tag">Core</span>
+      <div class="bc-icon bc-icon-gold">🎓</div>
+      <h3 class="bc-h">Student & Staff Management</h3>
+      <p class="bc-p">Complete lifecycle management — admissions, academic profiles, class assignments, bulk CSV imports, teacher HR records, leave tracking, and role assignments in one place.</p>
+      <div class="bc-bar-chart">
+        <div class="bcb" style="height:40%"></div>
+        <div class="bcb" style="height:65%"></div>
+        <div class="bcb" style="height:50%"></div>
+        <div class="bcb" style="height:80%"></div>
+        <div class="bcb" style="height:60%"></div>
+        <div class="bcb" style="height:95%"></div>
+        <div class="bcb" style="height:70%"></div>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <span class="bc-tag">Daily</span>
+      <div class="bc-icon bc-icon-terra">✅</div>
+      <h3 class="bc-h">Attendance Tracking</h3>
+      <p class="bc-p">Mark per-class or per-subject attendance with real-time parent alerts and monthly reports.</p>
+    </div>
+
+    <div class="bento-card">
+      <span class="bc-tag">Finance</span>
+      <div class="bc-icon bc-icon-amber">💳</div>
+      <h3 class="bc-h">Fee Management</h3>
+      <p class="bc-p">Structured fee plans, payment tracking, PDF receipts, and automated overdue reminders.</p>
+    </div>
+
+    <div class="bento-card">
+      <span class="bc-tag">Academic</span>
+      <div class="bc-icon bc-icon-forest">📋</div>
+      <h3 class="bc-h">Exams & Report Cards</h3>
+      <p class="bc-p">Schedule exams, enter subject marks, auto-calculate grades, and generate beautiful certificates.</p>
+    </div>
+
+    <div class="bento-card">
+      <span class="bc-tag">Planning</span>
+      <div class="bc-icon bc-icon-gold">📅</div>
+      <h3 class="bc-h">Timetable Builder</h3>
+      <p class="bc-p">Drag-and-drop scheduling with conflict detection and period copy tools.</p>
+    </div>
+
+    <div class="bento-card">
+      <span class="bc-tag">Communication</span>
+      <div class="bc-icon bc-icon-terra">🔔</div>
+      <h3 class="bc-h">Smart Notifications</h3>
+      <p class="bc-p">Targeted in-app, email, and WhatsApp alerts to students, parents, and staff.</p>
+    </div>
+
+    <div class="bento-card">
+      <span class="bc-tag">Academic</span>
+      <div class="bc-icon bc-icon-forest">📚</div>
+      <h3 class="bc-h">Library System</h3>
+      <p class="bc-p">Manage your book catalog, issue & return records, and automated overdue alerts.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Wave divider -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" fill="#1a140a" xmlns="http://www.w3.org/2000/svg" style="background:#f3ead7;">
+    <path d="M0,0 C360,60 720,0 1080,60 C1260,90 1380,30 1440,0 L1440,60 L0,60 Z"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════
+     HOW IT WORKS — TIMELINE
+═══════════════════════════════════════ -->
+<section class="timeline-section" id="how-it-works">
+  <div class="bokeh-wrap">
+    <div class="bokeh bokeh-1" data-parallax-el="0.04"></div>
+    <div class="bokeh bokeh-2" data-parallax-el="0.06"></div>
+    <div class="bokeh bokeh-3" data-parallax-el="0.03"></div>
+  </div>
+
+  <div class="timeline-header reveal">
+    <div class="pretitle">Getting Started</div>
+    <h2>Three steps to <em>transform</em> your institution</h2>
+  </div>
+
+  <div class="timeline-steps">
+    <div class="tl-step">
+      <div class="tl-num">01</div>
+      <div class="tl-body">
+        <h3>Register Your Institution</h3>
+        <p>Sign up as a School or Coaching Institute. Get instant access to your dedicated, fully isolated management dashboard in seconds.</p>
+      </div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-num">02</div>
+      <div class="tl-body">
+        <h3>Configure Your Setup</h3>
+        <p>Add your academic year, classes, subjects, and fee structures using our elegantly guided setup wizard. Ready in minutes, not days.</p>
+      </div>
+    </div>
+    <div class="tl-step">
+      <div class="tl-num">03</div>
+      <div class="tl-body">
+        <h3>Manage Everything, Effortlessly</h3>
+        <p>Add students and staff, mark attendance, schedule exams, collect fees, and communicate — all from one beautiful command centre.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave divider -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" fill="#fdf8f0" xmlns="http://www.w3.org/2000/svg" style="background:#1a140a;">
+    <path d="M0,60 C480,0 960,60 1440,0 L1440,60 L0,60 Z"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════
+     TESTIMONIALS — Magazine
+═══════════════════════════════════════ -->
+<section class="magazine-section" id="testimonials">
+  <div class="magazine-header">
+    <div class="mh-title">
+      <div class="pretitle">Trusted Voices</div>
+      <h2>Words from <em>the field</em></h2>
+    </div>
+    <p class="mh-caption">Educators who transformed their institutions with SkolMatrixa.</p>
+  </div>
+
+  <div class="magazine-grid reveal-stagger">
+    <div class="mg-card featured">
+      <div class="mg-quote">"</div>
+      <p class="mg-text">SkolMatrixa transformed how we run our school. Attendance and fee management alone saved us 10+ hours every week. The parent notification system is absolutely brilliant.</p>
+      <div class="mg-stars">
+        <span class="mg-star">★</span><span class="mg-star">★</span><span class="mg-star">★</span><span class="mg-star">★</span><span class="mg-star">★</span>
+      </div>
+      <div class="mg-author">
+        <div class="mg-avatar">PS</div>
+        <div>
+          <div class="mg-name">Dr. Priya Sharma</div>
+          <div class="mg-role">Principal · Delhi Public School</div>
+        </div>
+      </div>
+    </div>
+    <div class="mg-card">
+      <div class="mg-quote" style="color:var(--gold-deep); opacity:0.4">"</div>
+      <p class="mg-text" style="color:var(--ink-lt)">As a coaching institute, we needed batch management that actually works. SkolMatrixa delivered beyond expectations — intuitive, fast, and completely reliable.</p>
+      <div class="mg-stars"><span class="mg-star">★</span><span class="mg-star">★</span><span class="mg-star">★</span><span class="mg-star">★</span><span class="mg-star">★</span></div>
+      <div class="mg-author">
+        <div class="mg-avatar">RK</div>
+        <div>
+          <div class="mg-name">Rajesh Kumar</div>
+          <div class="mg-role">Director · Apex Coaching</div>
+        </div>
+      </div>
+    </div>
+    <div class="mg-card">
+      <div class="mg-quote" style="color:var(--gold-deep); opacity:0.4">"</div>
+      <p class="mg-text" style="color:var(--ink-lt)">Report card generation and the parent portal are incredible. Parents love the transparency and our admin team saves days every term.</p>
+      <div class="mg-stars"><span class="mg-star">★</span><span class="mg-star">★</span><span class="mg-star">★</span><span class="mg-star">★</span><span class="mg-star">★</span></div>
+      <div class="mg-author">
+        <div class="mg-avatar">AD</div>
+        <div>
+          <div class="mg-name">Anita Desai</div>
+          <div class="mg-role">Admin · St. Mary's Academy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave divider -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 60" preserveAspectRatio="none" fill="#fce6aa" xmlns="http://www.w3.org/2000/svg" style="background:#fdf8f0;">
+    <path d="M0,30 C360,0 720,60 1080,20 C1260,0 1380,40 1440,30 L1440,60 L0,60 Z"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════
+     CTA — Golden sunset
+═══════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="cta-background"></div>
+  <div class="cta-bg-mountain" data-parallax-cta="0.12">
+    <div class="cta-forest"></div>
+  </div>
+
+  <div class="cta-content reveal">
+    <h2>Begin <em>your</em> golden chapter</h2>
+    <p>Join hundreds of institutions who trust SkolMatrixa to manage what matters most — beautifully.</p>
+    <div class="cta-btns">
+      <a href="/register" class="btn-ivory">Create Free Account</a>
+      <a href="/contact" class="btn-outline-light">Talk to Our Team</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Skol<span>Matrix</span></div>
+      <div class="footer-tagline">Where knowledge meets clarity.</div>
+    </div>
+    <div class="footer-links">
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/contact">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 SkolMatrixa · Crafted for educators</div>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════
+   NAV SCROLL STYLING
+══════════════════════════════════════ */
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+/* ══════════════════════════════════════
+   MULTI-LAYER PARALLAX
+══════════════════════════════════════ */
+(function() {
+  const heroParallaxEls = document.querySelectorAll('[data-parallax]');
+  const botEls  = document.querySelectorAll('[data-parallax-el]');
+  const ctaBgEl = document.querySelector('[data-parallax-cta]');
+
+  function onScroll() {
+    const sy = window.scrollY;
+
+    // Hero landscape layers
+    heroParallaxEls.forEach(el => {
+      const speed = parseFloat(el.getAttribute('data-parallax'));
+      el.style.transform = `translateY(${sy * speed}px)`;
+    });
+
+    // Bokeh / botanical elements
+    botEls.forEach(el => {
+      const speed = parseFloat(el.getAttribute('data-parallax-el'));
+      el.style.transform = `translateY(${sy * speed}px)`;
+    });
+
+    // CTA forest parallax
+    if (ctaBgEl) {
+      const rect = ctaBgEl.closest('section').getBoundingClientRect();
+      const offset = -rect.top * parseFloat(ctaBgEl.getAttribute('data-parallax-cta'));
+      ctaBgEl.style.transform = `translateY(${offset}px)`;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ══════════════════════════════════════
+   INTERSECTION OBSERVER REVEALS
+══════════════════════════════════════ */
+(function() {
+  const allReveal = document.querySelectorAll('.reveal, .reveal-stagger, .bento-card, .tl-step, .mg-card');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+
+      if (el.classList.contains('bento-card') || el.classList.contains('mg-card')) {
+        const siblings = el.parentElement.querySelectorAll('.bento-card, .mg-card');
+        const idx = Array.from(siblings).indexOf(el);
+        setTimeout(() => el.classList.add('revealed'), idx * 90);
+      } else if (el.classList.contains('tl-step')) {
+        const steps = el.parentElement.querySelectorAll('.tl-step');
+        const idx = Array.from(steps).indexOf(el);
+        setTimeout(() => el.classList.add('revealed'), idx * 180);
+      } else {
+        el.classList.add('active');
+      }
+      io.unobserve(el);
+    });
+  }, { threshold: 0.1 });
+
+  allReveal.forEach(el => io.observe(el));
+})();
+
+/* ══════════════════════════════════════
+   BENTO CARD 3D TILT
+══════════════════════════════════════ */
+(function() {
+  document.querySelectorAll('.bento-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top)  / rect.height - 0.5;
+      card.style.transform = `translateY(-8px) rotateX(${-y*8}deg) rotateY(${x*8}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+})();
+
+/* ══════════════════════════════════════
+   GOLD SHIMMER ON SCROLL – bar chart
+══════════════════════════════════════ */
+(function() {
+  const bars = document.querySelectorAll('.bcb');
+  const heights = [40, 65, 50, 80, 60, 95, 70];
+  let animated = false;
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !animated) {
+        animated = true;
+        bars.forEach((bar, i) => {
+          bar.style.height = '0%';
+          setTimeout(() => {
+            bar.style.transition = `height 0.8s cubic-bezier(0.23,1,0.32,1) ${i*80}ms`;
+            bar.style.height = heights[i % heights.length] + '%';
+          }, 200);
+        });
+        io.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const wideCard = document.querySelector('.bento-card.wide');
+  if (wideCard) io.observe(wideCard);
+})();
+</script>
+</body>
+</html>

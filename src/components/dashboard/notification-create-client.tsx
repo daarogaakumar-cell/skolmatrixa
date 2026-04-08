@@ -57,7 +57,7 @@ export function NotificationCreateClient() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [options, setOptions] = useState<{ classes: Record<string, any>[]; batches: Record<string, any>[] }>({ classes: [], batches: [] });
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-  const [sendEmailToo, setSendEmailToo] = useState(false);
+  const [sendEmailToo, setSendEmailToo] = useState(false);;
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -251,7 +251,7 @@ export function NotificationCreateClient() {
         </Card>
 
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="pt-6 space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <Label htmlFor="email-toggle" className="text-sm font-medium">Also send via email</Label>
@@ -260,6 +260,15 @@ export function NotificationCreateClient() {
                 </p>
               </div>
               <Switch id="email-toggle" checked={sendEmailToo} onCheckedChange={setSendEmailToo} />
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <Label className="text-sm font-medium">Also send via WhatsApp</Label>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  WhatsApp notifications — coming soon
+                </p>
+              </div>
+              <Badge variant="secondary" className="text-xs">Coming Soon</Badge>
             </div>
           </CardContent>
         </Card>

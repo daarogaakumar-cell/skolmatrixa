@@ -6,6 +6,16 @@ import { logAudit } from "./audit";
 import { revalidatePath } from "next/cache";
 import { notificationSchema } from "@/lib/validations/schemas";
 import { sendBulkAnnouncementEmail } from "@/lib/email";
+import {
+  sendWhatsAppAnnouncement,
+  sendBulkWhatsApp,
+  getWhatsAppSettings,
+  normalizePhone,
+  getTemplatesForTenantType,
+  type WhatsAppRecipient,
+  type WhatsAppTemplate,
+  type TenantTypeKey,
+} from "@/lib/whatsapp";
 
 // ==================== Auth Helpers ====================
 
@@ -39,6 +49,8 @@ export async function createNotification(data: {
   targetClassId?: string;
   targetBatchId?: string;
   sendEmail?: boolean;
+  sendWhatsApp?: boolean;
+  whatsAppTemplate?: string;
 }) {
   try {
     const user = await requireTenantAdmin();
@@ -48,6 +60,7 @@ export async function createNotification(data: {
 
     const sentVia = ["IN_APP"];
     if (data.sendEmail) sentVia.push("EMAIL");
+    if (data.sendWhatsApp) sentVia.push("WHATSAPP");
 
     const notification = await prisma.notification.create({
       data: {
@@ -69,13 +82,19 @@ export async function createNotification(data: {
       await sendNotificationEmails(tenantId, notification.id, validated.title, validated.message, validated.targetRoles, validated.targetClassId, validated.targetBatchId);
     }
 
+    // Send WhatsApp if requested
+    if (data.sendWhatsApp) {
+      sendNotificationWhatsApp(tenantId, notification.id, validated.title, validated.message, validated.targetRoles, validated.targetClassId, validated.targetBatchId, data.whatsAppTemplate)
+        .catch((err) => console.error("WhatsApp notification error:", err));
+    }
+
     await logAudit({
       tenantId,
       userId: user.id,
       action: "NOTIFICATION_CREATED",
       entityType: "Notification",
       entityId: notification.id,
-      details: { title: validated.title, type: validated.type },
+      details: { title: validated.title, type: validated.type, sentVia },
     });
 
     revalidatePath("/dashboard/notifications");
@@ -389,6 +408,114 @@ async function sendNotificationEmails(
     }
   } catch (error) {
     console.error("Send notification emails error:", error);
+  }
+}
+
+async function sendNotificationWhatsApp(
+  tenantId: string,
+  notificationId: string,
+  title: string,
+  message: string,
+  targetRoles?: string[],
+  targetClassId?: string,
+  targetBatchId?: string,
+  templateName?: string,
+) {
+  try {
+    const tenant = await prisma.tenant.findUnique({
+      where: { id: tenantId },
+      select: { name: true, logoUrl: true, slug: true, type: true, settings: true },
+    });
+
+    if (!tenant) return;
+
+    const waSettings = getWhatsAppSettings((tenant.settings as Record<string, unknown>) || {});
+    if (!waSettings.enabled) return;
+
+    // Validate template is available for this tenant type
+    const resolvedTemplate = (templateName || "general_announcement") as WhatsAppTemplate;
+    const availableTemplates = getTemplatesForTenantType(tenant.type as TenantTypeKey);
+    const finalTemplate = availableTemplates.includes(resolvedTemplate) ? resolvedTemplate : "general_announcement" as WhatsAppTemplate;
+
+    // Collect phone numbers
+    const recipients: WhatsAppRecipient[] = [];
+    const seenPhones = new Set<string>();
+
+    function addPhone(phone: string | null | undefined, name?: string) {
+      if (!phone) return;
+      const normalized = normalizePhone(phone, waSettings.defaultCountryCode);
+      if (normalized && !seenPhones.has(normalized)) {
+        seenPhones.add(normalized);
+        recipients.push({ phone: normalized, name });
+      }
+    }
+
+    if (targetClassId || targetBatchId) {
+      const students = await prisma.student.findMany({
+        where: {
+          tenantId,
+          status: "ACTIVE",
+          ...(targetClassId ? { classId: targetClassId } : {}),
+          ...(targetBatchId ? { batchId: targetBatchId } : {}),
+        },
+        select: { phone: true, name: true, guardianPhone: true, guardianName: true },
+      });
+      for (const s of students) {
+        addPhone(s.guardianPhone, s.guardianName || undefined);
+        addPhone(s.phone, s.name);
+      }
+    } else {
+      const userWhere: Record<string, unknown> = { tenantId, isActive: true };
+      if (targetRoles && targetRoles.length > 0) {
+        userWhere.role = { in: targetRoles };
+      }
+      const users = await prisma.user.findMany({
+        where: userWhere,
+        select: { phone: true, name: true },
+        take: 500,
+      });
+      for (const u of users) addPhone(u.phone, u.name);
+    }
+
+    if (recipients.length > 0) {
+      let result: { sent: number; failed: number; errors: string[] };
+
+      if (finalTemplate === "general_announcement") {
+        result = await sendWhatsAppAnnouncement({
+          tenantId,
+          tenantName: tenant.name,
+          tenantLogoUrl: tenant.logoUrl || undefined,
+          recipients,
+          title,
+          message,
+        });
+      } else {
+        result = await sendBulkWhatsApp({
+          tenantId,
+          templateName: finalTemplate,
+          recipients,
+          headerImageUrl: tenant.logoUrl || undefined,
+          variables: {
+            title,
+            message: message.substring(0, 900),
+            institute_name: tenant.name,
+          },
+          ctaButtons: tenant.slug
+            ? [{ index: 0, subType: "url" as const, text: tenant.slug }]
+            : undefined,
+        });
+      }
+
+      // Update notification with WhatsApp status
+      await prisma.notification.update({
+        where: { id: notificationId },
+        data: {
+          whatsappStatus: result.failed === 0 ? "SENT" : (result.sent > 0 ? "SENT" : "FAILED"),
+        },
+      });
+    }
+  } catch (error) {
+    console.error("Send notification WhatsApp error:", error);
   }
 }
 

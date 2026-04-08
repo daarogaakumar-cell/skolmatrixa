@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkolMatrixa — Art Deco Solarium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════
+   THEME 16: ART DECO SOLARIUM
+   Concept: 1920s golden-age Parisian solarium meets modern
+   education. Deco geometry, stained glass light shafts,
+   chevrons, sunburst rays, hammered gold, midnight black.
+   Font: Playfair Display (editorial) · Josefin Sans (labels)
+   Palette: Midnight · Champagne Gold · Ivory · Scarlet · Verdigris
+   ════════════════════════════════════════════════════════ */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --midnight:    #0d0e12;
+  --midnight-2:  #151620;
+  --midnight-3:  #1e2030;
+  --deco-gold:   #c9a84c;
+  --deco-gold-2: #e8c96e;
+  --deco-gold-3: #f5e0a0;
+  --ivory:       #f5f0e4;
+  --ivory-2:     #ede6d0;
+  --ivory-3:     #e2d9be;
+  --scarlet:     #c0392b;
+  --scarlet-lt:  #e05540;
+  --verdg:       #2e7a6e;
+  --verdg-lt:    #4aab9a;
+  --smoke-gold:  rgba(201,168,76,0.15);
+
+  --glow-gold:   0 0 40px rgba(201,168,76,0.25);
+  --glow-glass:  0 0 80px rgba(201,168,76,0.1);
+  --shadow-deep: 0 24px 80px rgba(0,0,0,0.6);
+  --shadow-card: 0 12px 50px rgba(0,0,0,0.4);
+  --shadow-warm: 0 8px 40px rgba(201,168,76,0.2);
+
+  --fs-hero: clamp(3.4rem, 8vw, 7.5rem);
+  --fs-h2:   clamp(2.2rem, 4.5vw, 3.6rem);
+  --fs-body: clamp(0.93rem, 1.5vw, 1.06rem);
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'Josefin Sans',sans-serif;
+  background:var(--midnight);
+  color:var(--ivory);
+  overflow-x:hidden;
+  line-height:1.75;
+}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  padding:1.4rem 3.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all 0.5s;
+}
+nav.scrolled{
+  background:rgba(13,14,18,0.94);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(201,168,76,0.1);
+}
+.nav-logo{
+  font-family:'Playfair Display',serif;
+  font-size:1.55rem;font-weight:700;
+  color:var(--ivory);text-decoration:none;letter-spacing:0.04em;
+}
+.nav-logo span{color:var(--deco-gold);}
+.nav-divider{
+  flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,0.2),transparent);
+  margin:0 2.5rem;
+}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{
+  font-size:0.72rem;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(245,240,228,0.5);text-decoration:none;transition:color 0.3s;
+}
+.nav-links a:hover{color:var(--deco-gold);}
+.nav-cta{
+  padding:0.6rem 1.8rem;
+  background:transparent;border:1px solid var(--deco-gold);
+  color:var(--deco-gold);border-radius:2px;
+  font-size:0.7rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  text-decoration:none;transition:all 0.35s;
+}
+.nav-cta:hover{background:var(--deco-gold);color:var(--midnight);}
+
+/* ═══════════════════════════════
+   HERO — SUNBURST SOLARIUM
+═══════════════════════════════ */
+.deco-hero{
+  min-height:100vh;
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  padding:7rem 2rem 5rem;
+  background:var(--midnight);
+}
+
+/* Animated stained-glass light shafts */
+#light-canvas{
+  position:absolute;inset:0;
+  pointer-events:none;z-index:1;
+}
+
+/* Central sunburst ring structure */
+.sunburst-ring{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-52%);
+  pointer-events:none;z-index:4;
+}
+.sb-ring-outer{width:min(640px,90vw);height:min(640px,90vw);margin-top:calc(-1 * min(320px,45vw));margin-left:calc(-1 * min(320px,45vw));}
+.sb-ring-inner{
+  position:absolute;
+  top:50%;left:50%;
+  width:min(480px,70vw);height:min(480px,70vw);
+  transform:translate(-50%,-50%);
+}
+.sb-ring-core{
+  position:absolute;
+  top:50%;left:50%;
+  width:min(320px,48vw);height:min(320px,48vw);
+  transform:translate(-50%,-50%);
+}
+
+/* Deco frame — corner ornaments */
+.deco-corners{
+  position:absolute;inset:0;pointer-events:none;z-index:5;
+}
+
+/* Hero content */
+.hero-content{
+  position:relative;z-index:20;
+  max-width:800px;padding:0 2rem;
+}
+.deco-flag{
+  display:inline-flex;align-items:center;gap:1rem;
+  margin-bottom:2rem;
+  opacity:0;animation:deco-rise 0.9s ease 0.3s forwards;
+}
+.df-line{display:block;width:40px;height:1px;background:var(--deco-gold);}
+.df-text{
+  font-size:0.68rem;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--deco-gold);
+}
+.df-diamond{
+  width:7px;height:7px;background:var(--deco-gold);
+  transform:rotate(45deg);flex-shrink:0;
+}
+
+.deco-title{
+  font-family:'Playfair Display',serif;
+  font-size:var(--fs-hero);
+  font-weight:900;
+  line-height:0.95;
+  letter-spacing:-0.02em;
+  margin-bottom:1rem;
+  opacity:0;animation:deco-rise 1.1s ease 0.5s forwards;
+}
+.deco-title .sup-line{
+  display:block;
+  font-size:0.38em;font-weight:400;font-style:italic;
+  letter-spacing:0.12em;color:var(--deco-gold-3);
+  margin-bottom:0.3em;
+}
+.deco-title .main-word{
+  display:block;color:var(--ivory);
+  text-shadow:0 4px 40px rgba(201,168,76,0.2);
+}
+.deco-title .gold-word{
+  display:block;
+  background:linear-gradient(135deg, var(--deco-gold-3) 0%, var(--deco-gold) 40%, var(--deco-gold-2) 70%, var(--deco-gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 2px 8px rgba(201,168,76,0.4));
+  animation:gold-shimmer 4s ease-in-out infinite;
+}
+@keyframes gold-shimmer{
+  0%,100%{filter:drop-shadow(0 2px 8px rgba(201,168,76,0.4));}
+  50%    {filter:drop-shadow(0 2px 20px rgba(201,168,76,0.7));}
+}
+
+.deco-sub{
+  font-size:var(--fs-body);
+  color:rgba(245,240,228,0.55);
+  line-height:1.9;max-width:500px;margin:1.8rem auto 3rem;
+  letter-spacing:0.02em;
+  opacity:0;animation:deco-rise 1s ease 0.9s forwards;
+}
+.deco-actions{
+  display:flex;gap:1.4rem;justify-content:center;flex-wrap:wrap;
+  opacity:0;animation:deco-rise 1s ease 1.1s forwards;
+}
+.btn-deco-primary{
+  padding:1rem 3rem;
+  background:linear-gradient(135deg,var(--deco-gold),var(--deco-gold-2));
+  color:var(--midnight);border:none;border-radius:2px;
+  font-family:'Josefin Sans',sans-serif;
+  font-size:0.75rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  text-decoration:none;transition:all 0.35s;
+  box-shadow:var(--shadow-warm);
+  position:relative;overflow:hidden;
+}
+.btn-deco-primary::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.12) 50%,transparent 100%);
+  transform:skewX(-20deg) translateX(-120%);
+  transition:transform 0.55s;
+}
+.btn-deco-primary:hover::before{transform:skewX(-20deg) translateX(220%);}
+.btn-deco-primary:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(201,168,76,0.45);}
+
+.btn-deco-ghost{
+  padding:1rem 2.6rem;
+  background:transparent;color:var(--ivory);
+  border:1px solid rgba(245,240,228,0.25);border-radius:2px;
+  font-size:0.75rem;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;
+  text-decoration:none;transition:all 0.3s;display:flex;align-items:center;gap:0.7rem;
+}
+.btn-deco-ghost:hover{border-color:var(--deco-gold);color:var(--deco-gold);}
+
+@keyframes deco-rise{
+  from{opacity:0;transform:translateY(22px);}
+  to  {opacity:1;transform:translateY(0);}
+}
+
+/* Scroll indicator */
+.deco-scroll{
+  position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;z-index:30;
+  opacity:0;animation:deco-rise 1s ease 1.8s forwards;
+}
+.ds-t{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(201,168,76,0.5);}
+.ds-line{width:1px;height:38px;background:linear-gradient(to bottom,rgba(201,168,76,0.5),transparent);animation:line-grow 2s ease-in-out infinite;}
+@keyframes line-grow{0%,100%{height:38px;opacity:0.5}50%{height:54px;opacity:1}}
+
+/* ═══════════════════════════════
+   MARQUETRY BAND — GOLD CHEVRON
+═══════════════════════════════ */
+.marquetry-band{
+  background:var(--deco-gold);
+  padding:1.4rem 0;
+  overflow:hidden;position:relative;z-index:10;
+}
+.marquetry-ticker{
+  display:flex;gap:0;
+  animation:ticker-scroll 28s linear infinite;
+  width:max-content;
+}
+.marquetry-ticker:hover{animation-play-state:paused;}
+.mt-item{
+  display:flex;align-items:center;gap:1.2rem;
+  padding:0 2.4rem;white-space:nowrap;
+}
+.mti-text{
+  font-size:0.68rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--midnight);
+}
+.mti-diamond{width:5px;height:5px;background:var(--midnight);transform:rotate(45deg);flex-shrink:0;opacity:0.4;}
+@keyframes ticker-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ═══════════════════════════════
+   DECO STATS — GILDED PANELS
+═══════════════════════════════ */
+.gilded-stats{
+  background:var(--midnight-2);
+  padding:8rem 3rem;
+  position:relative;overflow:hidden;
+  border-top:1px solid rgba(201,168,76,0.1);
+  border-bottom:1px solid rgba(201,168,76,0.1);
+}
+/* Deco chevron background pattern */
+.gilded-stats::before{
+  content:'';
+  position:absolute;inset:0;
+  opacity:0.025;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      var(--deco-gold) 0,
+      var(--deco-gold) 1px,
+      transparent 0,
+      transparent 50%
+    );
+  background-size:40px 40px;
+}
+
+.gs-grid{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+  border:1px solid rgba(201,168,76,0.12);
+}
+.gs-panel{
+  background:var(--midnight-3);
+  padding:3rem 2rem;text-align:center;
+  position:relative;overflow:hidden;
+  border-right:1px solid rgba(201,168,76,0.08);
+  opacity:0;transform:translateY(20px);
+  transition:all 0.6s cubic-bezier(0.23,1,0.32,1);
+}
+.gs-panel:last-child{border-right:none;}
+.gs-panel.revealed{opacity:1;transform:translateY(0);}
+.gs-panel:hover{background:rgba(30,32,48,0.8);}
+/* Gold top notch */
+.gs-panel::before{
+  content:'';
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:30px;height:3px;background:var(--deco-gold);
+}
+.gs-panel::after{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(201,168,76,0.04) 0%,transparent 70%);
+  pointer-events:none;
+}
+/* Decorative deco arch within panel */
+.gs-arch{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:60px;height:24px;
+  border:1px solid rgba(201,168,76,0.15);
+  border-bottom:none;
+  border-radius:60px 60px 0 0;
+}
+.gs-value{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.2rem,3.5vw,3rem);font-weight:900;
+  color:var(--deco-gold-2);
+  line-height:1;margin:1.5rem 0 0.5rem;
+}
+.gs-label{font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:rgba(245,240,228,0.35);font-weight:600;}
+
+/* ═══════════════════════════════
+   GRAND HALL — ABOUT
+═══════════════════════════════ */
+.grand-hall{
+  background:var(--midnight);
+  padding:10rem 0;
+  position:relative;overflow:hidden;
+}
+/* Corner deco frames */
+.gh-corner{
+  position:absolute;pointer-events:none;z-index:2;
+  opacity:0.18;
+  width:160px;height:160px;
+}
+.gh-corner-tl{top:3rem;left:3rem;}
+.gh-corner-br{bottom:3rem;right:3rem;transform:rotate(180deg);}
+
+.hall-container{
+  max-width:1200px;margin:0 auto;padding:0 3rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:7rem;align-items:center;
+}
+
+/* Data panels cluster */
+.panel-cluster{position:relative;height:520px;}
+.deco-panel{
+  position:absolute;
+  background:var(--midnight-2);
+  border:1px solid rgba(201,168,76,0.15);
+  border-radius:2px;
+  padding:2rem;
+  box-shadow:var(--shadow-card);
+  transition:all 0.55s cubic-bezier(0.23,1,0.32,1);
+}
+.deco-panel:hover{transform:translateY(-12px) rotate(0deg) !important;box-shadow:var(--shadow-deep),var(--glow-gold);}
+.deco-panel::before{
+  content:'';
+  position:absolute;inset:0;
+  border:1px solid rgba(201,168,76,0.06);
+  pointer-events:none;
+}
+
+.dp-main{
+  width:82%;top:50%;left:50%;
+  transform:translate(-53%,-52%) rotate(-1.2deg);
+  z-index:3;
+  border-top:2px solid var(--deco-gold);
+  animation:panel-float 10s ease-in-out infinite;
+}
+.dp-side1{
+  width:58%;top:5%;right:0;
+  transform:rotate(2.5deg);z-index:4;
+  border-top:2px solid var(--verdg);
+  animation:panel-float 7.5s ease-in-out infinite 1.8s;
+}
+.dp-side2{
+  width:54%;bottom:2%;left:0;
+  transform:rotate(-2.5deg);z-index:2;
+  border-top:2px solid var(--scarlet);
+  animation:panel-float 12s ease-in-out infinite 3.5s;
+  opacity:0.9;
+}
+@keyframes panel-float{
+  0%,100%{transform:rotate(var(--r,-1.2deg)) translateY(0);}
+  50%    {transform:rotate(var(--r,-1.2deg)) translateY(-12px);}
+}
+
+.dp-tag{font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(201,168,76,0.5);margin-bottom:0.4rem;}
+.dp-val{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:900;color:var(--deco-gold-2);line-height:1;}
+.dp-val.verdg{color:var(--verdg-lt);}
+.dp-val.scarlet{color:var(--scarlet-lt);}
+.dp-note{font-size:0.8rem;color:rgba(245,240,228,0.35);margin-top:0.3rem;}
+.dp-hr{height:1px;background:rgba(201,168,76,0.1);margin:1rem 0;}
+.dp-bars{display:flex;align-items:flex-end;gap:4px;height:34px;}
+.dp-bar{
+  flex:1;border-radius:1px 1px 0 0;
+  background:linear-gradient(to top,var(--deco-gold),var(--deco-gold-2));
+  opacity:0.55;
+}
+
+/* Text side */
+.hall-text .deco-kicker{
+  font-size:0.68rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--deco-gold);
+  display:flex;align-items:center;gap:0.7rem;margin-bottom:1.5rem;
+}
+.dk-line{display:block;width:36px;height:1px;background:var(--deco-gold);}
+.hall-text h2{
+  font-family:'Playfair Display',serif;
+  font-size:var(--fs-h2);font-weight:900;
+  color:var(--ivory);line-height:1.1;letter-spacing:-0.01em;
+  margin-bottom:1.4rem;
+}
+.hall-text h2 em{font-style:italic;color:var(--deco-gold);}
+.hall-text p{color:rgba(245,240,228,0.55);line-height:1.9;margin-bottom:1.8rem;}
+
+.deco-list{list-style:none;margin-bottom:2.5rem;display:flex;flex-direction:column;gap:0.9rem;}
+.deco-list li{display:flex;align-items:flex-start;gap:1rem;font-size:0.96rem;color:rgba(245,240,228,0.55);}
+.dl-mark{
+  width:20px;height:20px;flex-shrink:0;margin-top:0.15rem;
+  background:transparent;border:1px solid var(--deco-gold);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.65rem;color:var(--deco-gold);font-weight:700;
+  transform:rotate(45deg);border-radius:2px;
+  transition:all 0.3s;
+}
+.deco-list li:hover .dl-mark{background:var(--deco-gold);color:var(--midnight);}
+.dl-txt{flex:1;}
+
+/* ═══════════════════════════════
+   EXHIBITION HALL — FEATURES
+═══════════════════════════════ */
+.exhibition{
+  background:var(--midnight-2);
+  padding:10rem 0;
+  position:relative;overflow:hidden;
+}
+.exhibition::before{
+  content:'';
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(
+    90deg,
+    rgba(201,168,76,0.02) 0,
+    rgba(201,168,76,0.02) 1px,
+    transparent 1px,
+    transparent 80px
+  );
+  pointer-events:none;
+}
+
+.ex-header{
+  text-align:center;max-width:680px;margin:0 auto 5rem;padding:0 2rem;
+}
+.ex-header .deco-kicker{justify-content:center;margin-bottom:1.2rem;}
+.ex-header h2{font-family:'Playfair Display',serif;font-size:var(--fs-h2);font-weight:900;color:var(--ivory);letter-spacing:-0.01em;line-height:1.1;margin-bottom:0.9rem;}
+.ex-header h2 em{font-style:italic;color:var(--deco-gold);}
+.ex-header p{color:rgba(245,240,228,0.4);letter-spacing:0.02em;}
+
+.ex-grid{
+  max-width:1200px;margin:0 auto;padding:0 3rem;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;
+  border:1px solid rgba(201,168,76,0.1);
+}
+
+.ex-card{
+  background:var(--midnight-3);
+  padding:2.5rem;
+  position:relative;overflow:hidden;
+  border-right:1px solid rgba(201,168,76,0.07);
+  border-bottom:1px solid rgba(201,168,76,0.07);
+  opacity:0;transform:translateY(24px);
+  transition:all 0.6s cubic-bezier(0.23,1,0.32,1);
+  cursor:default;
+}
+.ex-card:hover{background:rgba(30,32,48,0.95);z-index:2;}
+.ex-card:hover .ec-icon{transform:scale(1.1) rotate(-4deg);}
+.ex-card.revealed{opacity:1;transform:translateY(0);}
+
+/* Gold top notch on hover */
+.ex-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--panel-accent,var(--deco-gold));
+  transform:scaleX(0);transform-origin:center;
+  transition:transform 0.35s ease;
+}
+.ex-card:hover::before{transform:scaleX(1);}
+
+/* Deco corner mark */
+.ec-corner{
+  position:absolute;top:1.2rem;right:1.2rem;
+  width:20px;height:20px;
+  border-top:1px solid rgba(201,168,76,0.2);
+  border-right:1px solid rgba(201,168,76,0.2);
+  pointer-events:none;
+}
+.ex-card:hover .ec-corner{border-color:rgba(201,168,76,0.4);}
+
+.ec-icon{
+  width:56px;height:56px;border-radius:2px;
+  background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;margin-bottom:1.3rem;
+  transition:transform 0.3s;
+}
+.ec-tag{font-size:0.62rem;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(201,168,76,0.4);margin-bottom:0.6rem;}
+.ec-h{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--ivory);margin-bottom:0.5rem;}
+.ec-p{font-size:0.87rem;color:rgba(245,240,228,0.4);line-height:1.8;}
+
+/* Wide card for features */
+.ex-card.wide{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:2rem;}
+.wide-table{width:100%;}
+.wt-row{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0;border-bottom:1px solid rgba(201,168,76,0.07);}
+.wt-row:last-child{border-bottom:none;}
+.wt-k{font-size:0.84rem;color:rgba(245,240,228,0.4);}
+.wt-v{font-family:'Playfair Display',serif;font-weight:700;color:var(--deco-gold-2);font-size:0.95rem;}
+
+/* ═══════════════════════════════
+   ROTUNDA — HOW IT WORKS
+═══════════════════════════════ */
+.rotunda{
+  background:var(--midnight);
+  padding:10rem 0;
+  position:relative;overflow:hidden;
+}
+/* Central rotunda ring decoration */
+.rotunda-ring{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:700px;height:700px;
+  border:1px solid rgba(201,168,76,0.04);
+  border-radius:50%;pointer-events:none;z-index:1;
+}
+.rotunda-ring-2{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:500px;height:500px;
+  border:1px solid rgba(201,168,76,0.03);
+  border-radius:50%;pointer-events:none;z-index:1;
+}
+.rotunda::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--deco-gold),transparent);
+}
+
+.rot-header{text-align:center;padding:0 2rem;margin-bottom:6rem;position:relative;z-index:5;}
+.rot-header .deco-kicker{justify-content:center;margin-bottom:1.2rem;}
+.rot-header h2{font-family:'Playfair Display',serif;font-size:var(--fs-h2);font-weight:900;color:var(--ivory);letter-spacing:-0.01em;}
+.rot-header h2 em{font-style:italic;color:var(--deco-gold);}
+
+.rot-steps{
+  max-width:960px;margin:0 auto;padding:0 3rem;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;
+  position:relative;z-index:5;
+}
+.rot-step{
+  background:var(--midnight-2);
+  border:1px solid rgba(201,168,76,0.1);
+  border-radius:2px;
+  padding:3rem 2.2rem;
+  text-align:center;
+  opacity:0;transform:translateY(28px);
+  transition:all 0.6s cubic-bezier(0.23,1,0.32,1);
+  position:relative;overflow:hidden;
+}
+.rot-step.revealed{opacity:1;transform:translateY(0);}
+.rot-step:hover{
+  border-color:rgba(201,168,76,0.25);
+  box-shadow:var(--glow-gold);
+  transform:translateY(-8px) !important;
+}
+.rot-step::before{
+  content:'';
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:50%;height:2px;background:var(--deco-gold);opacity:0;
+  transition:opacity 0.3s;
+}
+.rot-step:hover::before{opacity:1;}
+
+/* Step connecting lines (desktop) */
+.rot-step:not(:last-child)::after{
+  content:'◆';
+  position:absolute;top:3.5rem;right:-1.4rem;
+  color:rgba(201,168,76,0.3);font-size:0.8rem;z-index:5;
+}
+
+.rot-num{
+  position:absolute;top:1.5rem;right:1.8rem;
+  font-family:'Playfair Display',serif;
+  font-size:4rem;font-weight:900;
+  color:rgba(201,168,76,0.04);line-height:1;
+}
+.rot-icon{
+  width:72px;height:72px;
+  border:1px solid rgba(201,168,76,0.2);
+  border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;margin:0 auto 1.5rem;
+  background:rgba(201,168,76,0.04);
+  position:relative;
+  transition:all 0.3s;
+}
+/* Deco diamond corner marks on icon box */
+.rot-icon::before,.rot-icon::after{
+  content:'';
+  position:absolute;
+  width:6px;height:6px;
+  background:var(--deco-gold);
+  transform:rotate(45deg);
+  opacity:0.4;
+  transition:opacity 0.3s;
+}
+.rot-icon::before{top:-3px;left:-3px;}
+.rot-icon::after{bottom:-3px;right:-3px;}
+.rot-step:hover .rot-icon{
+  background:rgba(201,168,76,0.08);
+  box-shadow:0 0 30px rgba(201,168,76,0.15);
+}
+.rot-step:hover .rot-icon::before,
+.rot-step:hover .rot-icon::after{opacity:0.8;}
+
+.rot-step h3{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ivory);margin-bottom:0.7rem;}
+.rot-step p{font-size:0.88rem;color:rgba(245,240,228,0.4);line-height:1.82;}
+
+/* ═══════════════════════════════
+   TESTIMONIALS — PORTRAIT GALLERY
+═══════════════════════════════ */
+.portrait-gallery{
+  background:var(--midnight-2);
+  padding:10rem 0;
+  position:relative;overflow:hidden;
+  border-top:1px solid rgba(201,168,76,0.08);
+  border-bottom:1px solid rgba(201,168,76,0.08);
+}
+.pg-header{text-align:center;padding:0 2rem;margin-bottom:5rem;}
+.pg-header .deco-kicker{justify-content:center;margin-bottom:0.9rem;}
+.pg-header h2{font-family:'Playfair Display',serif;font-size:var(--fs-h2);font-weight:900;color:var(--ivory);letter-spacing:-0.01em;}
+.pg-header h2 em{font-style:italic;color:var(--deco-gold);}
+
+.pg-grid{
+  max-width:1200px;margin:0 auto;padding:0 3rem;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;
+}
+.pg-card{
+  background:var(--midnight-3);
+  border:1px solid rgba(201,168,76,0.1);
+  border-radius:2px;
+  padding:2.8rem;
+  position:relative;overflow:hidden;
+  opacity:0;transform:translateY(22px);
+  transition:all 0.65s cubic-bezier(0.23,1,0.32,1);
+}
+.pg-card::before{content:'';position:absolute;top:0;left:2rem;right:2rem;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.2),transparent);}
+.pg-card.revealed{opacity:1;transform:translateY(0);}
+.pg-card:hover{border-color:rgba(201,168,76,0.2);box-shadow:var(--glow-glass);transform:translateY(-6px)!important;}
+/* Gold border top bar */
+.pg-card::after{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--deco-gold),var(--deco-gold-2),var(--deco-gold));
+  transform:scaleX(0);transition:transform 0.4s;
+}
+.pg-card:hover::after{transform:scaleX(1);}
+
+.pg-quote-mark{
+  font-family:'Playfair Display',serif;
+  font-size:5rem;font-style:italic;
+  color:rgba(201,168,76,0.1);
+  line-height:0.6;margin-bottom:0.4rem;
+}
+.pg-text{font-style:italic;font-size:0.97rem;color:rgba(245,240,228,0.55);line-height:1.88;margin-bottom:1.8rem;}
+.pg-stars{display:flex;gap:4px;margin-bottom:1.2rem;}
+.pg-star{color:var(--deco-gold);font-size:0.82rem;}
+/* Diamond divider */
+.pg-diamond-divider{
+  display:flex;align-items:center;gap:0.6rem;margin-bottom:1.2rem;
+}
+.pdd-line{flex:1;height:1px;background:rgba(201,168,76,0.12);}
+.pdd-d{width:5px;height:5px;background:rgba(201,168,76,0.35);transform:rotate(45deg);flex-shrink:0;}
+.pg-author{display:flex;align-items:center;gap:1rem;}
+.pg-avatar{
+  width:44px;height:44px;border-radius:2px;
+  background:linear-gradient(135deg,var(--deco-gold),var(--deco-gold-2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.78rem;font-weight:700;color:var(--midnight);
+  flex-shrink:0;
+  box-shadow:0 3px 15px rgba(201,168,76,0.3);
+}
+.pg-name{font-size:0.88rem;font-weight:700;color:var(--ivory);letter-spacing:0.04em;}
+.pg-role{font-size:0.74rem;color:rgba(201,168,76,0.5);letter-spacing:0.06em;margin-top:0.1rem;}
+
+/* ═══════════════════════════════
+   CTA — GRAND FINALE
+═══════════════════════════════ */
+.grand-finale{
+  position:relative;overflow:hidden;
+  min-height:76vh;
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  background:var(--midnight);
+}
+/* CTA sunburst SVG background */
+.gf-sunburst{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;z-index:2;
+  opacity:0.55;
+  animation:gf-spin 120s linear infinite;
+}
+@keyframes gf-spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+
+.gf-vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 70% at 50% 50%, transparent 20%, var(--midnight) 70%);
+  z-index:3;pointer-events:none;
+}
+.gf-content{
+  position:relative;z-index:20;
+  max-width:680px;padding:4rem 2rem;
+}
+.gf-content h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2.5rem,6vw,4.8rem);
+  font-weight:900;color:var(--ivory);
+  letter-spacing:-0.01em;line-height:1.06;
+  text-shadow:0 4px 40px rgba(0,0,0,0.5);
+  margin-bottom:1.5rem;
+}
+.gf-content h2 em{font-style:italic;color:var(--deco-gold);}
+.gf-content p{color:rgba(245,240,228,0.4);font-size:1.05rem;max-width:460px;margin:0 auto 3rem;letter-spacing:0.02em;}
+.gf-btns{display:flex;gap:1.4rem;justify-content:center;flex-wrap:wrap;}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--midnight-2);
+  padding:3.5rem 3.5rem;
+  border-top:1px solid rgba(201,168,76,0.1);
+}
+.fi2{
+  max-width:1200px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:2rem;
+}
+.fb2{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--ivory);}
+.fb2 span{color:var(--deco-gold);}
+.ft2{font-size:0.7rem;letter-spacing:0.08em;color:rgba(245,240,228,0.2);margin-top:0.2rem;font-style:italic;}
+.fl2{display:flex;gap:2.2rem;}
+.fl2 a{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(245,240,228,0.25);text-decoration:none;transition:color 0.3s;}
+.fl2 a:hover{color:var(--deco-gold);}
+.fc2{font-size:0.7rem;color:rgba(245,240,228,0.15);letter-spacing:0.04em;}
+
+/* ─── REVEAL UTIL ─── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.9s cubic-bezier(0.23,1,0.32,1),transform 0.9s cubic-bezier(0.23,1,0.32,1);}
+.reveal.active{opacity:1;transform:none;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:960px){
+  .hall-container,.pg-grid,.rot-steps{grid-template-columns:1fr;}
+  .ex-grid{grid-template-columns:1fr 1fr;}
+  .ex-card.wide{grid-column:span 2;}
+  .gs-grid{grid-template-columns:repeat(2,1fr);}
+  .panel-cluster{height:320px;}
+  nav{padding:1rem 1.5rem;}
+  .nav-links,.nav-divider{display:none;}
+  .rot-step:not(:last-child)::after{display:none;}
+}
+@media(max-width:600px){
+  .ex-grid{grid-template-columns:1fr;}
+  .ex-card.wide{grid-column:span 1;display:block;}
+  .gs-grid{grid-template-columns:1fr 1fr;}
+  .pg-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- Light canvas -->
+<canvas id="light-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo">Skol<span>Matrixa</span></a>
+  <div class="nav-divider"></div>
+  <ul class="nav-links">
+    <li><a href="#exhibition">Gallery</a></li>
+    <li><a href="#rotunda">Journey</a></li>
+    <li><a href="#portrait">Voices</a></li>
+  </ul>
+  <a href="/register" class="nav-cta">Enquire Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="deco-hero">
+  <!-- Sunburst ring structure -->
+  <div class="sunburst-ring sb-ring-outer" aria-hidden="true">
+    <svg viewBox="0 0 640 640" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+      <defs>
+        <radialGradient id="rg1" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(201,168,76,0.06)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+      </defs>
+      <!-- Outer ring -->
+      <circle cx="320" cy="320" r="310" fill="none" stroke="rgba(201,168,76,0.08)" stroke-width="1"/>
+      <circle cx="320" cy="320" r="306" fill="none" stroke="rgba(201,168,76,0.04)" stroke-width="3" stroke-dasharray="6 8"/>
+      <!-- Sunburst rays — 36 rays -->
+      <g stroke="rgba(201,168,76,0.08)" stroke-width="1">
+        <line x1="320" y1="10"  x2="320" y2="90"/> <line x1="320" y1="550" x2="320" y2="630"/>
+        <line x1="10"  y1="320" x2="90"  y2="320"/> <line x1="550" y1="320" x2="630" y2="320"/>
+        <line x1="80"  y1="80"  x2="134" y2="134"/> <line x1="506" y1="506" x2="560" y2="560"/>
+        <line x1="560" y1="80"  x2="506" y2="134"/> <line x1="134" y1="506" x2="80"  y2="560"/>
+        <line x1="170" y1="33"  x2="198" y2="110"/> <line x1="470" y1="610" x2="442" y2="530"/>
+        <line x1="470" y1="33"  x2="442" y2="110"/> <line x1="170" y1="610" x2="198" y2="530"/>
+        <line x1="607" y1="170" x2="530" y2="198"/> <line x1="33"  y1="470" x2="110" y2="442"/>
+        <line x1="607" y1="470" x2="530" y2="442"/> <line x1="33"  y1="170" x2="110" y2="198"/>
+        <!-- Corner chevrons on outer ring -->
+        <polyline points="290,15 320,10 350,15" stroke-width="1.5"/>
+        <polyline points="290,625 320,630 350,625" stroke-width="1.5"/>
+        <polyline points="15,290 10,320 15,350" stroke-width="1.5"/>
+        <polyline points="625,290 630,320 625,350" stroke-width="1.5"/>
+      </g>
+      <!-- Diamond markers at cardinal points -->
+      <rect x="317" y="5" width="6" height="6" fill="rgba(201,168,76,0.4)" transform="rotate(45 320 8)"/>
+      <rect x="317" y="629" width="6" height="6" fill="rgba(201,168,76,0.4)" transform="rotate(45 320 632)"/>
+      <rect x="4" y="317" width="6" height="6" fill="rgba(201,168,76,0.4)" transform="rotate(45 7 320)"/>
+      <rect x="630" y="317" width="6" height="6" fill="rgba(201,168,76,0.4)" transform="rotate(45 633 320)"/>
+      <!-- Radial fill -->
+      <circle cx="320" cy="320" r="310" fill="url(#rg1)"/>
+    </svg>
+  </div>
+
+  <!-- Inner ring -->
+  <div class="sunburst-ring sb-ring-inner" aria-hidden="true">
+    <svg viewBox="0 0 480 480" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+      <circle cx="240" cy="240" r="234" fill="none" stroke="rgba(201,168,76,0.06)" stroke-width="1"/>
+      <circle cx="240" cy="240" r="228" fill="none" stroke="rgba(201,168,76,0.03)" stroke-width="1"/>
+      <g stroke="rgba(201,168,76,0.06)" stroke-width="0.8">
+        <line x1="240" y1="6"   x2="240" y2="50"/>  <line x1="240" y1="430" x2="240" y2="474"/>
+        <line x1="6"   y1="240" x2="50"  y2="240"/>  <line x1="430" y1="240" x2="474" y2="240"/>
+        <line x1="58"  y1="58"  x2="90"  y2="90"/>   <line x1="390" y1="390" x2="422" y2="422"/>
+        <line x1="422" y1="58"  x2="390" y2="90"/>   <line x1="90"  y1="390" x2="58"  y2="422"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Core circle -->
+  <div class="sunburst-ring sb-ring-core" aria-hidden="true">
+    <svg viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+      <circle cx="160" cy="160" r="154" fill="rgba(201,168,76,0.025)" stroke="rgba(201,168,76,0.1)" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <!-- Hero text -->
+  <div class="hero-content">
+    <div class="deco-flag">
+      <span class="df-line"></span>
+      <span class="df-diamond"></span>
+      <span class="df-text">Established · MMXXVI · Grand Collection</span>
+      <span class="df-diamond"></span>
+      <span class="df-line"></span>
+    </div>
+    <h1 class="deco-title">
+      <span class="sup-line">The Intelligence of</span>
+      <span class="main-word">SkolMatrixa</span>
+      <span class="gold-word">Elevated.</span>
+    </h1>
+    <p class="deco-sub">
+      An institution-grade school management platform styled in the golden age of architecture, built for the precision of the modern era. Every feature, a masterwork.
+    </p>
+    <div class="deco-actions">
+      <a href="/register" class="btn-deco-primary">◆ Enquire Today</a>
+      <a href="/about" class="btn-deco-ghost">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="none"/></svg>
+        View the Gallery
+      </a>
+    </div>
+  </div>
+
+  <div class="deco-scroll">
+    <span class="ds-t">Enter the Hall</span>
+    <div class="ds-line"></div>
+  </div>
+</section>
+
+<!-- MARQUETRY TICKER -->
+<div class="marquetry-band" aria-label="Features ticker">
+  <div class="marquetry-ticker" id="ticker">
+    <div class="mt-item"><span class="mti-text">Student Management</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Attendance &amp; Analytics</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Fee Management</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Exam &amp; Grading</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Timetable Builder</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Library System</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">WhatsApp Notifications</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Parent Portal</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Multi-Tenant SaaS</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">PDF Report Cards</span><span class="mti-diamond"></span></div>
+    <!-- Duplicate for seamless loop -->
+    <div class="mt-item"><span class="mti-text">Student Management</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Attendance &amp; Analytics</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Fee Management</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Exam &amp; Grading</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Timetable Builder</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Library System</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">WhatsApp Notifications</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Parent Portal</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">Multi-Tenant SaaS</span><span class="mti-diamond"></span></div>
+    <div class="mt-item"><span class="mti-text">PDF Report Cards</span><span class="mti-diamond"></span></div>
+  </div>
+</div>
+
+<!-- GILDED STATS -->
+<section class="gilded-stats">
+  <div class="gs-grid">
+    <div class="gs-panel">
+      <div class="gs-arch"></div>
+      <div class="gs-value">10K+</div>
+      <div class="gs-label">Students Enrolled</div>
+    </div>
+    <div class="gs-panel">
+      <div class="gs-arch"></div>
+      <div class="gs-value">500+</div>
+      <div class="gs-label">Institutions</div>
+    </div>
+    <div class="gs-panel">
+      <div class="gs-arch"></div>
+      <div class="gs-value">₹50L+</div>
+      <div class="gs-label">Fees Processed</div>
+    </div>
+    <div class="gs-panel">
+      <div class="gs-arch"></div>
+      <div class="gs-value">5M+</div>
+      <div class="gs-label">Messages Sent</div>
+    </div>
+  </div>
+</section>
+
+<!-- GRAND HALL — ABOUT -->
+<section class="grand-hall" id="about">
+  <!-- SVG corner ornaments -->
+  <div class="gh-corner gh-corner-tl" aria-hidden="true">
+    <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+      <path d="M10,10 L10,80 L80,80" stroke="rgba(201,168,76,1)" stroke-width="1" fill="none"/>
+      <path d="M10,10 L40,10" stroke="rgba(201,168,76,1)" stroke-width="1.5"/>
+      <path d="M10,10 L10,40" stroke="rgba(201,168,76,1)" stroke-width="1.5"/>
+      <!-- Inner deco elements -->
+      <circle cx="10" cy="10" r="4" fill="rgba(201,168,76,1)"/>
+      <circle cx="80" cy="80" r="3" fill="rgba(201,168,76,1)"/>
+      <path d="M30,10 L10,30" stroke="rgba(201,168,76,0.5)" stroke-width="0.8"/>
+      <path d="M50,10 L10,50" stroke="rgba(201,168,76,0.3)" stroke-width="0.8"/>
+      <path d="M70,10 L10,70" stroke="rgba(201,168,76,0.2)" stroke-width="0.8"/>
+    </svg>
+  </div>
+  <div class="gh-corner gh-corner-br" aria-hidden="true">
+    <svg viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+      <path d="M10,10 L10,80 L80,80" stroke="rgba(201,168,76,1)" stroke-width="1" fill="none"/>
+      <path d="M10,10 L40,10" stroke="rgba(201,168,76,1)" stroke-width="1.5"/>
+      <path d="M10,10 L10,40" stroke="rgba(201,168,76,1)" stroke-width="1.5"/>
+      <circle cx="10" cy="10" r="4" fill="rgba(201,168,76,1)"/>
+      <circle cx="80" cy="80" r="3" fill="rgba(201,168,76,1)"/>
+    </svg>
+  </div>
+
+  <div class="hall-container">
+    <!-- Panel cluster -->
+    <div class="panel-cluster reveal">
+      <div class="deco-panel dp-side2">
+        <div class="dp-tag">Fee Collections</div>
+        <div class="dp-val scarlet">₹2.4L</div>
+        <div class="dp-note">↑ 18% this quarter</div>
+      </div>
+      <div class="deco-panel dp-side1">
+        <div class="dp-tag">Attendance Today</div>
+        <div class="dp-val verdg">287/302</div>
+        <div class="dp-note">95% — exceptional</div>
+      </div>
+      <div class="deco-panel dp-main">
+        <div class="dp-tag">Overall Attendance</div>
+        <div class="dp-val">94.8%</div>
+        <div class="dp-note">◆ +3.2% this term</div>
+        <div class="dp-hr"></div>
+        <div class="dp-bars" id="dp-bars">
+          <div class="dp-bar" style="height:40%"></div>
+          <div class="dp-bar" style="height:55%"></div>
+          <div class="dp-bar" style="height:62%"></div>
+          <div class="dp-bar" style="height:78%"></div>
+          <div class="dp-bar" style="height:72%"></div>
+          <div class="dp-bar" style="height:88%"></div>
+          <div class="dp-bar" style="height:82%"></div>
+          <div class="dp-bar" style="height:100%"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text side -->
+    <div class="hall-text reveal">
+      <div class="deco-kicker">
+        <span class="dk-line"></span>
+        ◆ The Collection
+      </div>
+      <h2>Precision engineered.<br><em>Artfully</em> delivered.</h2>
+      <p>SkolMatrixa is the institution management platform designed to the exacting standards of the golden age — where nothing extraneous exists, and every feature serves a sacred purpose.</p>
+      <ul class="deco-list">
+        <li><span class="dl-mark">✓</span><span class="dl-txt">Multi-tenant isolation — every school, its own private hall</span></li>
+        <li><span class="dl-mark">✓</span><span class="dl-txt">Role-based access — principals, teachers, parents, students</span></li>
+        <li><span class="dl-mark">✓</span><span class="dl-txt">CSV bulk import — transfer all existing records in minutes</span></li>
+        <li><span class="dl-mark">✓</span><span class="dl-txt">PDF report cards, receipts — composed with precision</span></li>
+        <li><span class="dl-mark">✓</span><span class="dl-txt">WhatsApp &amp; email — every communication, delivered</span></li>
+        <li><span class="dl-mark">✓</span><span class="dl-txt">Real-time analytics — understand your institution's true form</span></li>
+      </ul>
+      <a href="/register" class="btn-deco-primary">◆ Begin Your Collection</a>
+    </div>
+  </div>
+</section>
+
+<!-- EXHIBITION — FEATURES -->
+<section class="exhibition" id="exhibition">
+  <div class="ex-header reveal">
+    <div class="deco-kicker">
+      <span class="dk-line"></span>
+      ◆ Eight Masterworks
+    </div>
+    <h2>The <em>permanent</em> collection</h2>
+    <p>Features curated over years of institution management — each one irreducible.</p>
+  </div>
+
+  <div class="ex-grid">
+    <div class="ex-card wide" style="--panel-accent:var(--deco-gold)">
+      <div>
+        <div class="ec-corner"></div>
+        <div class="ec-tag">Foundation · Core</div>
+        <div class="ec-icon">🎓</div>
+        <h3 class="ec-h">Student &amp; Staff Management</h3>
+        <p class="ec-p">Complete lifecycle management — admissions, profiles, class assignments, CSV bulk import, teacher records, leave tracking, and role assignments. The cornerstone of every great institution.</p>
+      </div>
+      <div class="wide-table" style="margin-top:0.5rem;">
+        <div class="wt-row"><span class="wt-k">Active Students</span><span class="wt-v">10,247</span></div>
+        <div class="wt-row"><span class="wt-k">Staff Records</span><span class="wt-v">342</span></div>
+        <div class="wt-row"><span class="wt-k">Classes Managed</span><span class="wt-v">86</span></div>
+        <div class="wt-row"><span class="wt-k">Import Capacity</span><span class="wt-v">Unlimited</span></div>
+      </div>
+    </div>
+
+    <div class="ex-card" style="--panel-accent:var(--verdg-lt)">
+      <div class="ec-corner"></div>
+      <div class="ec-tag">Daily Operations</div>
+      <div class="ec-icon">✅</div>
+      <h3 class="ec-h">Attendance Tracking</h3>
+      <p class="ec-p">Per-class or per-subject attendance with real-time parent alerts and monthly analytics.</p>
+    </div>
+
+    <div class="ex-card" style="--panel-accent:var(--scarlet-lt)">
+      <div class="ec-corner"></div>
+      <div class="ec-tag">Finance</div>
+      <div class="ec-icon">💳</div>
+      <h3 class="ec-h">Fee Management</h3>
+      <p class="ec-p">Structured fee plans, payment tracking, PDF receipts, and automated overdue reminders.</p>
+    </div>
+
+    <div class="ex-card" style="--panel-accent:var(--deco-gold)">
+      <div class="ec-corner"></div>
+      <div class="ec-tag">Academic</div>
+      <div class="ec-icon">📋</div>
+      <h3 class="ec-h">Exams &amp; Report Cards</h3>
+      <p class="ec-p">Schedule exams, enter marks, auto-calculate grades, generate PDF report cards per student.</p>
+    </div>
+
+    <div class="ex-card" style="--panel-accent:var(--verdg)">
+      <div class="ec-corner"></div>
+      <div class="ec-tag">Planning</div>
+      <div class="ec-icon">📅</div>
+      <h3 class="ec-h">Timetable Builder</h3>
+      <p class="ec-p">Visual scheduling with conflict detection, room allocation, and period copy tools.</p>
+    </div>
+
+    <div class="ex-card" style="--panel-accent:var(--deco-gold-2)">
+      <div class="ec-corner"></div>
+      <div class="ec-tag">Communication</div>
+      <div class="ec-icon">🔔</div>
+      <h3 class="ec-h">Smart Notifications</h3>
+      <p class="ec-p">Targeted in-app, email, and WhatsApp alerts reaching every role with precision.</p>
+    </div>
+
+    <div class="ex-card" style="--panel-accent:var(--scarlet)">
+      <div class="ec-corner"></div>
+      <div class="ec-tag">Resources</div>
+      <div class="ec-icon">📚</div>
+      <h3 class="ec-h">Library System</h3>
+      <p class="ec-p">Book catalog, issue &amp; return management, and automated overdue tracking.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ROTUNDA — HOW IT WORKS -->
+<section class="rotunda" id="rotunda">
+  <div class="rotunda-ring"></div>
+  <div class="rotunda-ring-2"></div>
+
+  <div class="rot-header reveal">
+    <div class="deco-kicker">
+      <span class="dk-line"></span>
+      ◆ Three Grand Acts
+    </div>
+    <h2>The <em>movement</em> towards excellence</h2>
+  </div>
+
+  <div class="rot-steps">
+    <div class="rot-step">
+      <div class="rot-num">I</div>
+      <div class="rot-icon">🏛️</div>
+      <h3>Claim Your Hall</h3>
+      <p>Register your institution. Your private, isolated workspace emerges — fully yours, immediately.</p>
+    </div>
+    <div class="rot-step">
+      <div class="rot-num">II</div>
+      <div class="rot-icon">⚙️</div>
+      <h3>Commission the Details</h3>
+      <p>Configure classes, subjects, fee structures, and staff. The guided setup completes in minutes.</p>
+    </div>
+    <div class="rot-step">
+      <div class="rot-num">III</div>
+      <div class="rot-icon">✨</div>
+      <h3>Open the Doors</h3>
+      <p>Students, attendance, exams, fees, communications — your institution, elevated and complete.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS — PORTRAIT GALLERY -->
+<section class="portrait-gallery" id="portrait">
+  <div class="pg-header reveal">
+    <div class="deco-kicker">
+      <span class="dk-line"></span>
+      ◆ Patron Testimonials
+    </div>
+    <h2>Words from our <em>collectors</em></h2>
+  </div>
+
+  <div class="pg-grid">
+    <div class="pg-card">
+      <div class="pg-quote-mark">"</div>
+      <p class="pg-text">SkolMatrixa is the most sophisticated school management platform we've encountered. It's eliminated manual processes we accepted as inevitable for years.</p>
+      <div class="pg-stars"><span class="pg-star">★</span><span class="pg-star">★</span><span class="pg-star">★</span><span class="pg-star">★</span><span class="pg-star">★</span></div>
+      <div class="pg-diamond-divider"><div class="pdd-line"></div><div class="pdd-d"></div><div class="pdd-line"></div></div>
+      <div class="pg-author">
+        <div class="pg-avatar">PS</div>
+        <div><div class="pg-name">Dr. Priya Sharma</div><div class="pg-role">Principal · Delhi Public School</div></div>
+      </div>
+    </div>
+    <div class="pg-card">
+      <div class="pg-quote-mark">"</div>
+      <p class="pg-text">Managing a coaching institute across three batches was chaos before SkolMatrixa. Now it runs with the precision of a Swiss watch. Remarkable craftsmanship.</p>
+      <div class="pg-stars"><span class="pg-star">★</span><span class="pg-star">★</span><span class="pg-star">★</span><span class="pg-star">★</span><span class="pg-star">★</span></div>
+      <div class="pg-diamond-divider"><div class="pdd-line"></div><div class="pdd-d"></div><div class="pdd-line"></div></div>
+      <div class="pg-author">
+        <div class="pg-avatar">RK</div>
+        <div><div class="pg-name">Rajesh Kumar</div><div class="pg-role">Director · Apex Coaching Centre</div></div>
+      </div>
+    </div>
+    <div class="pg-card">
+      <div class="pg-quote-mark">"</div>
+      <p class="pg-text">The parent portal transformed our school's relationship with families. Transparency, trust, and efficiency — all in one beautifully executed platform.</p>
+      <div class="pg-stars"><span class="pg-star">★</span><span class="pg-star">★</span><span class="pg-star">★</span><span class="pg-star">★</span><span class="pg-star">★</span></div>
+      <div class="pg-diamond-divider"><div class="pdd-line"></div><div class="pdd-d"></div><div class="pdd-line"></div></div>
+      <div class="pg-author">
+        <div class="pg-avatar">AD</div>
+        <div><div class="pg-name">Anita Desai</div><div class="pg-role">Administrator · St. Mary's Academy</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GRAND FINALE CTA -->
+<section class="grand-finale">
+  <!-- CTA Sunburst -->
+  <div class="gf-sunburst" aria-hidden="true">
+    <svg viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg" width="800" height="800">
+      <!-- 48 long rays -->
+      <g stroke="rgba(201,168,76,0.08)" stroke-width="1">
+        <line x1="400" y1="400" x2="400" y2="10"/>
+        <line x1="400" y1="400" x2="708" y2="54"/>
+        <line x1="400" y1="400" x2="790" y2="282"/>
+        <line x1="400" y1="400" x2="790" y2="400"/>
+        <line x1="400" y1="400" x2="746" y2="518"/>
+        <line x1="400" y1="400" x2="708" y2="746"/>
+        <line x1="400" y1="400" x2="400" y2="790"/>
+        <line x1="400" y1="400" x2="92"  y2="746"/>
+        <line x1="400" y1="400" x2="54"  y2="518"/>
+        <line x1="400" y1="400" x2="10"  y2="400"/>
+        <line x1="400" y1="400" x2="54"  y2="282"/>
+        <line x1="400" y1="400" x2="92"  y2="54"/>
+        <line x1="400" y1="400" x2="556" y2="24"/>
+        <line x1="400" y1="400" x2="244" y2="24"/>
+        <line x1="400" y1="400" x2="776" y2="556"/>
+        <line x1="400" y1="400" x2="776" y2="244"/>
+        <line x1="400" y1="400" x2="556" y2="776"/>
+        <line x1="400" y1="400" x2="244" y2="776"/>
+        <line x1="400" y1="400" x2="24"  y2="556"/>
+        <line x1="400" y1="400" x2="24"  y2="244"/>
+        <!-- Half-length rays between -->
+        <line x1="400" y1="400" x2="400" y2="200"/>
+        <line x1="400" y1="400" x2="554" y2="227"/>
+        <line x1="400" y1="400" x2="600" y2="400"/>
+        <line x1="400" y1="400" x2="554" y2="573"/>
+        <line x1="400" y1="400" x2="400" y2="600"/>
+        <line x1="400" y1="400" x2="246" y2="573"/>
+        <line x1="400" y1="400" x2="200" y2="400"/>
+        <line x1="400" y1="400" x2="246" y2="227"/>
+      </g>
+      <!-- Rings -->
+      <circle cx="400" cy="400" r="100" fill="none" stroke="rgba(201,168,76,0.07)" stroke-width="1"/>
+      <circle cx="400" cy="400" r="200" fill="none" stroke="rgba(201,168,76,0.05)" stroke-width="1"/>
+      <circle cx="400" cy="400" r="300" fill="none" stroke="rgba(201,168,76,0.04)" stroke-width="1"/>
+      <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(201,168,76,0.03)" stroke-width="1"/>
+      <!-- Center diamond -->
+      <rect x="395" y="395" width="10" height="10" fill="rgba(201,168,76,0.4)" transform="rotate(45 400 400)"/>
+    </svg>
+  </div>
+  <div class="gf-vignette"></div>
+
+  <div class="gf-content reveal">
+    <h2>Enter the <em>golden</em><br>age of your school</h2>
+    <p>Join hundreds of institutions already operating at the level of true excellence with SkolMatrixa.</p>
+    <div class="gf-btns">
+      <a href="/register" class="btn-deco-primary">◆ Begin Your Collection</a>
+      <a href="/contact" class="btn-deco-ghost">Speak With Us</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fi2">
+    <div>
+      <div class="fb2">Skol<span>Matrixa</span></div>
+      <div class="ft2">Institution management, elevated.</div>
+    </div>
+    <div class="fl2">
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/contact">Contact</a>
+    </div>
+    <div class="fc2">© 2026 SkolMatrixa · The Golden Collection</div>
+  </div>
+</footer>
+
+<script>
+/* NAV SCROLL */
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60), {passive:true});
+
+/* STAINED GLASS LIGHT CANVAS */
+(function(){
+  const canvas = document.getElementById('light-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+
+  const SHAFTS = [
+    {angle: -0.3, x: 0.15, color: 'rgba(201,168,76,0.045)', speed: 0.00015},
+    {angle:  0.1, x: 0.35, color: 'rgba(46,122,110,0.03)',  speed: 0.00022},
+    {angle: -0.5, x: 0.55, color: 'rgba(201,168,76,0.035)', speed: 0.00018},
+    {angle:  0.3, x: 0.72, color: 'rgba(192,57,43,0.025)',  speed: 0.00012},
+    {angle: -0.15,x: 0.88, color: 'rgba(201,168,76,0.04)',  speed: 0.0002 },
+  ];
+
+  function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+
+  let t = 0;
+  function draw(){
+    t++;
+    ctx.clearRect(0,0,W,H);
+
+    SHAFTS.forEach(s => {
+      const drift = Math.sin(t * s.speed * 60) * 0.05;
+      const cx = (s.x + drift) * W;
+      const w = 220 + Math.sin(t * s.speed * 40) * 60;
+
+      const grad = ctx.createLinearGradient(cx - w/2, 0, cx + w/2, 0);
+      grad.addColorStop(0, 'transparent');
+      grad.addColorStop(0.5, s.color);
+      grad.addColorStop(1, 'transparent');
+
+      ctx.save();
+      ctx.translate(cx, H * 0.3);
+      ctx.rotate(s.angle * 0.3 + Math.sin(t * s.speed * 30) * 0.05);
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.moveTo(-w * 1.5, -H * 0.6);
+      ctx.lineTo( w * 1.5, -H * 0.6);
+      ctx.lineTo( w * 0.6,  H * 0.8);
+      ctx.lineTo(-w * 0.6,  H * 0.8);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize(); draw();
+  window.addEventListener('resize', resize);
+})();
+
+/* BAR CHARTS ANIMATE */
+(function(){
+  const H = [40,55,62,78,72,88,82,100];
+
+  function animBars(containerSel){
+    let done=false;
+    const el=document.querySelector(containerSel);
+    if(!el) return;
+    const bars=el.querySelectorAll('.dp-bar, .vc-bar');
+    const io=new IntersectionObserver(e=>{
+      e.forEach(en=>{
+        if(en.isIntersecting && !done){
+          done=true;
+          bars.forEach((b,i)=>{
+            b.style.height='0%';
+            setTimeout(()=>{
+              b.style.transition=`height 0.9s cubic-bezier(0.23,1,0.32,1) ${i*60}ms`;
+              b.style.height=H[i]+'%';
+            },350);
+          });
+          io.disconnect();
+        }
+      });
+    },{threshold:0.5});
+    io.observe(el);
+  }
+
+  animBars('.dp-main');
+})();
+
+/* CARD 3D TILT */
+document.querySelectorAll('.ex-card, .deco-panel').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-0.5;
+    const y=(e.clientY-r.top)/r.height-0.5;
+    card.style.transform=`translateY(-8px) rotateX(${-y*6}deg) rotateY(${x*6}deg)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';});
+});
+
+/* INTERSECTION REVEALS */
+(function(){
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(!entry.isIntersecting) return;
+      const el=entry.target;
+      if(el.classList.contains('gs-panel')){
+        const idx=Array.from(el.parentElement.querySelectorAll('.gs-panel')).indexOf(el);
+        setTimeout(()=>el.classList.add('revealed'), idx*120);
+      } else if(el.classList.contains('ex-card')){
+        const idx=Array.from(el.parentElement.querySelectorAll('.ex-card')).indexOf(el);
+        setTimeout(()=>el.classList.add('revealed'), idx*70);
+      } else if(el.classList.contains('rot-step')){
+        const idx=Array.from(el.parentElement.querySelectorAll('.rot-step')).indexOf(el);
+        setTimeout(()=>el.classList.add('revealed'), idx*180);
+      } else if(el.classList.contains('pg-card')){
+        const idx=Array.from(el.parentElement.querySelectorAll('.pg-card')).indexOf(el);
+        setTimeout(()=>el.classList.add('revealed'), idx*130);
+      } else {
+        el.classList.add('active');
+      }
+      io.unobserve(el);
+    });
+  },{threshold:0.1});
+  document.querySelectorAll('.reveal,.gs-panel,.ex-card,.rot-step,.pg-card').forEach(el=>io.observe(el));
+})();
+</script>
+</body>
+</html>

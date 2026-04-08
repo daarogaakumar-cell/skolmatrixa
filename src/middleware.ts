@@ -13,6 +13,8 @@ export default auth((req) => {
   const publicPaths = ["/", "/login", "/register", "/forgot-password", "/reset-password"];
   const isPublicPath = publicPaths.includes(pathname);
   const isApiAuth = pathname.startsWith("/api/auth");
+  const isApiWebhook = pathname.startsWith("/api/webhooks/");
+  const isApiCron = pathname.startsWith("/api/cron/");
   const isPublicAsset =
     pathname.startsWith("/_next") ||
     pathname.startsWith("/favicon") ||
@@ -21,7 +23,7 @@ export default auth((req) => {
     pathname === "/robots.txt" ||
     pathname === "/sitemap.xml";
 
-  if (isApiAuth || isPublicAsset) {
+  if (isApiAuth || isPublicAsset || isApiWebhook || isApiCron) {
     return NextResponse.next();
   }
 
@@ -50,8 +52,8 @@ export default auth((req) => {
       return NextResponse.redirect(new URL("/dashboard", nextUrl));
     }
 
-    // Admin only routes (settings, staff management, bulk email)
-    const adminOnlyPaths = ["/settings", "/staff", "/bulk-email"];
+    // Admin only routes (settings, staff management, bulk email, whatsapp logs)
+    const adminOnlyPaths = ["/settings", "/staff", "/bulk-email", "/whatsapp-logs"];
     const isAdminOnlyPath = adminOnlyPaths.some((p) => pathname.startsWith(`/dashboard${p}`));
     if (isAdminOnlyPath && !["TENANT_ADMIN", "VICE_ADMIN"].includes(role)) {
       return NextResponse.redirect(new URL("/dashboard", nextUrl));

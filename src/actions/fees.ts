@@ -12,6 +12,10 @@ import {
 import { FeeFrequency, PaymentStatus } from "@/generated/prisma/client";
 import { createSystemNotification } from "./notifications";
 import { sendFeePaymentConfirmationEmail } from "@/lib/email";
+import {
+  sendWhatsAppPaymentReceived,
+  getWhatsAppSettings,
+} from "@/lib/whatsapp";
 
 // ==================== Auth Helpers ====================
 
@@ -418,7 +422,7 @@ export async function recordPayment(data: {
     // Verify student belongs to this tenant
     const student = await prisma.student.findFirst({
       where: { id: validated.studentId, tenantId },
-      select: { id: true, name: true, admissionNo: true, guardianEmail: true },
+      select: { id: true, name: true, admissionNo: true, guardianEmail: true, guardianPhone: true, guardianName: true },
     });
     if (!student) return { success: false, error: "Student not found" };
 
@@ -526,7 +530,7 @@ export async function recordPayment(data: {
     if (student.guardianEmail) {
       const tenantInfo = await prisma.tenant.findUnique({
         where: { id: tenantId },
-        select: { name: true },
+        select: { name: true, slug: true, logoUrl: true, settings: true },
       });
       const totalDueForStudent = await prisma.feePayment.aggregate({
         where: { tenantId, studentId: student.id, status: { in: ["PENDING", "PARTIAL", "OVERDUE"] } },
@@ -547,6 +551,24 @@ export async function recordPayment(data: {
         String(Math.max(0, remainingBalance)),
         tenantInfo?.name || "Your Institution"
       ).catch((err) => console.error("Fee confirmation email failed:", err));
+
+      // Send WhatsApp payment confirmation
+      if (student.guardianPhone && tenantInfo) {
+        const waSettings = getWhatsAppSettings((tenantInfo.settings as Record<string, unknown>) || {});
+        if (waSettings.enabled && waSettings.sendFeeReminders) {
+          sendWhatsAppPaymentReceived({
+            tenantId,
+            tenantName: tenantInfo.name,
+            tenantSlug: tenantInfo.slug,
+            tenantLogoUrl: tenantInfo.logoUrl || undefined,
+            recipientPhone: student.guardianPhone,
+            recipientName: student.guardianName || student.name,
+            studentName: student.name,
+            amount: validated.amountPaying.toLocaleString("en-IN"),
+            receiptNo,
+          }).catch((err) => console.error("Fee confirmation WhatsApp failed:", err));
+        }
+      }
     }
 
     revalidatePath("/dashboard/fees");

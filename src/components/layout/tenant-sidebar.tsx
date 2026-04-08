@@ -28,6 +28,7 @@ import {
   IndianRupee,
   Library,
   Mail,
+  MessageCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -183,6 +184,7 @@ const coachingSections: NavSection[] = [
       { href: "/dashboard/events", label: "Events", icon: CalendarDays, roles: ["TENANT_ADMIN", "VICE_ADMIN", "TEACHER", "ACCOUNTANT", "LIBRARIAN"] },
       { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
       { href: "/dashboard/bulk-email", label: "Bulk Email", icon: Mail, roles: ["TENANT_ADMIN", "VICE_ADMIN"] },
+      { href: "/dashboard/whatsapp-logs", label: "WhatsApp Logs", icon: MessageCircle, roles: ["TENANT_ADMIN", "VICE_ADMIN"] },
     ],
   },
   {
@@ -255,6 +257,7 @@ const librarySections: NavSection[] = [
     title: "",
     items: [
       { href: "/dashboard/notifications", label: "Notifications", icon: Bell },
+      { href: "/dashboard/whatsapp-logs", label: "WhatsApp Logs", icon: MessageCircle, roles: ["TENANT_ADMIN", "VICE_ADMIN"] },
       { href: "/dashboard/settings", label: "Settings", icon: Settings, roles: ["TENANT_ADMIN"] },
     ],
   },

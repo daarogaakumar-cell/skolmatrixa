@@ -1,7 +1,7 @@
-import { UserRole, TenantType, TenantStatus, Gender, StudentStatus, AttendanceStatus, ExamType, ExamStatus, HomeworkStatus, SubmissionStatus, FeeFrequency, PaymentMethod, PaymentStatus, NotificationType, NotificationPriority, LeaveType, LeaveStatus, LeaveApplicantType, EventType, SeatStatus, SlotType, LibraryMemberStatus, BookIssueStatus } from "@/generated/prisma/client";
+import { UserRole, TenantType, TenantStatus, Gender, StudentStatus, AttendanceStatus, ExamType, ExamStatus, HomeworkStatus, SubmissionStatus, FeeFrequency, PaymentMethod, PaymentStatus, NotificationType, NotificationPriority, LeaveType, LeaveStatus, LeaveApplicantType, EventType, SeatStatus, SlotType, LibraryMemberStatus, BookIssueStatus, WhatsAppMessageStatus } from "@/generated/prisma/client";
 
 // Re-export enums for convenience
-export { UserRole, TenantType, TenantStatus, Gender, StudentStatus, AttendanceStatus, ExamType, ExamStatus, HomeworkStatus, SubmissionStatus, FeeFrequency, PaymentMethod, PaymentStatus, NotificationType, NotificationPriority, LeaveType, LeaveStatus, LeaveApplicantType, EventType, SeatStatus, SlotType, LibraryMemberStatus, BookIssueStatus };
+export { UserRole, TenantType, TenantStatus, Gender, StudentStatus, AttendanceStatus, ExamType, ExamStatus, HomeworkStatus, SubmissionStatus, FeeFrequency, PaymentMethod, PaymentStatus, NotificationType, NotificationPriority, LeaveType, LeaveStatus, LeaveApplicantType, EventType, SeatStatus, SlotType, LibraryMemberStatus, BookIssueStatus, WhatsAppMessageStatus };
 
 // Extended session user type
 export interface SessionUser {

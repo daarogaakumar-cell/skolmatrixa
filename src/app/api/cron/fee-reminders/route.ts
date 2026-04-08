@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendFeeReminderEmail } from "@/lib/email";
+import { sendWhatsAppFeeReminder, getWhatsAppSettings } from "@/lib/whatsapp";
 import { PaymentStatus } from "@/generated/prisma/client";
 
 export async function GET(req: NextRequest) {
@@ -84,7 +85,9 @@ export async function GET(req: NextRequest) {
           select: {
             name: true,
             guardianEmail: true,
-            tenant: { select: { name: true } },
+            guardianPhone: true,
+            guardianName: true,
+            tenant: { select: { id: true, name: true, slug: true, logoUrl: true, settings: true } },
           },
         },
         feeStructure: {
@@ -99,7 +102,13 @@ export async function GET(req: NextRequest) {
       {
         studentName: string;
         guardianEmail: string | null;
+        guardianPhone: string | null;
+        guardianName: string | null;
+        tenantId: string;
         tenantName: string;
+        tenantSlug: string;
+        tenantLogoUrl: string | null;
+        tenantSettings: Record<string, unknown>;
         totalDue: number;
         dueDate: string;
       }
@@ -121,15 +130,26 @@ export async function GET(req: NextRequest) {
         studentGroups.set(studentId, {
           studentName: p.student.name,
           guardianEmail: p.student.guardianEmail,
+          guardianPhone: p.student.guardianPhone,
+          guardianName: p.student.guardianName,
+          tenantId: p.student.tenant.id,
           tenantName: p.student.tenant.name,
+          tenantSlug: p.student.tenant.slug,
+          tenantLogoUrl: p.student.tenant.logoUrl,
+          tenantSettings: (p.student.tenant.settings as Record<string, unknown>) || {},
           totalDue: balance,
           dueDate,
         });
       }
     }
 
+    let whatsappSent = 0;
+
     for (const [, info] of studentGroups) {
-      if (info.guardianEmail && info.totalDue > 0) {
+      if (info.totalDue <= 0) continue;
+
+      // Send email
+      if (info.guardianEmail) {
         try {
           await sendFeeReminderEmail(
             info.guardianEmail,
@@ -143,13 +163,37 @@ export async function GET(req: NextRequest) {
           // Continue on email failure
         }
       }
+
+      // Send WhatsApp
+      if (info.guardianPhone) {
+        const waSettings = getWhatsAppSettings(info.tenantSettings);
+        if (waSettings.enabled && waSettings.sendFeeReminders) {
+          try {
+            const waResult = await sendWhatsAppFeeReminder({
+              tenantId: info.tenantId,
+              tenantName: info.tenantName,
+              tenantSlug: info.tenantSlug,
+              tenantLogoUrl: info.tenantLogoUrl || undefined,
+              recipientPhone: info.guardianPhone,
+              recipientName: info.guardianName || info.studentName,
+              studentName: info.studentName,
+              amount: `₹${info.totalDue.toLocaleString("en-IN")}`,
+              dueDate: info.dueDate,
+            });
+            if (waResult.success) whatsappSent++;
+          } catch {
+            // Continue on WhatsApp failure
+          }
+        }
+      }
     }
 
     return NextResponse.json({
       success: true,
       message: "Fee reminders processed",
       appliedLateFees,
-      remindersSent,
+      emailRemindersSent: remindersSent,
+      whatsappRemindersSent: whatsappSent,
       overdueMarked: overduePayments.length,
     });
   } catch (error) {

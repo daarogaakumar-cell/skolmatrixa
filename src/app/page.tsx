@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+﻿/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import {
   GraduationCap,
@@ -10,6 +10,7 @@ import {
   Wallet,
   Award,
   BookOpen,
+  BookMarked,
   ArrowRight,
   CheckCircle2,
   Sparkles,
@@ -36,10 +37,12 @@ import {
   MapPin,
   ChevronRight,
 } from "lucide-react";
+import AboutPanel from "@/components/shared/AboutPanel";
+import HeroFeatures from "@/components/shared/HeroFeatures";
 
-/* ─────────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    DATA CONSTANTS
-───────────────────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 const FEATURES = [
   {
@@ -93,7 +96,7 @@ const FEATURES = [
 ];
 
 const ICON_STYLES = [
-  { bg: "bg-emerald-600/10", text: "text-emerald-600" },
+  { bg: "bg-blue-600/10", text: "text-blue-600" },
   { bg: "bg-[#F97066]/10", text: "text-[#F97066]" },
   { bg: "bg-blue-500/10", text: "text-blue-500" },
   { bg: "bg-amber-500/10", text: "text-amber-500" },
@@ -113,7 +116,7 @@ const CARD_STYLES = [
   { iconBg: "bg-teal-500", circle: "bg-gradient-to-br from-green-200/70 to-teal-200/50" },
   { iconBg: "bg-orange-500", circle: "bg-gradient-to-br from-orange-200/60 to-pink-200/50" },
   { iconBg: "bg-purple-500", circle: "bg-gradient-to-br from-orange-200/60 to-rose-200/50" },
-  { iconBg: "bg-pink-500", circle: "bg-gradient-to-br from-green-200/60 to-emerald-200/50" },
+  { iconBg: "bg-pink-500", circle: "bg-gradient-to-br from-green-200/60 to-blue-200/50" },
   { iconBg: "bg-cyan-500", circle: "bg-gradient-to-br from-green-200/60 to-teal-200/50" },
   { iconBg: "bg-amber-500", circle: "bg-gradient-to-br from-purple-200/60 to-violet-200/50" },
   { iconBg: "bg-green-500", circle: "bg-gradient-to-br from-pink-200/60 to-purple-200/50" },
@@ -208,6 +211,15 @@ const COACHING_FEATURES = [
   "Assignment submission portal",
 ];
 
+const LIBRARY_FEATURES = [
+  "Digital book catalog & ISBN search",
+  "Member cards & borrowing history",
+  "Issue, return & renewal tracking",
+  "Automatic overdue fine calculation",
+  "Stock inventory & audit reports",
+  "E-library resource management",
+];
+
 const FAQ = [
   {
     q: "Is SkolMatrixa suitable for small institutions?",
@@ -235,25 +247,25 @@ const FAQ = [
   },
 ];
 
-/* ─────────────────────────────────────────────
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
    THEME 4 — IMMERSIVE VISUAL
-   Palette: Charcoal #1C1C1E, Off-white #F8F7F4,
-   Cream #F0EDE8, Emerald #059669, Coral #F97066
+   Palette: Charcoal #1C1C1E, Off-white #F0F7FF,
+   Cream #EFF6FF, blue #059669, Coral #F97066
    Fonts: Cormorant Garamond (serif) + Manrope (sans)
-───────────────────────────────────────────── */
+â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col overflow-x-hidden bg-[#F8F7F4]">
+    <div className="flex min-h-screen flex-col overflow-x-hidden bg-[#F0F7FF]">
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           HEADER — Glass over charcoal
-      ══════════════════════════════════════════ */}
-      <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#1C1C1E]/85 backdrop-blur-2xl">
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <header className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#071e3d]/85 backdrop-blur-2xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-600 shadow-lg shadow-emerald-600/30 transition-transform group-hover:scale-110">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 shadow-lg shadow-blue-600/30 transition-transform group-hover:scale-110">
               <BookOpen className="h-4 w-4 text-white" />
             </div>
             <span className="font-display text-xl font-bold text-white tracking-tight">
@@ -290,7 +302,7 @@ export default function Home() {
             </Link>
             <Link
               href="/register"
-              className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-5 py-2 text-[13px] font-bold text-white shadow-lg shadow-emerald-600/25 transition-all hover:bg-emerald-700"
+              className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-5 py-2 text-[13px] font-bold text-white shadow-lg shadow-blue-600/25 transition-all hover:bg-blue-700"
             >
               Get Started
             </Link>
@@ -298,337 +310,140 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ══════════════════════════════════════════
-          HERO — Full-bleed immersive, serif headings
-      ══════════════════════════════════════════ */}
-      <section className="relative min-h-screen overflow-hidden bg-[#1C1C1E]">
-        {/* Background layers */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(5,150,105,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(5,150,105,0.04)_1px,transparent_1px)] bg-[length:60px_60px] [mask-image:radial-gradient(ellipse_85%_70%_at_50%_10%,black_40%,transparent_100%)]" />
-        <div className="absolute -top-40 left-1/4 h-[500px] w-[500px] rounded-full bg-emerald-600/12 blur-[130px]" />
-        <div className="absolute top-1/3 -right-20 h-[400px] w-[400px] rounded-full bg-[#F97066]/6 blur-[120px]" />
-        <div className="absolute bottom-10 left-1/3 h-[350px] w-[350px] rounded-full bg-emerald-900/15 blur-[100px]" />
-        {/* Accent dots */}
-        <div className="absolute right-[12%] top-[18%] h-2.5 w-2.5 rounded-full bg-emerald-400/60 shadow-lg shadow-emerald-400/40 animate-pulse" />
-        <div className="absolute left-[10%] top-[45%] h-2 w-2 rounded-full bg-[#F97066]/50 shadow-lg shadow-[#F97066]/30 animate-pulse" style={{ animationDelay: "0.5s" }} />
-        <div className="absolute right-[25%] bottom-[30%] h-1.5 w-1.5 rounded-full bg-amber-400/50" />
-        {/* Decorative rings */}
-        <div className="absolute right-[8%] top-[35%] h-32 w-32 rounded-full border border-emerald-500/8 opacity-60" />
-        <div className="absolute right-[8%] top-[35%] h-48 w-48 -translate-x-8 -translate-y-8 rounded-full border border-[#F97066]/6 opacity-40" />
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          HERO — Full-bleed background image
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section
+        className="relative min-h-[60vh] overflow-hidden bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/hero%20section%20img.png')" }}
+      >
+        {/* Left gradient overlay for text readability over the blue bg area */}
+        <div className="absolute inset-0 bg-linear-to-r from-[#0a4899]/80 via-[#0a4899]/45 to-transparent" />
 
-        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-24 pt-36 sm:px-6 lg:px-8">
-          <div className="lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
-            {/* Left — Text */}
-            <div className="text-center lg:text-left">
-              {/* Eyebrow */}
-              <div className="animate-slide-up mb-7 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-emerald-400">
-                <span className="h-0.5 w-8 bg-emerald-400" />
-                #1 School Management ERP Platform
-              </div>
-
-              {/* Headline — Serif with italic accent */}
-              <h1 className="animate-slide-up stagger-1 font-display text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-[4.75rem]">
-                Inspire. Educate.
-                <br />
-                <em className="italic text-emerald-400">Transform.</em>
-              </h1>
-
-              <p className="animate-slide-up stagger-2 mx-auto mt-8 max-w-xl text-lg leading-relaxed text-white/55 lg:mx-0">
-                SkolMatrixa unifies every aspect of school and coaching administration — students, staff, attendance,
-                exams, fees, and communication — into one powerful, beautifully simple platform.
-              </p>
-
-              {/* CTAs — Pill style */}
-              <div className="animate-slide-up stagger-3 mt-10 flex flex-col items-center gap-4 sm:flex-row lg:justify-start">
-                <Link
-                  href="/register"
-                  className="group inline-flex items-center gap-2.5 rounded-full bg-emerald-600 px-8 py-4 text-base font-bold text-white shadow-2xl shadow-emerald-600/25 transition-all duration-300 hover:bg-emerald-700 hover:shadow-emerald-600/40 hover:-translate-y-0.5"
-                >
-                  <GraduationCap className="h-5 w-5" />
-                  <span>Start Free Trial</span>
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Link>
-                <button className="group flex items-center gap-3 rounded-full border-2 border-white/15 px-7 py-4 text-base font-semibold text-white transition-all duration-300 hover:border-white/30 hover:bg-white/5">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition-all group-hover:bg-white/15">
-                    <Play className="h-4 w-4 fill-white text-white" />
-                  </div>
-                  Watch Demo
-                </button>
-              </div>
-
-              {/* Trust badges */}
-              <div className="animate-slide-up stagger-4 mt-10 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 lg:justify-start">
-                {[
-                  { icon: Shield, label: "Enterprise Security", color: "text-emerald-400" },
-                  { icon: Zap, label: "5-Min Setup", color: "text-amber-400" },
-                  { icon: Globe, label: "Cloud-Based", color: "text-blue-400" },
-                  { icon: Lock, label: "100% Private", color: "text-[#F97066]" },
-                ].map(({ icon: Icon, label, color }) => (
-                  <div key={label} className="flex items-center gap-2 text-sm text-white/35">
-                    <Icon className={`h-4 w-4 ${color}`} />
-                    {label}
-                  </div>
-                ))}
-              </div>
-
-              {/* Hero stats bar */}
-              <div className="animate-slide-up stagger-5 mt-12 flex gap-12 border-t border-white/10 pt-8">
-                {[
-                  { value: "10K+", label: "Students Managed" },
-                  { value: "500+", label: "Institutions" },
-                  { value: "99.9%", label: "Uptime" },
-                ].map((s) => (
-                  <div key={s.label}>
-                    <div className="font-display text-4xl font-bold text-white">{s.value}</div>
-                    <div className="mt-1 text-xs font-semibold tracking-wide text-white/35">{s.label}</div>
-                  </div>
-                ))}
-              </div>
+        <div className="relative z-10 mx-auto max-w-7xl px-4 pb-12 pt-20 sm:px-6 lg:px-8">
+          <div className="max-w-lg">
+            {/* Eyebrow */}
+            <div className="animate-slide-up mb-7 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-white/90">
+              <span className="h-0.5 w-8 bg-white/90" />
+              #1 School Management ERP Platform
             </div>
 
-            {/* Right — Dashboard Mockup */}
-            <div className="animate-slide-up stagger-5 relative mt-16 lg:mt-0">
-              <div className="absolute inset-0 -m-8 rounded-3xl bg-emerald-600/6 blur-3xl" />
+            {/* Headline */}
+            <h1 className="animate-slide-up stagger-1 font-display text-5xl font-bold leading-[1.08] tracking-tight text-white sm:text-6xl lg:text-[4.5rem]">
+              Inspire. Educate.
+              <br />
+              <em className="italic text-yellow-300">Transform.</em>
+            </h1>
 
-              <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-[#2C2C2E]/80 shadow-2xl shadow-black/50 backdrop-blur-2xl">
-                {/* Browser bar */}
-                <div className="flex items-center gap-2 border-b border-white/8 bg-[#1C1C1E]/80 px-5 py-3.5">
-                  <div className="flex gap-1.5">
-                    <div className="h-3 w-3 rounded-full bg-[#F97066]/70" />
-                    <div className="h-3 w-3 rounded-full bg-amber-500/70" />
-                    <div className="h-3 w-3 rounded-full bg-emerald-500/70" />
-                  </div>
-                  <div className="mx-3 flex-1">
-                    <div className="mx-auto h-6 w-64 rounded-lg bg-white/5 px-4 text-center text-xs leading-6 text-white/30">
-                      🔒 app.skolmatrixa.com/dashboard
-                    </div>
-                  </div>
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/20">
-                    <div className="h-2 w-2 rounded-full bg-emerald-400" />
-                  </div>
+            <p className="animate-slide-up stagger-2 mt-7 max-w-md text-[17px] leading-relaxed text-white/85">
+              SkolMatrixa unifies every aspect of school and coaching administration — students, staff, exams, fees, and communication — into one powerful, beautifully simple platform.
+            </p>
+
+            {/* Feature points — JS-driven sequential reveal */}
+            <HeroFeatures />
+
+            {/* CTAs */}
+            <div className="animate-slide-up mt-10 flex flex-col items-start gap-4 sm:flex-row" style={{ animationDelay: '5s' }}>
+              <Link
+                href="/register"
+                className="group inline-flex items-center gap-2.5 rounded-full bg-yellow-400 px-8 py-4 text-base font-bold text-[#1a2b4a] shadow-2xl shadow-yellow-400/30 transition-all duration-300 hover:bg-yellow-300 hover:-translate-y-0.5"
+              >
+                <GraduationCap className="h-5 w-5" />
+                <span>Start Free Trial</span>
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+              <button className="group flex items-center gap-3 rounded-full border-2 border-white/30 px-7 py-4 text-base font-semibold text-white transition-all duration-300 hover:border-white/50 hover:bg-white/10">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 transition-all group-hover:bg-white/25">
+                  <Play className="h-4 w-4 fill-white text-white" />
                 </div>
-
-                <div className="p-5 sm:p-6">
-                  <div className="mb-5 flex items-center justify-between">
-                    <div>
-                      <p className="text-xs text-white/30">Academic Year 2025–26</p>
-                      <p className="font-display text-sm font-bold text-white">Good morning, Principal 👋</p>
-                    </div>
-                    <div className="rounded-xl border border-white/8 bg-white/5 px-3 py-1.5 text-xs font-medium text-white/30">
-                      Today: Mon, Mar 18
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                    {[
-                      { label: "Total Students", value: "2,847", icon: "🎓", change: "+12%", color: "text-emerald-400" },
-                      { label: "Attendance", value: "94.2%", icon: "✅", change: "↑ 2.1%", color: "text-emerald-400" },
-                      { label: "Fee Collected", value: "₹8.4L", icon: "💰", change: "+18%", color: "text-amber-400" },
-                      { label: "Staff Active", value: "156", icon: "👩‍🏫", change: "+3 new", color: "text-[#F97066]" },
-                    ].map((stat) => (
-                      <div key={stat.label} className="rounded-xl border border-white/6 bg-white/4 p-3.5">
-                        <div className="mb-2 text-lg">{stat.icon}</div>
-                        <p className="text-[10px] font-medium text-white/30">{stat.label}</p>
-                        <p className="mt-0.5 font-display text-lg font-bold text-white">{stat.value}</p>
-                        <p className={`mt-1 text-[10px] font-semibold ${stat.color}`}>{stat.change} this month</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                    <div className="col-span-2 rounded-xl border border-white/6 bg-white/3 p-4">
-                      <div className="mb-3 flex items-center justify-between">
-                        <p className="text-xs font-semibold text-white/60">Weekly Attendance</p>
-                        <span className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[9px] font-bold text-emerald-400">
-                          THIS WEEK
-                        </span>
-                      </div>
-                      <div className="flex items-end gap-1.5">
-                        {[72, 85, 78, 91, 88, 94, 89].map((h, i) => (
-                          <div key={i} className="flex flex-1 flex-col items-center gap-1">
-                            <div
-                              className="w-full rounded-t bg-linear-to-t from-emerald-600 to-emerald-400 opacity-80"
-                              style={{ height: `${h * 0.52}px` }}
-                            />
-                            <span className="text-[8px] text-white/25">
-                              {["M", "T", "W", "T", "F", "S", "S"][i]}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="rounded-xl border border-white/6 bg-white/3 p-4">
-                      <p className="mb-3 text-xs font-semibold text-white/60">Quick Actions</p>
-                      <div className="space-y-2">
-                        {[
-                          { label: "Mark Attendance", cls: "bg-emerald-500/15 text-emerald-300 border-emerald-500/10" },
-                          { label: "Collect Fees", cls: "bg-amber-500/15 text-amber-300 border-amber-500/10" },
-                          { label: "Send Notice", cls: "bg-blue-500/15 text-blue-300 border-blue-500/10" },
-                          { label: "View Reports", cls: "bg-[#F97066]/15 text-[#F97066] border-[#F97066]/10" },
-                        ].map((a) => (
-                          <div key={a.label} className={`rounded-lg border px-2.5 py-1.5 text-[10px] font-medium ${a.cls}`}>
-                            {a.label}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating notification card */}
-              <div className="absolute -top-5 -right-4 hidden w-52 animate-float rounded-2xl border border-white/10 bg-[#2C2C2E]/95 p-4 shadow-2xl backdrop-blur-2xl sm:block">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20">
-                    <CheckCircle2 className="h-5 w-5 text-emerald-400" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-bold text-white">Fees Collected ✓</p>
-                    <p className="text-[10px] text-white/40">Grade 10 — 42 students</p>
-                    <p className="mt-1 text-[9px] text-white/25">2 minutes ago</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating attendance card */}
-              <div className="absolute -bottom-5 -left-4 hidden w-48 animate-float-delayed rounded-2xl border border-white/10 bg-[#2C2C2E]/95 p-4 shadow-2xl backdrop-blur-2xl sm:block">
-                <p className="text-[10px] font-medium text-white/40">Today&apos;s Attendance</p>
-                <p className="mt-1 font-display text-2xl font-bold text-white">94.2%</p>
-                <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                  <div className="h-full w-[94%] rounded-full bg-linear-to-r from-emerald-600 to-emerald-400" />
-                </div>
-                <p className="mt-1.5 text-[10px] font-semibold text-emerald-400">↑ 2.1% vs last week</p>
-              </div>
+                Watch Demo
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Wave separator */}
-        <div className="absolute -bottom-px left-0 w-full">
-          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="block w-full h-16 sm:h-20" preserveAspectRatio="none">
-            <path d="M0,0 L1440,80 L1440,80 L0,80 Z" fill="#F8F7F4" />
-          </svg>
-        </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           TRUST STRIP — Stats bar
-      ══════════════════════════════════════════ */}
-      <section className="relative bg-[#F8F7F4] py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="mb-12 text-center text-xs font-bold uppercase tracking-[3px] text-[#8E8E93]">
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section className="relative bg-[#071e3d] py-16 sm:py-20">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(37,99,235,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,0.04)_1px,transparent_1px)] bg-size-[40px_40px]" />
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <p className="mb-10 text-center text-xs font-bold uppercase tracking-[3px] text-blue-300/50">
             Empowering institutions across India
           </p>
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {STATS.map((stat) => (
-              <div key={stat.label} className="group flex flex-col items-center text-center">
-                <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600/10 transition-all duration-300 group-hover:scale-110">
-                  <stat.icon className="h-7 w-7 text-emerald-600" />
+              <div key={stat.label} className="group relative overflow-hidden rounded-2xl border border-white/8 bg-white/4 p-6 text-center backdrop-blur-sm transition-all hover:border-blue-400/30 hover:bg-white/8">
+                <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-blue-600/10 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                <div className="relative">
+                  <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600/20 transition-all group-hover:scale-110 group-hover:bg-blue-600/30">
+                    <stat.icon className="h-6 w-6 text-blue-300" />
+                  </div>
+                  <p className="font-display text-4xl font-bold text-white sm:text-5xl">{stat.value}</p>
+                  <p className="mt-1.5 text-xs font-semibold uppercase tracking-wide text-blue-200/50">{stat.label}</p>
                 </div>
-                <p className="font-display text-4xl font-bold text-[#1C1C1E] sm:text-5xl">
-                  {stat.value}
-                </p>
-                <p className="mt-2 text-sm font-medium text-[#8E8E93]">{stat.label}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           IMAGE STRIP — Educational imagery
-      ══════════════════════════════════════════ */}
-      <section className="relative bg-[#F8F7F4] pb-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 sm:grid-cols-4 sm:px-6 lg:px-8">
-          {[
-            { src: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80", label: "Student Learning" },
-            { src: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80", label: "Expert Teaching" },
-            { src: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&q=80", label: "Exams & Assessment" },
-            { src: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80", label: "Library & Resources" },
-          ].map((img) => (
-            <div key={img.label} className="group relative h-48 overflow-hidden rounded-2xl sm:h-56">
-              <img src={img.src} alt={img.label} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
-              <p className="absolute bottom-3 left-4 text-sm font-bold text-white">{img.label}</p>
-            </div>
-          ))}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section className="bg-[#071e3d] pb-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <p className="pb-8 text-center text-xs font-bold uppercase tracking-[3px] text-blue-300/40">What we enable</p>
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+            {[
+              { src: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80",  label: "Student Learning",   sub: "Engage & empower every learner",   pill: "Students",  pillColor: "bg-blue-500" },
+              { src: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80",  label: "Expert Teaching",   sub: "Tools crafted for educators",       pill: "Teachers",  pillColor: "bg-amber-500" },
+              { src: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&q=80",  label: "Exams & Assessment", sub: "Track academic progress clearly",   pill: "Academics", pillColor: "bg-purple-500" },
+              { src: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80",  label: "Library & Resources", sub: "Knowledge accessible to all",       pill: "Library",   pillColor: "bg-teal-500" },
+            ].map((img) => (
+              <div key={img.label} className="group relative h-64 overflow-hidden rounded-2xl sm:h-72 lg:h-80">
+                <img
+                  src={img.src}
+                  alt={img.label}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-[#071e3d] via-[#071e3d]/30 to-transparent" />
+                <div className="absolute inset-0 rounded-2xl border-2 border-white/0 transition-all duration-300 group-hover:border-blue-400/40" />
+                <div className="absolute left-4 top-4">
+                  <span className={`${img.pillColor} rounded-full px-2.5 py-1 text-[10px] font-bold text-white`}>{img.pill}</span>
+                </div>
+                <div className="absolute bottom-5 left-5 right-5">
+                  <p className="font-display text-base font-bold text-white">{img.label}</p>
+                  <p className="mt-1 text-xs text-white/50">{img.sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           ABOUT SECTION — Split layout with visual
-      ══════════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-[#F0EDE8]">
-        <div className="absolute right-0 top-0 h-80 w-80 rounded-full bg-emerald-200/30 blur-3xl" />
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section className="relative overflow-hidden bg-[#EFF6FF]">
+        <div className="absolute right-0 top-0 h-80 w-80 rounded-full bg-blue-200/30 blur-3xl" />
         <div className="absolute left-0 bottom-0 h-60 w-60 rounded-full bg-[#F97066]/10 blur-3xl" />
 
         <div className="relative mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
-          <div className="grid items-center gap-16 lg:grid-cols-2">
-            {/* Left — Visual */}
+          <div className="grid items-start gap-16 lg:grid-cols-2">
+            {/* Left — Rotating dashboard panels */}
             <div className="relative order-2 lg:order-1">
-              <div className="relative overflow-hidden rounded-3xl border border-[#1C1C1E]/10 bg-white shadow-2xl shadow-[#1C1C1E]/5">
-                {/* Header */}
-                <div className="border-b border-[#1C1C1E]/5 bg-emerald-600 px-6 py-5">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20">
-                      <BookOpen className="h-5 w-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium text-emerald-200">SkolMatrixa Platform</p>
-                      <p className="font-display text-base font-bold text-white">Institution Overview</p>
-                    </div>
-                    <div className="ml-auto flex items-center gap-2 rounded-full bg-white/15 px-3 py-1">
-                      <div className="h-2 w-2 rounded-full bg-white animate-pulse" />
-                      <span className="text-xs font-medium text-white">Live</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { icon: GraduationCap, label: "2,847 Students", sub: "Active enrollment", color: "bg-emerald-50 text-emerald-600" },
-                      { icon: Users, label: "156 Staff", sub: "Teachers & admin", color: "bg-[#F97066]/10 text-[#F97066]" },
-                      { icon: ClipboardCheck, label: "94.2% Attendance", sub: "Today's rate", color: "bg-amber-50 text-amber-600" },
-                      { icon: Wallet, label: "₹8.4L Collected", sub: "This month fees", color: "bg-blue-50 text-blue-600" },
-                      { icon: Award, label: "12 Exams", sub: "Scheduled this term", color: "bg-emerald-50 text-emerald-600" },
-                      { icon: Bell, label: "340 Notices", sub: "Sent this month", color: "bg-[#F97066]/10 text-[#F97066]" },
-                    ].map((item) => (
-                      <div key={item.label} className="flex items-center gap-3 rounded-xl border border-[#1C1C1E]/5 bg-[#F8F7F4]/60 p-3 transition-all hover:border-[#1C1C1E]/10 hover:bg-white hover:shadow-sm">
-                        <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${item.color}`}>
-                          <item.icon className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-[#1C1C1E]">{item.label}</p>
-                          <p className="text-[10px] text-[#8E8E93]">{item.sub}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="mt-5 space-y-3">
-                    {[
-                      { label: "Fee Collection Progress", pct: 78, color: "bg-emerald-500" },
-                      { label: "Monthly Attendance Goal", pct: 92, color: "bg-amber-500" },
-                      { label: "Homework Completion", pct: 85, color: "bg-[#F97066]" },
-                    ].map((bar) => (
-                      <div key={bar.label}>
-                        <div className="mb-1 flex justify-between">
-                          <span className="text-[10px] font-medium text-[#8E8E93]">{bar.label}</span>
-                          <span className="text-[10px] font-bold text-[#4A4A4C]">{bar.pct}%</span>
-                        </div>
-                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#1C1C1E]/5">
-                          <div className={`h-full rounded-full ${bar.color}`} style={{ width: `${bar.pct}%` }} />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <AboutPanel />
               {/* Badge overlays */}
-              <div className="absolute -right-5 top-12 hidden rounded-2xl border border-emerald-200/80 bg-emerald-50 p-4 shadow-xl sm:block">
+              <div className="absolute -right-5 top-12 hidden rounded-2xl border border-blue-200/80 bg-blue-50 p-4 shadow-xl sm:block">
                 <div className="flex items-center gap-2">
-                  <Star className="h-5 w-5 fill-emerald-500 text-emerald-500" />
+                  <Star className="h-5 w-5 fill-blue-500 text-blue-500" />
                   <div>
-                    <p className="text-xs font-bold text-emerald-800">5-Star Rating</p>
-                    <p className="text-[10px] text-emerald-600">500+ institutions</p>
+                    <p className="text-xs font-bold text-blue-800">5-Star Rating</p>
+                    <p className="text-[10px] text-blue-600">500+ institutions</p>
                   </div>
                 </div>
               </div>
@@ -645,13 +460,13 @@ export default function Home() {
 
             {/* Right — Text */}
             <div className="order-1 lg:order-2">
-              <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-emerald-600">
-                <span className="h-0.5 w-6 bg-emerald-600" />
+              <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-blue-600">
+                <span className="h-0.5 w-6 bg-blue-600" />
                 About SkolMatrixa
               </div>
               <h2 className="font-display text-3xl font-bold tracking-tight text-[#1C1C1E] sm:text-4xl lg:text-[52px] lg:leading-[1.12]">
                 One Platform.{" "}
-                <em className="italic text-emerald-600">Complete School</em>{" "}
+                <em className="italic text-blue-600">Complete School</em>{" "}
                 Management.
               </h2>
               <p className="mt-5 text-base leading-relaxed text-[#8E8E93] sm:text-lg">
@@ -660,7 +475,7 @@ export default function Home() {
                 attendance tracking to exam management — our platform empowers schools and coaching institutes to
                 manage everything in one place.
               </p>
-              <ul className="mt-8 space-y-3.5">
+              <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-3">
                 {[
                   "Unified student, staff & academic management",
                   "Automated fee collection with digital receipts",
@@ -669,23 +484,23 @@ export default function Home() {
                   "Multi-tenant with complete data isolation",
                   "Role-based access for admins, teachers & students",
                 ].map((point) => (
-                  <li key={point} className="flex items-start gap-3">
-                    <div className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600">
+                  <li key={point} className="flex items-start gap-2.5">
+                    <div className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-600">
                       <CheckCircle2 className="h-3 w-3 text-white" />
                     </div>
-                    <span className="text-sm text-[#4A4A4C]">{point}</span>
+                    <span className="text-[13px] text-[#4A4A4C]">{point}</span>
                   </li>
                 ))}
               </ul>
               <div className="mt-10 flex items-center gap-4">
                 <Link
                   href="/register"
-                  className="group inline-flex items-center gap-2 rounded-full bg-emerald-600 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 transition-all hover:bg-emerald-700 hover:-translate-y-0.5"
+                  className="group inline-flex items-center gap-2 rounded-full bg-blue-600 px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-600/25 transition-all hover:bg-blue-700 hover:-translate-y-0.5"
                 >
                   Get Started Free
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
-                <a href="#features" className="group flex items-center gap-2 text-sm font-semibold text-emerald-600 hover:text-emerald-700">
+                <a href="#features" className="group flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700">
                   Explore Features
                   <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
                 </a>
@@ -695,22 +510,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           CORE FEATURES — Card grid with badges
-      ══════════════════════════════════════════ */}
-      <section id="features" className="relative overflow-hidden bg-[#F8F7F4] py-24 sm:py-32">
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section id="features" className="relative overflow-hidden bg-[#F0F7FF] pb-24 pt-12 sm:pb-32 sm:pt-14">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mx-auto max-w-2xl text-center">
-            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-emerald-600">
-              <span className="h-0.5 w-6 bg-emerald-600" />
+            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-blue-600">
+              <span className="h-0.5 w-6 bg-blue-600" />
               Features
-              <span className="h-0.5 w-6 bg-emerald-600" />
+              <span className="h-0.5 w-6 bg-blue-600" />
             </div>
             <h2 className="font-display text-3xl font-bold tracking-tight text-[#1C1C1E] sm:text-4xl lg:text-[52px] lg:leading-[1.12]">
               Everything your institution
               <br />
-              needs to <em className="italic text-emerald-600">thrive</em>
+              needs to <em className="italic text-blue-600">thrive</em>
             </h2>
             <p className="mt-5 text-lg text-[#8E8E93]">
               Crafted with care for the unique needs of Indian educational institutions.
@@ -728,7 +543,7 @@ export default function Home() {
                   className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                 >
                   {/* Decorative circle */}
-                  <div className={`absolute -right-8 -top-8 h-32 w-32 rounded-full ${card.circle} opacity-70`} />
+                  <div className={`absolute -right-8 -top-8 h-32 w-32 rounded-full ${card.circle} opacity-70 transition-transform duration-300 group-hover:scale-125`} />
 
                   <div className="relative">
                     <div className="mb-4 flex items-center gap-3">
@@ -750,9 +565,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           SPLIT IMAGE — Visual feature showcase
-      ══════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <section className="relative overflow-hidden">
         <div className="grid min-h-[500px] lg:grid-cols-2">
           {/* Left — Image */}
@@ -767,14 +582,14 @@ export default function Home() {
           </div>
           {/* Right — Content */}
           <div className="flex flex-col justify-center bg-white px-8 py-16 sm:px-12 lg:px-16">
-            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-emerald-600">
-              <span className="h-0.5 w-6 bg-emerald-600" />
+            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-blue-600">
+              <span className="h-0.5 w-6 bg-blue-600" />
               Built for Indian Schools
             </div>
             <h2 className="font-display text-3xl font-bold tracking-tight text-[#1C1C1E] sm:text-4xl lg:text-[40px] lg:leading-[1.15]">
               Purpose-built for
               <br />
-              <em className="italic text-emerald-600">your institution</em>
+              <em className="italic text-blue-600">your institution</em>
             </h2>
             <p className="mt-5 text-base leading-relaxed text-[#8E8E93]">
               Designed for CBSE, ICSE, and state board schools. Works seamlessly for coaching institutes and libraries too.
@@ -789,7 +604,7 @@ export default function Home() {
                 "Real-time analytics dashboard",
               ].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-sm text-[#4A4A4C]">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-blue-600" />
                   {item}
                 </li>
               ))}
@@ -798,24 +613,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           WHY CHOOSE US — Checkpoints + visual cards
-      ══════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <section className="relative overflow-hidden bg-white py-24 sm:py-32">
-        <div className="absolute right-0 top-0 h-[400px] w-[400px] rounded-full bg-emerald-100/40 blur-3xl" />
+        <div className="absolute right-0 top-0 h-[400px] w-[400px] rounded-full bg-blue-100/40 blur-3xl" />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-16 lg:grid-cols-2">
             {/* Left — Checklist */}
             <div>
-              <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-emerald-600">
-                <span className="h-0.5 w-6 bg-emerald-600" />
+              <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-blue-600">
+                <span className="h-0.5 w-6 bg-blue-600" />
                 Why Choose SkolMatrixa?
               </div>
               <h2 className="font-display text-3xl font-bold tracking-tight text-[#1C1C1E] sm:text-4xl lg:text-[52px] lg:leading-[1.12]">
                 Tailored for
                 <br />
-                <em className="italic text-emerald-600">your institution</em>
+                <em className="italic text-blue-600">your institution</em>
               </h2>
               <p className="mt-5 text-base leading-relaxed text-[#8E8E93] sm:text-lg">
                 Purpose-built with CBSE, ICSE, and state board support. Works for schools, coaching institutes, and libraries.
@@ -824,9 +639,9 @@ export default function Home() {
                 {WHY_CHOOSE.map((item) => (
                   <div
                     key={item.title}
-                    className="group flex items-start gap-3 rounded-2xl border border-[#1C1C1E]/5 bg-[#F8F7F4] p-4 transition-all hover:border-emerald-200 hover:shadow-md"
+                    className="group flex items-start gap-3 rounded-2xl border border-[#1C1C1E]/5 bg-[#F0F7FF] p-4 transition-all hover:border-blue-200 hover:shadow-md"
                   >
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-emerald-600 shadow-sm shadow-emerald-600/20">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-blue-600 shadow-sm shadow-blue-600/20">
                       <CheckCircle2 className="h-4 w-4 text-white" />
                     </div>
                     <div>
@@ -839,7 +654,7 @@ export default function Home() {
               <div className="mt-10">
                 <Link
                   href="/register"
-                  className="group inline-flex items-center gap-2 rounded-full bg-emerald-600 px-8 py-4 text-sm font-bold text-white shadow-lg shadow-emerald-600/25 transition-all hover:bg-emerald-700 hover:-translate-y-0.5"
+                  className="group inline-flex items-center gap-2 rounded-full bg-blue-600 px-8 py-4 text-sm font-bold text-white shadow-lg shadow-blue-600/25 transition-all hover:bg-blue-700 hover:-translate-y-0.5"
                 >
                   Start Managing Today
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -851,11 +666,11 @@ export default function Home() {
             <div className="relative">
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { icon: Shield, title: "Data Security", desc: "Enterprise-grade encryption & complete isolation per institution", bg: "bg-emerald-50", iconColor: "text-emerald-600" },
+                  { icon: Shield, title: "Data Security", desc: "Enterprise-grade encryption & complete isolation per institution", bg: "bg-blue-50", iconColor: "text-blue-600" },
                   { icon: TrendingUp, title: "Deep Analytics", desc: "Actionable insights on attendance, fees, and academic performance", bg: "bg-amber-50", iconColor: "text-amber-600" },
                   { icon: Zap, title: "Lightning Fast", desc: "Blazing performance with auto-scaling infrastructure built in", bg: "bg-blue-50", iconColor: "text-blue-600" },
                   { icon: Globe, title: "Access Anywhere", desc: "Cloud-based platform accessible from any device, any location", bg: "bg-[#F97066]/8", iconColor: "text-[#F97066]" },
-                  { icon: Cpu, title: "AI-Powered Tools", desc: "Smart automation for routine tasks, saving hours every week", bg: "bg-emerald-50", iconColor: "text-emerald-600" },
+                  { icon: Cpu, title: "AI-Powered Tools", desc: "Smart automation for routine tasks, saving hours every week", bg: "bg-blue-50", iconColor: "text-blue-600" },
                   { icon: Trophy, title: "Award-Winning", desc: "Recognized as the best school ERP by institutions across India", bg: "bg-amber-50", iconColor: "text-amber-600" },
                 ].map((card) => (
                   <div
@@ -875,9 +690,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           FULL-WIDTH IMAGE — Analytics showcase
-      ══════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <section className="relative flex h-[400px] items-center justify-center overflow-hidden sm:h-[500px]">
         <img
           src="https://images.unsplash.com/photo-1577896851231-70ef18881754?w=1600&q=80"
@@ -885,10 +700,10 @@ export default function Home() {
           loading="lazy"
           className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-[#1C1C1E]/60" />
+        <div className="absolute inset-0 bg-[#071e3d]/60" />
         <div className="relative z-10 mx-auto max-w-2xl px-4 text-center">
           <h2 className="font-display text-4xl font-bold text-white sm:text-5xl leading-[1.1]">
-            Real-time analytics made <em className="italic text-emerald-400">beautiful</em>
+            Real-time analytics made <em className="italic text-blue-400">beautiful</em>
           </h2>
           <p className="mx-auto mt-5 max-w-lg text-base text-white/70 leading-relaxed">
             Track attendance patterns, fee collection, academic performance, and institutional growth with stunning dashboards.
@@ -903,33 +718,33 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           INSTITUTION TYPES — Schools vs Coaching
-      ══════════════════════════════════════════ */}
-      <section id="institutions" className="relative overflow-hidden bg-[#F8F7F4] py-24 sm:py-32">
-        <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-100/30 blur-3xl" />
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section id="institutions" className="relative overflow-hidden bg-[#F0F7FF] py-24 sm:py-32">
+        <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-100/30 blur-3xl" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-emerald-600">
-              <span className="h-0.5 w-6 bg-emerald-600" />
+            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-blue-600">
+              <span className="h-0.5 w-6 bg-blue-600" />
               Built for Your Institution
-              <span className="h-0.5 w-6 bg-emerald-600" />
+              <span className="h-0.5 w-6 bg-blue-600" />
             </div>
             <h2 className="font-display text-3xl font-bold tracking-tight text-[#1C1C1E] sm:text-4xl lg:text-[52px] lg:leading-[1.12]">
-              Tailored for Schools &{" "}
-              <em className="italic text-emerald-600">Coaching Institutes</em>
+              Tailored for Schools,{" "}
+              <em className="italic text-blue-600">Coaching &amp; Libraries</em>
             </h2>
             <p className="mt-5 text-lg text-[#8E8E93]">
-              Register as a School for class-based management, or as a Coaching Institute for flexible batch-based operations.
+              Register as a School, Coaching Institute, or Library — each with a tailored management experience.
             </p>
           </div>
 
-          <div className="mx-auto mt-14 grid max-w-5xl gap-8 lg:grid-cols-2">
+          <div className="mx-auto mt-14 grid max-w-6xl gap-8 lg:grid-cols-3">
             {/* School card */}
-            <div className="group relative overflow-hidden rounded-3xl border-2 border-emerald-200 bg-white p-8 transition-all duration-300 hover:border-emerald-300 hover:shadow-2xl hover:shadow-emerald-600/5">
-              <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-emerald-100/40 blur-2xl" />
+            <div className="group relative overflow-hidden rounded-3xl border-2 border-blue-200 bg-white p-8 transition-all duration-300 hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-600/5">
+              <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-blue-100/40 blur-2xl" />
               <div className="relative">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-600 shadow-lg shadow-emerald-600/25">
+                <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-600 shadow-lg shadow-blue-600/25">
                   <GraduationCap className="h-8 w-8 text-white" />
                 </div>
                 <div className="mt-5">
@@ -941,8 +756,8 @@ export default function Home() {
                 <ul className="mt-6 space-y-3">
                   {SCHOOL_FEATURES.map((f) => (
                     <li key={f} className="flex items-center gap-3 text-sm text-[#4A4A4C]">
-                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100">
-                        <CheckCircle2 className="h-3 w-3 text-emerald-600" />
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-100">
+                        <CheckCircle2 className="h-3 w-3 text-blue-600" />
                       </div>
                       {f}
                     </li>
@@ -950,7 +765,7 @@ export default function Home() {
                 </ul>
                 <Link
                   href="/register?type=SCHOOL"
-                  className="group/btn mt-8 flex items-center gap-2 rounded-full bg-emerald-600 px-6 py-3 text-sm font-bold text-white shadow-md shadow-emerald-600/20 transition-all hover:bg-emerald-700"
+                  className="group/btn mt-8 flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-md shadow-blue-600/20 transition-all hover:bg-blue-700"
                 >
                   Register as School
                   <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
@@ -990,63 +805,107 @@ export default function Home() {
                 </Link>
               </div>
             </div>
+
+            {/* Library card */}
+            <div className="group relative overflow-hidden rounded-3xl border-2 border-teal-200 bg-white p-8 transition-all duration-300 hover:border-teal-300 hover:shadow-2xl hover:shadow-teal-600/5">
+              <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-teal-100/40 blur-2xl" />
+              <div className="relative">
+                <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-teal-600 shadow-lg shadow-teal-600/25">
+                  <BookMarked className="h-8 w-8 text-white" />
+                </div>
+                <div className="mt-5">
+                  <h3 className="font-display text-2xl font-bold text-[#1C1C1E]">For Libraries</h3>
+                  <p className="mt-2 text-sm text-[#8E8E93]">
+                    Complete library management with digital catalog, member tracking, and automated overdue handling.
+                  </p>
+                </div>
+                <ul className="mt-6 space-y-3">
+                  {LIBRARY_FEATURES.map((f) => (
+                    <li key={f} className="flex items-center gap-3 text-sm text-[#4A4A4C]">
+                      <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-teal-100">
+                        <CheckCircle2 className="h-3 w-3 text-teal-600" />
+                      </div>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/register?type=LIBRARY"
+                  className="group/btn mt-8 flex items-center gap-2 rounded-full bg-teal-600 px-6 py-3 text-sm font-bold text-white shadow-md shadow-teal-600/20 transition-all hover:bg-teal-700"
+                >
+                  Register as Library
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          HOW IT WORKS — Charcoal section, emerald steps
-      ══════════════════════════════════════════ */}
-      <section id="how-it-works" className="relative overflow-hidden bg-[#1C1C1E] py-24 sm:py-32">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(5,150,105,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(5,150,105,0.04)_1px,transparent_1px)] bg-[length:60px_60px]" />
-        <div className="absolute left-1/4 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-emerald-900/20 blur-[120px]" />
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          HOW IT WORKS — Charcoal section, blue steps
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section id="how-it-works" className="relative overflow-hidden bg-[#071e3d] py-24 sm:py-32">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(37,99,235,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(37,99,235,0.05)_1px,transparent_1px)] bg-[length:60px_60px]" />
+        <div className="absolute left-1/4 top-1/2 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-blue-900/20 blur-[120px]" />
         <div className="absolute right-1/4 bottom-0 h-[300px] w-[300px] rounded-full bg-[#F97066]/8 blur-[100px]" />
-        {/* Top wave */}
-        <div className="absolute -top-px left-0 w-full overflow-hidden rotate-180">
-          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="block w-full h-16 sm:h-20" preserveAspectRatio="none">
-            <path d="M0,0 L1440,80 L1440,80 L0,80 Z" fill="#F8F7F4" />
-          </svg>
-        </div>
-
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-emerald-400">
-              <span className="h-0.5 w-6 bg-emerald-400" />
+            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-blue-400">
+              <span className="h-0.5 w-6 bg-blue-400" />
               Getting Started
-              <span className="h-0.5 w-6 bg-emerald-400" />
+              <span className="h-0.5 w-6 bg-blue-400" />
             </div>
             <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-[52px] lg:leading-[1.12]">
               Up and running in
               <br />
-              <em className="italic text-emerald-400">three simple steps</em>
+              <em className="italic text-blue-400">three simple steps</em>
             </h2>
             <p className="mt-5 text-lg text-white/40">
               No lengthy onboarding. No complex training. Just register, configure, and start managing.
             </p>
           </div>
 
-          <div className="mx-auto mt-16 grid max-w-5xl gap-6 lg:grid-cols-3">
-            {STEPS.map((s, i) => (
-              <div key={s.step} className="group relative">
-                {i < STEPS.length - 1 && (
-                  <div className="absolute left-full top-[4.5rem] hidden h-0.5 w-full -translate-y-1/2 bg-linear-to-r from-white/10 to-transparent lg:block" style={{ width: "calc(100% - 2rem)", left: "calc(100% - 1rem)" }} />
-                )}
-                <div className="relative rounded-2xl bg-white p-10 text-center shadow-lg shadow-[#1C1C1E]/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                  {/* Step number */}
-                  <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-600 shadow-xl shadow-emerald-600/30">
-                    <span className="font-display text-2xl font-bold text-white">{s.step}</span>
+          {/* Journey steps */}
+          <div className="relative mx-auto mt-16 max-w-5xl">
+            {/* Dashed connecting line */}
+            <div className="absolute left-[25%] right-[25%] top-14 hidden h-px border-t border-dashed border-blue-400/25 lg:block" />
+
+            <div className="grid gap-10 lg:grid-cols-3">
+              {STEPS.map((s, i) => (
+                <div key={s.step} className="group flex flex-col items-center text-center">
+                  {/* Icon ring */}
+                  <div className="relative mb-7">
+                    <div className="absolute inset-0 scale-150 rounded-full bg-blue-500/10 blur-2xl opacity-0 transition-all duration-500 group-hover:opacity-100" />
+                    <div className="relative flex h-28 w-28 items-center justify-center rounded-full border border-blue-400/30 bg-linear-to-br from-blue-700 to-blue-950">
+                      <s.icon className="h-10 w-10 text-blue-200 transition-transform duration-300 group-hover:scale-110" />
+                      {/* Step badge */}
+                      <div className="absolute -right-1.5 -top-1.5 flex h-7 w-7 items-center justify-center rounded-full bg-yellow-400 text-[11px] font-black text-[#071e3d] shadow-lg">
+                        {i + 1}
+                      </div>
+                    </div>
                   </div>
-                  <h3 className="font-display text-xl font-bold text-[#1C1C1E]">{s.title}</h3>
-                  <p className="mt-3 text-sm leading-relaxed text-[#8E8E93]">{s.desc}</p>
+
+                  {/* Duration tag */}
+                  <div className="mb-4 flex items-center gap-1.5 rounded-full border border-blue-400/20 bg-blue-600/15 px-3 py-1 text-[11px] font-semibold text-blue-300">
+                    <Clock className="h-3 w-3" />
+                    {(["2 min", "10 min", "Instant"] as const)[i]}
+                  </div>
+
+                  <h3 className="font-display text-xl font-bold text-white">{s.title}</h3>
+                  <p className="mt-3 max-w-xs text-sm leading-relaxed text-white/50">{s.desc}</p>
+
+                  {/* Bottom accent line */}
+                  <div className="mt-5 h-0.5 w-8 rounded-full bg-blue-500/40 transition-all duration-300 group-hover:w-16 group-hover:bg-blue-400" />
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           <div className="mt-14 text-center">
             <Link
               href="/register"
-              className="group inline-flex items-center gap-2.5 rounded-full bg-emerald-600 px-9 py-4 text-base font-bold text-white shadow-2xl shadow-emerald-600/25 transition-all hover:bg-emerald-700 hover:-translate-y-0.5"
+              className="group inline-flex items-center gap-2.5 rounded-full bg-blue-600 px-9 py-4 text-base font-bold text-white shadow-2xl shadow-blue-600/25 transition-all hover:bg-blue-700 hover:-translate-y-0.5"
             >
               Start for Free Today
               <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -1054,27 +913,21 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Bottom wave */}
-        <div className="absolute -bottom-px left-0 w-full">
-          <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="block w-full h-16 sm:h-20" preserveAspectRatio="none">
-            <path d="M0,0 L1440,80 L1440,80 L0,80 Z" fill="#F0EDE8" />
-          </svg>
-        </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           STATS COUNTER — Cream background
-      ══════════════════════════════════════════ */}
-      <section className="relative overflow-hidden bg-[#F0EDE8] py-24 sm:py-28">
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section className="relative overflow-hidden bg-[#EFF6FF] py-24 sm:py-28">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-14 text-center">
-            <div className="mb-4 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-emerald-600">
-              <span className="h-0.5 w-6 bg-emerald-600" />
+            <div className="mb-4 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-blue-600">
+              <span className="h-0.5 w-6 bg-blue-600" />
               Trusted at Scale
-              <span className="h-0.5 w-6 bg-emerald-600" />
+              <span className="h-0.5 w-6 bg-blue-600" />
             </div>
             <h2 className="font-display text-3xl font-bold tracking-tight text-[#1C1C1E] sm:text-4xl">
-              Numbers that speak for <em className="italic text-emerald-600">themselves</em>
+              Numbers that speak for <em className="italic text-blue-600">themselves</em>
             </h2>
           </div>
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
@@ -1084,8 +937,8 @@ export default function Home() {
                 className="group relative overflow-hidden rounded-3xl border border-[#1C1C1E]/5 bg-white p-8 text-center shadow-sm transition-all hover:-translate-y-1 hover:shadow-xl"
               >
                 <div className="relative">
-                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-600/10 transition-all group-hover:scale-110">
-                    <stat.icon className="h-7 w-7 text-emerald-600" />
+                  <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600/10 transition-all group-hover:scale-110">
+                    <stat.icon className="h-7 w-7 text-blue-600" />
                   </div>
                   <p className="font-display text-4xl font-bold text-[#1C1C1E] sm:text-5xl">{stat.value}</p>
                   <p className="mt-2 text-sm font-medium text-[#8E8E93]">{stat.label}</p>
@@ -1096,21 +949,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           TESTIMONIALS — Dark charcoal section
-      ══════════════════════════════════════════ */}
-      <section id="testimonials" className="relative overflow-hidden bg-[#1C1C1E] py-24 sm:py-32">
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section id="testimonials" className="relative overflow-hidden bg-[#071e3d] py-24 sm:py-32">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-emerald-400">
-              <span className="h-0.5 w-6 bg-emerald-400" />
+            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-blue-400">
+              <span className="h-0.5 w-6 bg-blue-400" />
               Testimonials
-              <span className="h-0.5 w-6 bg-emerald-400" />
+              <span className="h-0.5 w-6 bg-blue-400" />
             </div>
             <h2 className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-[52px] lg:leading-[1.12]">
               Trusted by educators
               <br />
-              <em className="italic text-emerald-400">across India</em>
+              <em className="italic text-blue-400">across India</em>
             </h2>
             <p className="mt-5 text-lg text-white/40">
               See what school principals, directors, and administrators say about SkolMatrixa.
@@ -1135,13 +988,13 @@ export default function Home() {
                 </p>
                 {/* Author */}
                 <div className="mt-auto flex items-center gap-4 border-t border-white/8 pt-5">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-emerald-600/20">
-                    <span className="font-display text-sm font-bold text-emerald-400">{t.initials}</span>
+                  <div className="flex h-11 w-11 items-center justify-center rounded-full bg-blue-600/20">
+                    <span className="font-display text-sm font-bold text-blue-400">{t.initials}</span>
                   </div>
                   <div>
                     <p className="text-sm font-bold text-white">{t.author}</p>
                     <p className="text-xs text-white/40">{t.role}</p>
-                    <p className="text-xs font-semibold text-emerald-400">{t.school}</p>
+                    <p className="text-xs font-semibold text-blue-400">{t.school}</p>
                   </div>
                 </div>
               </div>
@@ -1150,30 +1003,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           FAQ — Clean accordion
-      ══════════════════════════════════════════ */}
-      <section id="faq" className="relative overflow-hidden bg-[#F8F7F4] py-24 sm:py-32">
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <section id="faq" className="relative overflow-hidden bg-[#F0F7FF] py-24 sm:py-32">
         <div className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-emerald-600">
-              <span className="h-0.5 w-6 bg-emerald-600" />
+            <div className="mb-5 inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[3px] text-blue-600">
+              <span className="h-0.5 w-6 bg-blue-600" />
               FAQ
-              <span className="h-0.5 w-6 bg-emerald-600" />
+              <span className="h-0.5 w-6 bg-blue-600" />
             </div>
             <h2 className="font-display text-3xl font-bold tracking-tight text-[#1C1C1E] sm:text-4xl lg:text-[52px] lg:leading-[1.12]">
-              Questions? <em className="italic text-emerald-600">Answered.</em>
+              Questions? <em className="italic text-blue-600">Answered.</em>
             </h2>
           </div>
           <div className="mt-14 space-y-2.5">
             {FAQ.map((item, i) => (
-              <details key={i} className="group rounded-2xl border border-[#1C1C1E]/5 bg-white shadow-sm transition-all open:shadow-md open:shadow-emerald-600/5">
+              <details key={i} className="group rounded-2xl border border-[#1C1C1E]/5 bg-white shadow-sm transition-all open:shadow-md open:shadow-blue-600/5">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-6 text-left">
-                  <span className="font-display text-base font-semibold text-[#1C1C1E] transition-colors group-open:text-emerald-600">
+                  <span className="font-display text-base font-semibold text-[#1C1C1E] transition-colors group-open:text-blue-600">
                     {item.q}
                   </span>
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#1C1C1E]/10 bg-[#F8F7F4] transition-all group-open:rotate-45 group-open:border-emerald-200 group-open:bg-emerald-50">
-                    <svg className="h-4 w-4 text-[#8E8E93] group-open:text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[#1C1C1E]/10 bg-[#F0F7FF] transition-all group-open:rotate-45 group-open:border-blue-200 group-open:bg-blue-50">
+                    <svg className="h-4 w-4 text-[#8E8E93] group-open:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                     </svg>
                   </span>
@@ -1185,14 +1038,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          CTA — Emerald gradient overlay
-      ══════════════════════════════════════════ */}
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+          CTA — blue gradient overlay
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <section className="relative overflow-hidden">
         {/* Background with image */}
         <div className="absolute inset-0">
           <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&q=80" alt="" loading="lazy" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-linear-to-br from-emerald-700/90 via-emerald-600/85 to-[#1C1C1E]/90" />
+          <div className="absolute inset-0 bg-linear-to-br from-blue-700/65 via-blue-600/60 to-[#071e3d]/70" />
         </div>
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[length:48px_48px]" />
 
@@ -1238,16 +1091,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           FOOTER — Deep charcoal
-      ══════════════════════════════════════════ */}
-      <footer className="bg-[#1C1C1E] text-white/35">
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
+      <footer className="bg-[#071e3d] text-white/35">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
             {/* Brand */}
             <div className="lg:col-span-2">
               <Link href="/" className="flex items-center gap-2.5">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-600 shadow-lg">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 shadow-lg">
                   <BookOpen className="h-5 w-5 text-white" />
                 </div>
                 <span className="font-display text-xl font-bold text-white tracking-tight">
@@ -1291,7 +1144,7 @@ export default function Home() {
                   { label: "Analytics Dashboard", href: "#features" },
                 ].map((link) => (
                   <li key={link.label}>
-                    <a href={link.href} className="text-sm transition-colors hover:text-emerald-400">
+                    <a href={link.href} className="text-sm transition-colors hover:text-blue-400">
                       {link.label}
                     </a>
                   </li>
@@ -1304,7 +1157,7 @@ export default function Home() {
               <h4 className="mb-5 font-display text-sm font-bold text-white">Contact Us</h4>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3 text-sm">
-                  <Mail className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                  <Mail className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
                   <span>support@skolmatrixa.com</span>
                 </li>
                 <li className="flex items-start gap-3 text-sm">
@@ -1317,8 +1170,8 @@ export default function Home() {
                 </li>
               </ul>
               <div className="mt-6 flex items-center gap-2 rounded-xl border border-white/8 bg-white/4 px-3 py-2">
-                <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-xs text-emerald-400">All systems operational</span>
+                <div className="h-2 w-2 rounded-full bg-blue-400 animate-pulse" />
+                <span className="text-xs text-blue-400">All systems operational</span>
               </div>
             </div>
           </div>
@@ -1333,7 +1186,7 @@ export default function Home() {
                 { label: "Privacy Policy", href: "/privacy" },
                 { label: "Terms of Service", href: "/terms" },
               ].map((link) => (
-                <a key={link.label} href={link.href} className="transition-colors hover:text-emerald-400">
+                <a key={link.label} href={link.href} className="transition-colors hover:text-blue-400">
                   {link.label}
                 </a>
               ))}

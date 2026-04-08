@@ -122,6 +122,14 @@ enum NotificationPriority {
   URGENT
 }
 
+enum WhatsAppMessageStatus {
+  PENDING
+  SENT
+  DELIVERED
+  READ
+  FAILED
+}
+
 // ==================== MODELS ====================
 
 model Tenant {
@@ -173,6 +181,7 @@ model Tenant {
   libraryFees         LibraryFee[]
   libraryPricings     LibraryPricing[]
   schoolBookIssues    SchoolBookIssue[]
+  whatsappLogs        WhatsAppLog[]
 
   @@index([status])
   @@index([type])
@@ -596,19 +605,21 @@ model FeePayment {
 }
 
 model Notification {
-  id            String               @id @default(uuid())
-  tenantId      String
-  title         String
-  message       String
-  type          NotificationType     @default(GENERAL)
-  priority      NotificationPriority @default(NORMAL)
-  targetRoles   String[]
-  targetClassId String?
-  targetBatchId String?
-  sentVia       String[]
-  createdBy     String
-  createdAt     DateTime             @default(now())
-  expiresAt     DateTime?
+  id              String                @id @default(uuid())
+  tenantId        String
+  title           String
+  message         String
+  type            NotificationType      @default(GENERAL)
+  priority        NotificationPriority  @default(NORMAL)
+  targetRoles     String[]
+  targetClassId   String?
+  targetBatchId   String?
+  sentVia         String[]              // IN_APP, EMAIL, WHATSAPP
+  whatsappStatus  WhatsAppMessageStatus?
+  whatsappMsgId   String?
+  createdBy       String
+  createdAt       DateTime              @default(now())
+  expiresAt       DateTime?
 
   tenant      Tenant             @relation(fields: [tenantId], references: [id], onDelete: Cascade)
   creator     User               @relation("NotificationCreator", fields: [createdBy], references: [id], onDelete: Cascade)
@@ -1000,4 +1011,28 @@ model SchoolBookIssue {
   @@index([tenantId, studentId, status])
   @@index([tenantId, status])
   @@index([tenantId, dueDate])
+}
+
+// ==================== WHATSAPP MESSAGING ====================
+
+model WhatsAppLog {
+  id              String                @id @default(uuid())
+  tenantId        String
+  templateName    String
+  recipientPhone  String
+  recipientName   String?
+  status          WhatsAppMessageStatus @default(PENDING)
+  msgId           String?               // MSG91 request ID
+  errorMessage    String?
+  variables       Json?                 // Template variables sent
+  category        String?               // FEE_REMINDER, EVENT, RESULT, ATTENDANCE, GENERAL, LIBRARY_DUE
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, createdAt])
+  @@index([tenantId, category])
+  @@index([msgId])
+  @@index([status])
 }

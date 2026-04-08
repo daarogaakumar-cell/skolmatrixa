@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { updateTenantProfile, getAcademicYears, createAcademicYear, setCurrentAcademicYear } from "@/actions/academic";
 import { FileUpload } from "@/components/shared/file-upload";
-import { Building2, Calendar, Loader2, Star } from "lucide-react";
+import { Building2, Calendar, Loader2, Star, MessageCircle } from "lucide-react";
 
 interface TenantProfile {
   id: string;
@@ -63,6 +63,7 @@ export function SettingsClient({ tenant, academicYears: initialYears }: Settings
   const [yearName, setYearName] = useState("");
   const [yearStart, setYearStart] = useState("");
   const [yearEnd, setYearEnd] = useState("");
+
 
   function handleProfileSave() {
     if (!name.trim()) {
@@ -147,6 +148,10 @@ export function SettingsClient({ tenant, academicYears: initialYears }: Settings
           <TabsTrigger value="academic">
             <Calendar className="mr-2 h-4 w-4" />
             Academic Years
+          </TabsTrigger>
+          <TabsTrigger value="whatsapp">
+            <MessageCircle className="mr-2 h-4 w-4" />
+            WhatsApp
           </TabsTrigger>
         </TabsList>
 
@@ -251,7 +256,7 @@ export function SettingsClient({ tenant, academicYears: initialYears }: Settings
                           </Badge>
                         )}
                         <span className="text-sm text-muted-foreground">
-                          {new Date(year.startDate).toLocaleDateString()} —{" "}
+                          {new Date(year.startDate).toLocaleDateString()} â€”{" "}
                           {new Date(year.endDate).toLocaleDateString()}
                         </span>
                       </div>
@@ -307,6 +312,24 @@ export function SettingsClient({ tenant, academicYears: initialYears }: Settings
                   Add Year
                 </Button>
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* WhatsApp Tab */}
+        <TabsContent value="whatsapp" className="space-y-6">
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center py-16 text-center">
+              <div className="mb-4 rounded-full bg-green-100 p-5 text-green-600">
+                <MessageCircle className="h-10 w-10" />
+              </div>
+              <h3 className="mb-2 text-xl font-semibold">WhatsApp Notifications</h3>
+              <div className="mb-3 inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">
+                Coming Soon
+              </div>
+              <p className="max-w-md text-sm text-muted-foreground">
+                Send automated fee reminders, attendance alerts, exam schedules, and more directly to parents and students on WhatsApp. This feature is currently under development and will be available soon.
+              </p>
             </CardContent>
           </Card>
         </TabsContent>

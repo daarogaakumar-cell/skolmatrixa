@@ -190,3 +190,29 @@ export type AttendanceRecordInput = z.infer<typeof attendanceRecordSchema>;
 export type MarkAttendanceInput = z.infer<typeof markAttendanceSchema>;
 export type TimetableEntryInput = z.infer<typeof timetableEntrySchema>;
 export type SaveTimetableInput = z.infer<typeof saveTimetableSchema>;
+
+// ==================== WhatsApp Schemas ====================
+
+export const whatsAppSettingsSchema = z.object({
+  enabled: z.boolean().optional(),
+  sendFeeReminders: z.boolean().optional(),
+  sendAttendanceAlerts: z.boolean().optional(),
+  sendEventNotifications: z.boolean().optional(),
+  sendResultNotifications: z.boolean().optional(),
+  sendLibraryReminders: z.boolean().optional(),
+  dailyLimit: z.coerce.number().min(0).max(5000).optional(),
+  defaultCountryCode: z.string().min(1).max(5).optional(),
+});
+
+export const whatsAppNotificationSchema = z.object({
+  templateName: z.string().min(1, "Template is required"),
+  title: z.string().min(1, "Title is required").max(200),
+  message: z.string().min(1, "Message is required").max(1000),
+  targetType: z.enum(["ALL", "CLASS", "BATCH", "ROLE"]),
+  targetClassId: z.string().optional(),
+  targetBatchId: z.string().optional(),
+  targetRoles: z.array(z.string()).optional(),
+});
+
+export type WhatsAppSettingsInput = z.infer<typeof whatsAppSettingsSchema>;
+export type WhatsAppNotificationInput = z.infer<typeof whatsAppNotificationSchema>;

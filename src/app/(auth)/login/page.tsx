@@ -4,14 +4,11 @@ import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Eye, EyeOff, LogIn } from "lucide-react";
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center p-8">Loading...</div>}>
+    <Suspense fallback={<div className="p-10 text-center text-white/40">Loading...</div>}>
       <LoginForm />
     </Suspense>
   );
@@ -23,6 +20,7 @@ function LoginForm() {
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPw, setShowPw] = useState(false);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,16 +28,12 @@ function LoginForm() {
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
-
     try {
       const result = await signIn("credentials", {
-        email,
-        password,
+        email: formData.get("email") as string,
+        password: formData.get("password") as string,
         redirect: false,
       });
-
       if (result?.error) {
         setError("Invalid email or password");
       } else {
@@ -54,58 +48,104 @@ function LoginForm() {
   }
 
   return (
-    <Card className="border-[#1C1C1E]/5 shadow-lg shadow-[#1C1C1E]/3 bg-white">
-      <CardHeader className="text-center">
-        <CardTitle className="font-display text-2xl text-[#1C1C1E]">Sign In to <em className="italic text-emerald-600">SkolMatrixa</em></CardTitle>
-        <CardDescription className="text-[#8E8E93]">Enter your credentials to access your dashboard</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={onSubmit} className="space-y-4">
-          {error && (
-            <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-              {error}
-            </div>
-          )}
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="you@example.com"
-              required
-              autoComplete="email"
-              className="border-[#1C1C1E]/10 focus:border-emerald-600 focus:ring-emerald-600/20"
-            />
+    <div className="px-8 py-10 sm:px-10">
+      {/* Header */}
+      <div className="mb-8 text-center">
+        <h2 className="font-display text-2xl font-bold text-white">Welcome back</h2>
+        <p className="mt-1.5 text-sm text-white/40">
+          Sign in to your institution dashboard
+        </p>
+      </div>
+
+      <form onSubmit={onSubmit} className="space-y-5">
+        {error && (
+          <div className="rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+            {error}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
+        )}
+
+        {/* Email */}
+        <div className="space-y-1.5">
+          <label className="block text-[11px] font-semibold uppercase tracking-widest text-white/40">
+            Email Address
+          </label>
+          <input
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            placeholder="you@institution.com"
+            className="w-full rounded-xl border border-white/[0.08] bg-white/[0.05] px-4 py-3 text-sm text-white placeholder:text-white/20 outline-none transition-all focus:border-blue-500/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-blue-500/20"
+          />
+        </div>
+
+        {/* Password */}
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between">
+            <label className="block text-[11px] font-semibold uppercase tracking-widest text-white/40">
+              Password
+            </label>
+            <Link
+              href="/forgot-password"
+              className="text-[11px] text-blue-400/60 transition-colors hover:text-blue-400"
+            >
+              Forgot password?
+            </Link>
+          </div>
+          <div className="relative">
+            <input
               name="password"
-              type="password"
-              placeholder="••••••••"
+              type={showPw ? "text" : "password"}
               required
               autoComplete="current-password"
-              className="border-[#1C1C1E]/10 focus:border-emerald-600 focus:ring-emerald-600/20"
+              placeholder="••••••••"
+              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.05] px-4 py-3 pr-12 text-sm text-white placeholder:text-white/20 outline-none transition-all focus:border-blue-500/50 focus:bg-white/[0.08] focus:ring-2 focus:ring-blue-500/20"
             />
+            <button
+              type="button"
+              onClick={() => setShowPw(!showPw)}
+              tabIndex={-1}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-white/25 transition-colors hover:text-white/55"
+            >
+              {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
           </div>
-          <Button type="submit" className="w-full rounded-full bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20" disabled={loading}>
-            {loading ? "Signing in..." : "Sign In"}
-          </Button>
-        </form>
-      </CardContent>
-      <CardFooter className="flex flex-col gap-2 text-center text-sm">
-        <Link href="/forgot-password" className="text-emerald-600 hover:text-emerald-700 hover:underline">
-          Forgot your password?
+        </div>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="group mt-1 flex w-full items-center justify-center gap-2.5 rounded-xl bg-blue-600 py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-600/25 transition-all hover:bg-blue-700 disabled:opacity-50"
+        >
+          {loading ? (
+            <span className="flex items-center gap-2.5">
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+              Signing in…
+            </span>
+          ) : (
+            <>
+              <LogIn className="h-4 w-4" />
+              Sign In to Dashboard
+            </>
+          )}
+        </button>
+      </form>
+
+      {/* Divider */}
+      <div className="my-7 flex items-center gap-3">
+        <div className="h-px flex-1 bg-white/[0.06]" />
+        <span className="text-[10px] uppercase tracking-widest text-white/20">or</span>
+        <div className="h-px flex-1 bg-white/[0.06]" />
+      </div>
+
+      <p className="text-center text-sm text-white/30">
+        No account yet?{" "}
+        <Link href="/register" className="font-semibold text-blue-400 transition-colors hover:text-blue-300">
+          Register your institution
         </Link>
-        <p className="text-[#8E8E93]">
-          Don&apos;t have an account?{" "}
-          <Link href="/register" className="text-emerald-600 hover:text-emerald-700 hover:underline font-medium">
-            Register your institution
-          </Link>
-        </p>
-      </CardFooter>
-    </Card>
+      </p>
+    </div>
   );
 }
+
